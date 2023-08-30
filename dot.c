@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "dot.h"
-#include "radialtree.h"
 #include "Bibliotecas/learquivo.h"
 #include "Bibliotecas/efficiency.h"
 

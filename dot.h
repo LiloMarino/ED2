@@ -1,7 +1,6 @@
 #ifndef DOT_H
 #define DOT_H
 
-#include "radialtree.h"
 #include <stdio.h>
 
 typedef void *ArqDot;
@@ -28,7 +27,7 @@ void TerminaDot(ArqDot fdot);
  * @param pai Ponteiro para o pai
  * @param filho Ponteiro para o filho
  */
-void LigaNo(ArqDot fdot, RadialTree All, Node pai, Node filho);
+void LigaNo(ArqDot fdot, Tree All, Node pai, Node filho);
 
 /**
  * @brief Marca o nó como removido no .dot
@@ -36,7 +35,7 @@ void LigaNo(ArqDot fdot, RadialTree All, Node pai, Node filho);
  * @param All Ponteiro para a árvore radial
  * @param removido Ponteiro para o nó removido
  */
-void MarcaNoRemovido(ArqDot fdot, RadialTree All, Node removido);
+void MarcaNoRemovido(ArqDot fdot, Tree All, Node removido);
 
 /**
  * @brief Copia o .dot do .geo para o primeiro arquivo .qry
