@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "dot.h"
+#include "avltree.h"
 #include "Bibliotecas/learquivo.h"
 #include "Bibliotecas/efficiency.h"
 
@@ -21,26 +22,23 @@ void TerminaDot(ArqDot fdot)
     }
 }
 
-void LigaNo(ArqDot fdot, DataStructure All, Node pai, Node filho)
+void LigaNo(ArqDot fdot, DataStructure All, TIPOCHAVE pai, TIPOCHAVE filho)
 {
     if (pai == NULL)
     {
-        char Forma = ((Figura *)getInfoRadialT(All, filho))->Tipo;
         int ID = ((Figura *)getInfoRadialT(All, filho))->ID;
         fprintf(fdot, "    Raiz -> \"%c%d\"\n", Forma, ID);
     }
     else
     {
-        char Forma1 = ((Figura *)getInfoRadialT(All, pai))->Tipo;
         int ID1 = ((Figura *)getInfoRadialT(All, pai))->ID;
-        char Forma2 = ((Figura *)getInfoRadialT(All, filho))->Tipo;
         int ID2 = ((Figura *)getInfoRadialT(All, filho))->ID;
         fprintf(fdot, "    \"%c%d\" -> \"%c%d\"\n", Forma1, ID1, Forma2, ID2);
     }
     fflush(fdot);
 }
 
-void MarcaNoRemovido(ArqDot fdot, DataStructure All, Node removido)
+void MarcaNoRemovido(ArqDot fdot, DataStructure All, TIPOCHAVE removido)
 {
     char Forma = ((Figura *)getInfoRadialT(All, removido))->Tipo;
     int ID = ((Figura *)getInfoRadialT(All, removido))->ID;

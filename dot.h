@@ -27,7 +27,7 @@ void TerminaDot(ArqDot fdot);
  * @param pai Ponteiro para o pai
  * @param filho Ponteiro para o filho
  */
-void LigaNo(ArqDot fdot, Tree All, Node pai, Node filho);
+void LigaNo(ArqDot fdot, DataStructure All, Node pai, Node filho);
 
 /**
  * @brief Marca o nó como removido no .dot
@@ -35,7 +35,7 @@ void LigaNo(ArqDot fdot, Tree All, Node pai, Node filho);
  * @param All Ponteiro para a árvore radial
  * @param removido Ponteiro para o nó removido
  */
-void MarcaNoRemovido(ArqDot fdot, Tree All, Node removido);
+void MarcaNoRemovido(ArqDot fdot, DataStructure All, Node removido);
 
 /**
  * @brief Copia o .dot do .geo para o primeiro arquivo .qry
