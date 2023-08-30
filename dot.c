@@ -5,16 +5,6 @@
 #include "Bibliotecas/learquivo.h"
 #include "Bibliotecas/efficiency.h"
 
-struct StFigura
-{
-    int ID;
-    char Tipo;
-    Item Figura;
-    int RefCount; // Necessário para não dar free() mais de uma vez
-};
-
-typedef struct StFigura Figura;
-
 void InicializaDot(ArqDot fdot)
 {
     fprintf(fdot, "digraph Tree {\n");
@@ -31,7 +21,7 @@ void TerminaDot(ArqDot fdot)
     }
 }
 
-void LigaNo(ArqDot fdot, RadialTree All, Node pai, Node filho)
+void LigaNo(ArqDot fdot, DataStructure All, Node pai, Node filho)
 {
     if (pai == NULL)
     {
@@ -50,7 +40,7 @@ void LigaNo(ArqDot fdot, RadialTree All, Node pai, Node filho)
     fflush(fdot);
 }
 
-void MarcaNoRemovido(ArqDot fdot, RadialTree All, Node removido)
+void MarcaNoRemovido(ArqDot fdot, DataStructure All, Node removido)
 {
     char Forma = ((Figura *)getInfoRadialT(All, removido))->Tipo;
     int ID = ((Figura *)getInfoRadialT(All, removido))->ID;
