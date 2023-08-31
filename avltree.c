@@ -7,6 +7,7 @@
 struct StNodeTree
 {
     TIPOCHAVE Chave;
+    struct StNodeTree *Pai;
     struct StNodeTree *Dir;
     struct StNodeTree *Esq;
     int Hdir;
@@ -55,6 +56,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 if (P->Dir == NULL)
                 {
                     P->Dir = No;
+                    No->Pai = P;
                     LigaNo(ARQDOT, AVLTree, P, No);
                     return No;
                 }
@@ -69,6 +71,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 if (P->Esq == NULL)
                 {
                     P->Esq = No;
+                    No->Pai = P;
                     LigaNo(ARQDOT, AVLTree, P, No);
                     return No;
                 }
@@ -134,7 +137,7 @@ void FreeAVL(DataStructure *AVLTree)
 {
     Raiz *Tree = *AVLTree;
     NodeTree *No = Tree->No;
-    NodeTree *Clear = NULL;
+    NodeTree *Clear = Tree->No;
     while (Tree->NumTotalNos != 0)
     {
         bool Vazio = true;
@@ -171,7 +174,6 @@ void FreeAVL(DataStructure *AVLTree)
             else
             {
                 /*Nó raiz*/
-                Tree->node = NULL;
                 free(Tree);
                 *AVLTree = NULL;
                 return;

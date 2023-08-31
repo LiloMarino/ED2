@@ -2,6 +2,7 @@
 #define DOT_H
 
 #include <stdio.h>
+#include "avltree.h"
 
 typedef void *ArqDot;
 

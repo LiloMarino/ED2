@@ -16,7 +16,6 @@ int main()
     InicializaDot(ARQDOT);
 
 
-
     TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
     FreeAVL(AVL1);
