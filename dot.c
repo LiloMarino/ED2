@@ -22,25 +22,25 @@ void TerminaDot(ArqDot fdot)
     }
 }
 
-void LigaNo(ArqDot fdot, DataStructure All, Node pai, Node filho)
+void LigaNo(ArqDot fdot, Node pai, Node filho)
 {
     if (pai == NULL)
     {
-        TIPOCHAVE Chave = GetChave(All, filho);
+        TIPOCHAVE Chave = GetChaveAVL(filho);
         fprintf(fdot, "    Raiz -> \"%d\"\n", Chave);
     }
     else
     {
-        TIPOCHAVE Chave1 = GetChave(All, pai);
-        TIPOCHAVE Chave2 = GetChave(All, filho);
+        TIPOCHAVE Chave1 = GetChaveAVL(pai);
+        TIPOCHAVE Chave2 = GetChaveAVL(filho);
         fprintf(fdot, "    \"%d\" -> \"%d\"\n", Chave1, Chave2);
     }
     fflush(fdot);
 }
 
-void MarcaNoRemovido(ArqDot fdot, DataStructure All, Node removido)
+void MarcaNoRemovido(ArqDot fdot, Node removido)
 {
-    TIPOCHAVE Chave = GetChave(All, removido);
+    TIPOCHAVE Chave = GetChaveAVL(removido);
     fprintf(fdot, "    %d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Chave);
     fflush(fdot);
 }

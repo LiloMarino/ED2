@@ -57,7 +57,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 {
                     P->Dir = No;
                     No->Pai = P;
-                    LigaNo(ARQDOT, AVLTree, P, No);
+                    LigaNo(ARQDOT, P, No);
                     return No;
                 }
                 else
@@ -72,7 +72,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 {
                     P->Esq = No;
                     No->Pai = P;
-                    LigaNo(ARQDOT, AVLTree, P, No);
+                    LigaNo(ARQDOT, P, No);
                     return No;
                 }
                 else
@@ -90,7 +90,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             }
         } while (true);
     }
-    LigaNo(ARQDOT, AVLTree, NULL, No);
+    LigaNo(ARQDOT, NULL, No);
     return No;
 }
 
@@ -137,7 +137,7 @@ void FreeAVL(DataStructure *AVLTree)
 {
     Raiz *Tree = *AVLTree;
     NodeTree *No = Tree->No;
-    NodeTree *Clear = Tree->No;
+    NodeTree *Clear = NULL;
     while (Tree->NumTotalNos != 0)
     {
         bool Vazio = true;
