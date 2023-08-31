@@ -9,7 +9,7 @@
 void InicializaDot(ArqDot fdot)
 {
     fprintf(fdot, "digraph Tree {\n");
-    fprintf(fdot, "    node [shape=box];\n");
+    fprintf(fdot, "    node [shape=circle];\n");
     fflush(fdot);
 }
 
@@ -22,53 +22,27 @@ void TerminaDot(ArqDot fdot)
     }
 }
 
-void LigaNo(ArqDot fdot, DataStructure All, TIPOCHAVE pai, TIPOCHAVE filho)
+void LigaNo(ArqDot fdot, DataStructure All, Node pai, Node filho)
 {
     if (pai == NULL)
     {
-        int ID = ((Figura *)getInfoRadialT(All, filho))->ID;
-        fprintf(fdot, "    Raiz -> \"%c%d\"\n", Forma, ID);
+        TIPOCHAVE Chave = GetChave(All, filho);
+        fprintf(fdot, "    Raiz -> \"%d\"\n", Chave);
     }
     else
     {
-        int ID1 = ((Figura *)getInfoRadialT(All, pai))->ID;
-        int ID2 = ((Figura *)getInfoRadialT(All, filho))->ID;
-        fprintf(fdot, "    \"%c%d\" -> \"%c%d\"\n", Forma1, ID1, Forma2, ID2);
+        TIPOCHAVE Chave1 = GetChave(All, pai);
+        TIPOCHAVE Chave2 = GetChave(All, filho);
+        fprintf(fdot, "    \"%d\" -> \"%d\"\n", Chave1, Chave2);
     }
     fflush(fdot);
 }
 
-void MarcaNoRemovido(ArqDot fdot, DataStructure All, TIPOCHAVE removido)
+void MarcaNoRemovido(ArqDot fdot, DataStructure All, Node removido)
 {
-    char Forma = ((Figura *)getInfoRadialT(All, removido))->Tipo;
-    int ID = ((Figura *)getInfoRadialT(All, removido))->ID;
-    fprintf(fdot, "    %c%d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Forma, ID);
+    TIPOCHAVE Chave = GetChave(All, removido);
+    fprintf(fdot, "    %d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Chave);
     fflush(fdot);
-}
-
-void CopiaDot(ArqDot fdot, const char *OutputGeo)
-{
-    char fn[strlen(OutputGeo) + 5];
-    strcpy(fn, OutputGeo);
-    strcat(fn,".dot");
-    FILE *faux = fopen(fn,"r");
-    if (!faux)
-    {
-        printf("Erro ao copiar DOT");
-    }
-    else
-    {
-        char *buf = NULL;
-        while (leLinha(faux,&buf))
-        {
-            if (buf[0] != '}')
-            {
-                fprintf(fdot,"%s",buf);
-            }
-        }
-    }
-    fflush(fdot);
-    fclose(faux);
 }
 
 void CriaPngDot(const char nome[])

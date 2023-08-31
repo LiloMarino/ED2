@@ -13,6 +13,7 @@
         "*.scss.liquid": "liquid-scss",
         "*.c": "c",
         "*.txt": "plaintext",
-        "avltree.h": "c"
+        "avltree.h": "c",
+        "string.h": "c"
     },
 }

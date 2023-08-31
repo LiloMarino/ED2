@@ -2,7 +2,7 @@
 PROJETO = ted
 
 # Arquivos fonte
-FONTES = main.c avltree.c
+FONTES = main.c avltree.c dot.c
 
 # Pasta de saída
 OUTPUT = output/
