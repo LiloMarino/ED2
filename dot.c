@@ -3,8 +3,9 @@
 #include <unistd.h>
 #include "dot.h"
 #include "avltree.h"
-#include "Bibliotecas/learquivo.h"
+#include "Bibliotecas/geradores.h"
 #include "Bibliotecas/efficiency.h"
+#include "Bibliotecas/learquivo.h"
 
 void InicializaDot(ArqDot fdot)
 {
@@ -24,24 +25,28 @@ void TerminaDot(ArqDot fdot)
 
 void LigaNo(ArqDot fdot, Node pai, Node filho)
 {
+    TerminaDot(ARQDOT);
+    char *NomeArq = CriaLogNome(FNARQDOT, "dot", &ARQDOT);
+    CopiaDot(ARQDOT, NomeArq);
+    free(NomeArq);
     if (pai == NULL)
     {
         TIPOCHAVE Chave = GetChaveAVL(filho);
-        fprintf(fdot, "    Raiz -> \"%d\"\n", Chave);
+        fprintf(ARQDOT, "    Raiz -> \"%d\"\n", Chave);
     }
     else if (filho == NULL)
     {
         TIPOCHAVE Chave = GetChaveAVL(pai);
-        fprintf(fdot, "    \"%d\" -> Raiz\n", Chave);
+        fprintf(ARQDOT, "    \"%d\" -> Raiz\n", Chave);
     }
     else
     {
 
         TIPOCHAVE Chave1 = GetChaveAVL(pai);
         TIPOCHAVE Chave2 = GetChaveAVL(filho);
-        fprintf(fdot, "    \"%d\" -> \"%d\"\n", Chave1, Chave2);
+        fprintf(ARQDOT, "    \"%d\" -> \"%d\"\n", Chave1, Chave2);
     }
-    fflush(fdot);
+    fflush(ARQDOT);
 }
 
 void MarcaNoRemovido(ArqDot fdot, Node removido)
@@ -49,6 +54,31 @@ void MarcaNoRemovido(ArqDot fdot, Node removido)
     TIPOCHAVE Chave = GetChaveAVL(removido);
     fprintf(fdot, "    %d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Chave);
     fflush(fdot);
+}
+
+void CopiaDot(ArqDot fdot, const char *NomeArqDot)
+{
+    char fn[strlen(NomeArqDot) + 5];
+    strcpy(fn, NomeArqDot);
+    strcat(fn, ".dot");
+    FILE *faux = fopen(fn, "r");
+    if (!faux)
+    {
+        printf("Erro ao copiar DOT");
+    }
+    else
+    {
+        char *buf = NULL;
+        while (leLinha(faux, &buf))
+        {
+            if (buf[0] != '}')
+            {
+                fprintf(fdot, "%s", buf);
+            }
+        }
+    }
+    fflush(fdot);
+    fclose(faux);
 }
 
 void CriaPngDot(const char nome[])

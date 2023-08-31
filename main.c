@@ -35,6 +35,7 @@ int main()
 
     TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
+    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Rotação RR*/
@@ -49,6 +50,7 @@ int main()
 
     TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
+    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Rotação RL*/
@@ -63,6 +65,7 @@ int main()
 
     TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
+    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Exclusão em AVL*/
@@ -80,7 +83,6 @@ int main()
 
     TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
+    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
-
-    /*Realiza todos os frees*/
 }

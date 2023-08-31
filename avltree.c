@@ -66,7 +66,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                         P->Fb += 1;
                         if (P->Fb == 2)
                         {
-                            AjustaAVL(P);
+                            AjustaAVL(AVLTree, P);
                         }
                         P = P->Pai;
                     } while (P != NULL);
@@ -91,7 +91,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                         P->Fb -= 1;
                         if (P->Fb == -2)
                         {
-                            AjustaAVL(P);
+                            AjustaAVL(AVLTree, P);
                         }
                         P = P->Pai;
                     } while (P != NULL);
@@ -207,11 +207,9 @@ void FreeAVL(DataStructure *AVLTree)
     return;
 }
 
-void AjustaAVL(Node N)
+void AjustaAVL(DataStructure AVLTree, Node N)
 {
-    TerminaDot(ARQDOT);
-    ARQDOT = CriaLog(FNARQDOT, "dot");
-    InicializaDot(ARQDOT);
+    Raiz *Tree = AVLTree;
     NodeTree *P = N;
     NodeTree *U;
     NodeTree *V;
@@ -225,6 +223,27 @@ void AjustaAVL(Node N)
             V = U->Dir;
 
             /*Rotacao RR*/
+            if (P->Pai != NULL)
+            {
+                if (P->Pai->Dir == P)
+                {
+                    /* P é filho direito */
+                    P->Pai->Dir = U;
+                    LigaNo(ARQDOT, P->Pai, U);
+                }
+                else
+                {
+                    /* P é filho esquerdo */
+                    P->Pai->Esq = U;
+                    LigaNo(ARQDOT, P->Pai, U);
+                }
+            }
+            else
+            {
+                /* Se torna o primeiro elemento */
+                Tree->No = U;
+                LigaNo(ARQDOT, NULL, U);
+            }
             U->Pai = P->Pai;
             LigaNo(ARQDOT, U, P->Pai);
             U->Esq = P;
@@ -238,6 +257,27 @@ void AjustaAVL(Node N)
             V = U->Esq;
 
             /*Rotacao RL*/
+            if (P->Pai != NULL)
+            {
+                if (P->Pai->Dir == P)
+                {
+                    /* P é filho direito */
+                    P->Pai->Dir = V;
+                    LigaNo(ARQDOT, P->Pai, V);
+                }
+                else
+                {
+                    /* P é filho esquerdo */
+                    P->Pai->Esq = V;
+                    LigaNo(ARQDOT, P->Pai, V);
+                }
+            }
+            else
+            {
+                /* Se torna o primeiro elemento */
+                Tree->No = V;
+                LigaNo(ARQDOT, NULL, V);
+            }
             V->Pai = P->Pai;
             LigaNo(ARQDOT, V, P->Pai);
             V->Esq = P;
@@ -260,6 +300,27 @@ void AjustaAVL(Node N)
             V = U->Dir;
 
             /*Rotacao LR*/
+            if (P->Pai != NULL)
+            {
+                if (P->Pai->Dir == P)
+                {
+                    /* P é filho direito */
+                    P->Pai->Dir = V;
+                    LigaNo(ARQDOT, P->Pai, V);
+                }
+                else
+                {
+                    /* P é filho esquerdo */
+                    P->Pai->Esq = V;
+                    LigaNo(ARQDOT, P->Pai, V);
+                }
+            }
+            else
+            {
+                /* Se torna o primeiro elemento */
+                Tree->No = V;
+                LigaNo(ARQDOT, NULL, V);
+            }
             V->Pai = P->Pai;
             LigaNo(ARQDOT, V, P->Pai);
             V->Esq = U;
@@ -277,6 +338,28 @@ void AjustaAVL(Node N)
             V = U->Esq;
 
             /*Rotacao LL*/
+            if (P->Pai != NULL)
+            {
+                if (P->Pai->Dir == P)
+                {
+                    /* P é filho direito */
+                    P->Pai->Dir = U;
+                    LigaNo(ARQDOT, P->Pai, U);
+                }
+                else
+                {
+                    /* P é filho esquerdo */
+                    P->Pai->Esq = U;
+                    LigaNo(ARQDOT, P->Pai, U);
+                }
+            }
+            else
+            {
+                /* Se torna o primeiro elemento */
+                Tree->No = U;
+                LigaNo(ARQDOT, NULL, U);
+            }
+
             U->Pai = P->Pai;
             LigaNo(ARQDOT, U, P->Pai);
             U->Dir = P;

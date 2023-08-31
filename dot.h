@@ -39,6 +39,13 @@ void LigaNo(ArqDot fdot, Node pai, Node filho);
 void MarcaNoRemovido(ArqDot fdot, Node removido);
 
 /**
+ * @brief Copia o .dot do .geo para o primeiro arquivo .qry
+ * @param fdot Ponteiro para o arquivo .dot
+ * @param OutputGeo Caminho para o .dot do .geo
+ */
+void CopiaDot(ArqDot fdot, const char *NomeArqDot);
+
+/**
  * @brief Cria o png a partir do .dot
  * @param nome Nome do arquivo .dot
  */

@@ -18,6 +18,6 @@ void RemoveNodeAVL(DataStructure AVLTree, Node N);
 
 void FreeAVL(DataStructure *AVLTree);
 
-void AjustaAVL(Node N);
+void AjustaAVL(DataStructure AVLTree, Node N);
 
 #endif

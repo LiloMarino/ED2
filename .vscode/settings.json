@@ -15,7 +15,8 @@
         "*.scss.liquid": "liquid-scss",
         "avltree.h": "c",
         "string.h": "c",
-        "geradores.h": "c"
+        "geradores.h": "c",
+        "learquivo.h": "c"
     },
     "makefile.launchConfigurations": [
         {
