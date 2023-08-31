@@ -244,6 +244,8 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 Tree->No = U;
                 LigaNo(ARQDOT, NULL, U);
             }
+            P->Dir = U->Esq;
+            LigaNo(ARQDOT, P, U->Esq);
             U->Pai = P->Pai;
             LigaNo(ARQDOT, U, P->Pai);
             U->Esq = P;
@@ -359,7 +361,8 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 Tree->No = U;
                 LigaNo(ARQDOT, NULL, U);
             }
-
+            P->Esq = U->Dir;
+            LigaNo(ARQDOT, P, U->Dir);
             U->Pai = P->Pai;
             LigaNo(ARQDOT, U, P->Pai);
             U->Dir = P;
