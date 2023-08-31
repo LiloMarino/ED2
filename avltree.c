@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "Bibliotecas/geradores.h"
 #include "avltree.h"
 #include "dot.h"
 
@@ -10,8 +11,7 @@ struct StNodeTree
     struct StNodeTree *Pai;
     struct StNodeTree *Dir;
     struct StNodeTree *Esq;
-    int Hdir;
-    int Hesq;
+    int Fb;
 };
 
 struct StRaiz
@@ -43,6 +43,8 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
     {
         /*Primeiro nó da árvore*/
         Tree->No = No;
+        LigaNo(ARQDOT, NULL, No);
+        LigaNo(ARQDOT, No, NULL);
     }
     else
     {
@@ -56,8 +58,18 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 if (P->Dir == NULL)
                 {
                     P->Dir = No;
-                    No->Pai = P;
                     LigaNo(ARQDOT, P, No);
+                    No->Pai = P;
+                    LigaNo(ARQDOT, No, P);
+                    do
+                    {
+                        P->Fb += 1;
+                        if (P->Fb == 2)
+                        {
+                            AjustaAVL(P);
+                        }
+                        P = P->Pai;
+                    } while (P != NULL);
                     return No;
                 }
                 else
@@ -71,8 +83,18 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 if (P->Esq == NULL)
                 {
                     P->Esq = No;
-                    No->Pai = P;
                     LigaNo(ARQDOT, P, No);
+                    No->Pai = P;
+                    LigaNo(ARQDOT, No, P);
+                    do
+                    {
+                        P->Fb -= 1;
+                        if (P->Fb == -2)
+                        {
+                            AjustaAVL(P);
+                        }
+                        P = P->Pai;
+                    } while (P != NULL);
                     return No;
                 }
                 else
@@ -90,7 +112,6 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             }
         } while (true);
     }
-    LigaNo(ARQDOT, NULL, No);
     return No;
 }
 
@@ -184,4 +205,84 @@ void FreeAVL(DataStructure *AVLTree)
     free(Tree);
     *AVLTree = NULL;
     return;
+}
+
+void AjustaAVL(Node N)
+{
+    TerminaDot(ARQDOT);
+    ARQDOT = CriaLog(FNARQDOT, "dot");
+    InicializaDot(ARQDOT);
+    NodeTree *P = N;
+    NodeTree *U;
+    NodeTree *V;
+    if (P->Fb > 0)
+    {
+        /* Positivo então direita */
+        U = P->Dir;
+        if (U->Fb > 0)
+        {
+            /* Positivo então direita */
+            V = U->Dir;
+
+            /*Rotacao RR*/
+            U->Pai = P->Pai;
+            LigaNo(ARQDOT, U, P->Pai);
+            U->Esq = P;
+            LigaNo(ARQDOT, U, P);
+            P->Pai = U;
+            LigaNo(ARQDOT, P, U);
+        }
+        else
+        {
+            /* Negativo então esquerda */
+            V = U->Esq;
+
+            /*Rotacao RL*/
+            V->Pai = P->Pai;
+            LigaNo(ARQDOT, V, P->Pai);
+            V->Esq = P;
+            LigaNo(ARQDOT, V, P);
+            P->Pai = V;
+            LigaNo(ARQDOT, P, V);
+            V->Dir = U;
+            LigaNo(ARQDOT, V, U);
+            U->Pai = V;
+            LigaNo(ARQDOT, U, V);
+        }
+    }
+    else
+    {
+        /* Negativo então esquerda */
+        U = P->Esq;
+        if (U->Fb > 0)
+        {
+            /* Positivo então direita */
+            V = U->Dir;
+
+            /*Rotacao LR*/
+            V->Pai = P->Pai;
+            LigaNo(ARQDOT, V, P->Pai);
+            V->Esq = U;
+            LigaNo(ARQDOT, V, U);
+            U->Pai = V;
+            LigaNo(ARQDOT, U, V);
+            V->Dir = P;
+            LigaNo(ARQDOT, V, P);
+            P->Pai = V;
+            LigaNo(ARQDOT, P, V);
+        }
+        else
+        {
+            /* Negativo então esquerda */
+            V = U->Esq;
+
+            /*Rotacao LL*/
+            U->Pai = P->Pai;
+            LigaNo(ARQDOT, U, P->Pai);
+            U->Dir = P;
+            LigaNo(ARQDOT, U, P);
+            P->Pai = U;
+            LigaNo(ARQDOT, P, U);
+        }
+    }
 }

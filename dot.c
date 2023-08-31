@@ -29,8 +29,14 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
         TIPOCHAVE Chave = GetChaveAVL(filho);
         fprintf(fdot, "    Raiz -> \"%d\"\n", Chave);
     }
+    else if (filho == NULL)
+    {
+        TIPOCHAVE Chave = GetChaveAVL(pai);
+        fprintf(fdot, "    \"%d\" -> Raiz\n", Chave);
+    }
     else
     {
+
         TIPOCHAVE Chave1 = GetChaveAVL(pai);
         TIPOCHAVE Chave2 = GetChaveAVL(filho);
         fprintf(fdot, "    \"%d\" -> \"%d\"\n", Chave1, Chave2);
@@ -59,9 +65,9 @@ void CriaPngDot(const char nome[])
     while (vrfy != NULL)
     {
         fclose(vrfy);
-        char command[2*strlen(nomearq) + 30];
+        char command[2 * strlen(nomearq) + 30];
         sprintf(command, "dot -Tpng %s -o %s", nomearq, nomepng);
-        printf("\nTempo para gerar o %s\n",nomepng);
+        printf("\nTempo para gerar o %s\n", nomepng);
         iniciarTempo();
         system(command);
         finalizarTempo();
