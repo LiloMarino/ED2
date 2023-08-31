@@ -12,9 +12,9 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave);
 
 Node GetNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave);
 
-TIPOCHAVE GetChaveAVL(DataStructure AVLTree, Node No);
+TIPOCHAVE GetChaveAVL(Node N);
 
-void RemoveNodeAVL(DataStructure AVLTree, Node No);
+void RemoveNodeAVL(DataStructure AVLTree, Node N);
 
 void FreeAVL(DataStructure AVLTree);
 

@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "avltree.h"
+#include "dot.h"
 
 struct StNodeTree
 {
@@ -20,25 +24,109 @@ typedef struct StRaiz Raiz;
 
 DataStructure NovaArvoreAVL()
 {
-    return DataStructure();
+    Raiz *Tree = calloc(1, sizeof(Raiz));
+    return Tree;
 }
 
 Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
 {
-    return Node();
+    Raiz *Tree = AVLTree;
+
+    /*Inicializa o nó*/
+    Tree->NumTotalNos += 1;
+    NodeTree *No = calloc(1, sizeof(NodeTree));
+    No->Chave = Chave;
+
+    /*Atribui o nó a árvore*/
+    if (Tree->No == NULL)
+    {
+        /*Primeiro nó da árvore*/
+        Tree->No = No;
+    }
+    else
+    {
+        /*Procura a posição que nó pertence e o insere*/
+        NodeTree *P = Tree->No;
+        do
+        {
+            if (P->Chave < Chave)
+            {
+                /* Se é maior então direita */
+                if (P->Dir == NULL)
+                {
+                    P->Dir = No;
+                    LigaNo(ARQDOT, AVLTree, P, No);
+                    return No;
+                }
+                else
+                {
+                    P = P->Dir;
+                }
+            }
+            else if (P->Chave > Chave)
+            {
+                /* Se é menor então esquerda */
+                if (P->Esq == NULL)
+                {
+                    P->Esq = No;
+                    LigaNo(ARQDOT, AVLTree, P, No);
+                    return No;
+                }
+                else
+                {
+                    P = P->Esq;
+                }
+            }
+            else
+            {
+                /* Não pode ser igual */
+                printf("Erro: Chave já existe na árvore\n");
+                free(No);
+                Tree->NumTotalNos -= 1;
+                return NULL;
+            }
+        } while (true);
+    }
+    LigaNo(ARQDOT, AVLTree, NULL, No);
+    return No;
 }
 
 Node GetNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
 {
-    return Node();
+    /*Procura o nó com a Chave especificada*/
+    Raiz *Tree = AVLTree;
+    NodeTree *P = Tree->No;
+    do
+    {
+        if (P->Chave == Chave)
+        {
+            /* É igual, portanto, retorna*/
+            return P;
+        }
+        else
+        {
+            if (P->Chave < Chave)
+            {
+                /* Se é maior então direita */
+                P = P->Dir;
+            }
+            else if (P->Chave > Chave)
+            {
+                /* Se é menor então esquerda */
+                P = P->Esq;
+            }
+        }
+    } while (P != NULL);
+    return NULL;
 }
 
-TIPOCHAVE GetChaveAVL(DataStructure AVLTree, Node No)
+TIPOCHAVE GetChaveAVL(Node N)
 {
-    return TIPOCHAVE();
+    NodeTree *No = N;
+    return No->Chave;
 }
 
-void RemoveNodeAVL(DataStructure AVLTree, Node No)
+void RemoveNodeAVL(DataStructure AVLTree, Node N)
 {
 }
 
