@@ -38,8 +38,12 @@ clean:
 	rm -rf $(OUTPUT) $(PROJETO)
 	rm -rf $(LOGS)
 
-# Regra para executar o programa com o Valgrind
+# Regra para executar o programa
 run:
+	cd $(OUTPUT) && ./$(PROJETO)
+
+# Regra para executar o programa com o Valgrind
+valgrind:
 	cd $(OUTPUT) && valgrind --leak-check=full --show-leak-kinds=all ./$(PROJETO)
 
 .PHONY: all run clean

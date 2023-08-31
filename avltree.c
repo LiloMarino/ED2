@@ -180,4 +180,8 @@ void FreeAVL(DataStructure *AVLTree)
             }
         }
     }
+    /*Árvore vazia*/
+    free(Tree);
+    *AVLTree = NULL;
+    return;
 }

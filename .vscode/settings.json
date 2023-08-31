@@ -17,4 +17,11 @@
         "string.h": "c",
         "geradores.h": "c"
     },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/lilo/Faculdade/EstruturadeDados/ED2/output",
+            "binaryPath": "/home/lilo/Faculdade/EstruturadeDados/ED2/output/ted",
+            "binaryArgs": []
+        }
+    ],
 }
