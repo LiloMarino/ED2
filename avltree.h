@@ -14,10 +14,14 @@ Node GetNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave);
 
 TIPOCHAVE GetChaveAVL(Node N);
 
+int GetFbAVL(Node N);
+
 void RemoveNodeAVL(DataStructure AVLTree, Node N);
 
 void FreeAVL(DataStructure *AVLTree);
 
 void AjustaAVL(DataStructure AVLTree, Node N);
+
+void PrintAVL(DataStructure AVLTree);
 
 #endif

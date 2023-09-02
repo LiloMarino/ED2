@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "Bibliotecas/geradores.h"
+#include "Bibliotecas/listadupla.h"
 #include "avltree.h"
 #include "dot.h"
 
@@ -44,7 +45,6 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
         /*Primeiro nó da árvore*/
         Tree->No = No;
         LigaNo(ARQDOT, NULL, No);
-        LigaNo(ARQDOT, No, NULL);
     }
     else
     {
@@ -60,7 +60,6 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                     P->Dir = No;
                     LigaNo(ARQDOT, P, No);
                     No->Pai = P;
-                    LigaNo(ARQDOT, No, P);
                     do
                     {
                         P->Fb += 1;
@@ -85,7 +84,6 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                     P->Esq = No;
                     LigaNo(ARQDOT, P, No);
                     No->Pai = P;
-                    LigaNo(ARQDOT, No, P);
                     do
                     {
                         P->Fb -= 1;
@@ -148,6 +146,12 @@ TIPOCHAVE GetChaveAVL(Node N)
 {
     NodeTree *No = N;
     return No->Chave;
+}
+
+int GetFbAVL(Node N)
+{
+    NodeTree *No = N;
+    return No->Fb;
 }
 
 void RemoveNodeAVL(DataStructure AVLTree, Node N)
@@ -229,29 +233,22 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 {
                     /* P é filho direito */
                     P->Pai->Dir = U;
-                    LigaNo(ARQDOT, P->Pai, U);
                 }
                 else
                 {
                     /* P é filho esquerdo */
                     P->Pai->Esq = U;
-                    LigaNo(ARQDOT, P->Pai, U);
                 }
             }
             else
             {
                 /* Se torna o primeiro elemento */
                 Tree->No = U;
-                LigaNo(ARQDOT, NULL, U);
             }
             P->Dir = U->Esq;
-            LigaNo(ARQDOT, P, U->Esq);
             U->Pai = P->Pai;
-            LigaNo(ARQDOT, U, P->Pai);
             U->Esq = P;
-            LigaNo(ARQDOT, U, P);
             P->Pai = U;
-            LigaNo(ARQDOT, P, U);
         }
         else
         {
@@ -265,31 +262,23 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 {
                     /* P é filho direito */
                     P->Pai->Dir = V;
-                    LigaNo(ARQDOT, P->Pai, V);
                 }
                 else
                 {
                     /* P é filho esquerdo */
                     P->Pai->Esq = V;
-                    LigaNo(ARQDOT, P->Pai, V);
                 }
             }
             else
             {
                 /* Se torna o primeiro elemento */
                 Tree->No = V;
-                LigaNo(ARQDOT, NULL, V);
             }
             V->Pai = P->Pai;
-            LigaNo(ARQDOT, V, P->Pai);
             V->Esq = P;
-            LigaNo(ARQDOT, V, P);
             P->Pai = V;
-            LigaNo(ARQDOT, P, V);
             V->Dir = U;
-            LigaNo(ARQDOT, V, U);
             U->Pai = V;
-            LigaNo(ARQDOT, U, V);
         }
     }
     else
@@ -308,31 +297,23 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 {
                     /* P é filho direito */
                     P->Pai->Dir = V;
-                    LigaNo(ARQDOT, P->Pai, V);
                 }
                 else
                 {
                     /* P é filho esquerdo */
                     P->Pai->Esq = V;
-                    LigaNo(ARQDOT, P->Pai, V);
                 }
             }
             else
             {
                 /* Se torna o primeiro elemento */
                 Tree->No = V;
-                LigaNo(ARQDOT, NULL, V);
             }
             V->Pai = P->Pai;
-            LigaNo(ARQDOT, V, P->Pai);
             V->Esq = U;
-            LigaNo(ARQDOT, V, U);
             U->Pai = V;
-            LigaNo(ARQDOT, U, V);
             V->Dir = P;
-            LigaNo(ARQDOT, V, P);
             P->Pai = V;
-            LigaNo(ARQDOT, P, V);
         }
         else
         {
@@ -346,29 +327,58 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 {
                     /* P é filho direito */
                     P->Pai->Dir = U;
-                    LigaNo(ARQDOT, P->Pai, U);
                 }
                 else
                 {
                     /* P é filho esquerdo */
                     P->Pai->Esq = U;
-                    LigaNo(ARQDOT, P->Pai, U);
                 }
             }
             else
             {
                 /* Se torna o primeiro elemento */
                 Tree->No = U;
-                LigaNo(ARQDOT, NULL, U);
             }
             P->Esq = U->Dir;
-            LigaNo(ARQDOT, P, U->Dir);
             U->Pai = P->Pai;
-            LigaNo(ARQDOT, U, P->Pai);
             U->Dir = P;
-            LigaNo(ARQDOT, U, P);
             P->Pai = U;
-            LigaNo(ARQDOT, P, U);
         }
     }
+    PrintAVL(AVLTree);
+}
+
+void PrintAVL(DataStructure AVLTree)
+{
+    TerminaDot(ARQDOT);
+    ARQDOT = CriaLog(FNARQDOT, "dot");
+    InicializaDot(ARQDOT);
+
+    Raiz *Tree = t;
+    NodeTree *No = Tree->node;
+    Lista Stack = createLst(-1);
+    insertLst(Stack, No);
+
+    while (!isEmptyLst(Stack))
+    {
+        No = popLst(Stack);
+        if (No->removido)
+        {
+            LigaNo(file, t, No->pai, No);
+            MarcaNoRemovido(file, t, No);
+        }
+        else
+        {
+            LigaNo(file, t, No->pai, No);
+        }
+
+        for (int i = 0; i < Tree->numSetores; i++)
+        {
+            if (No->filhos[i] != NULL)
+            {
+                insertLst(Stack, No->filhos[i]);
+            }
+        }
+    }
+    killLst(Stack);
 }

@@ -25,26 +25,20 @@ void TerminaDot(ArqDot fdot)
 
 void LigaNo(ArqDot fdot, Node pai, Node filho)
 {
-    TerminaDot(ARQDOT);
-    char *NomeArq = CriaLogNome(FNARQDOT, "dot", &ARQDOT);
-    CopiaDot(ARQDOT, NomeArq);
-    free(NomeArq);
     if (pai == NULL)
     {
         TIPOCHAVE Chave = GetChaveAVL(filho);
-        fprintf(ARQDOT, "    Raiz -> \"%d\"\n", Chave);
-    }
-    else if (filho == NULL)
-    {
-        TIPOCHAVE Chave = GetChaveAVL(pai);
-        fprintf(ARQDOT, "    \"%d\" -> Raiz\n", Chave);
+        int Fb = GetFbAVL(filho);
+        fprintf(ARQDOT, "    Raiz -> \"%d\nFb:%d\"\n", Chave, Fb);
     }
     else
     {
 
         TIPOCHAVE Chave1 = GetChaveAVL(pai);
         TIPOCHAVE Chave2 = GetChaveAVL(filho);
-        fprintf(ARQDOT, "    \"%d\" -> \"%d\"\n", Chave1, Chave2);
+        int Fb1 = GetFbAVL(pai);
+        int Fb2 = GetFbAVL(filho);
+        fprintf(ARQDOT, "    \"%d\nFb:%d\" -> \"%d\nFb:%d\"\n", Chave1, Fb1, Chave2, Fb2);
     }
     fflush(ARQDOT);
 }
