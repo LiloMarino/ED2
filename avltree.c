@@ -275,10 +275,12 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 Tree->No = V;
             }
             V->Pai = P->Pai;
-            V->Esq = P;
-            P->Pai = V;
+            P->Dir = V->Esq;
+            U->Esq = V->Dir;
             V->Dir = U;
             U->Pai = V;
+            V->Esq = P;
+            P->Pai = V;
         }
     }
     else
@@ -310,10 +312,12 @@ void AjustaAVL(DataStructure AVLTree, Node N)
                 Tree->No = V;
             }
             V->Pai = P->Pai;
-            V->Esq = U;
-            U->Pai = V;
+            U->Dir = V->Esq;
+            P->Esq = V->Dir;
             V->Dir = P;
             P->Pai = V;
+            V->Esq = U;
+            U->Pai = V;
         }
         else
         {
