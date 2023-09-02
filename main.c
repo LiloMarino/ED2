@@ -21,6 +21,7 @@ int main()
 
     TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
+    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Rotação LR*/

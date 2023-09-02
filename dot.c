@@ -33,7 +33,7 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
     {
         TIPOCHAVE Chave = GetChaveAVL(filho);
         int Fb = GetFbAVL(filho);
-        fprintf(ARQDOT, "    Raiz -> \"%d\nFb:%d\"\n", Chave, Fb);
+        fprintf(fdot, "    Raiz -> \"%d\nFb:%d\"\n", Chave, Fb);
     }
     else
     {
@@ -42,9 +42,9 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
         TIPOCHAVE Chave2 = GetChaveAVL(filho);
         int Fb1 = GetFbAVL(pai);
         int Fb2 = GetFbAVL(filho);
-        fprintf(ARQDOT, "    \"%d\nFb:%d\" -> \"%d\nFb:%d\"\n", Chave1, Fb1, Chave2, Fb2);
+        fprintf(fdot, "    \"%d\nFb:%d\" -> \"%d\nFb:%d\"\n", Chave1, Fb1, Chave2, Fb2);
     }
-    fflush(ARQDOT);
+    fflush(fdot);
 }
 
 void MarcaNoRemovido(ArqDot fdot, Node removido)

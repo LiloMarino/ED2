@@ -66,6 +66,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                         if (P->Fb == 2)
                         {
                             AjustaAVL(AVLTree, P);
+                            break;
                         }
                         P = P->Pai;
                     } while (P != NULL);
@@ -90,6 +91,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                         if (P->Fb == -2)
                         {
                             AjustaAVL(AVLTree, P);
+                            break;
                         }
                         P = P->Pai;
                     } while (P != NULL);
@@ -226,7 +228,7 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             /* Positivo então direita */
             V = U->Dir;
 
-            /*Rotacao RR*/
+            /*Rotação RR*/
             if (P->Pai != NULL)
             {
                 if (P->Pai->Dir == P)
@@ -255,7 +257,7 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             /* Negativo então esquerda */
             V = U->Esq;
 
-            /*Rotacao RL*/
+            /*Rotação RL*/
             if (P->Pai != NULL)
             {
                 if (P->Pai->Dir == P)
@@ -292,7 +294,7 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             /* Positivo então direita */
             V = U->Dir;
 
-            /*Rotacao LR*/
+            /*Rotação LR*/
             if (P->Pai != NULL)
             {
                 if (P->Pai->Dir == P)
@@ -324,7 +326,7 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             /* Negativo então esquerda */
             V = U->Esq;
 
-            /*Rotacao LL*/
+            /*Rotação LL*/
             if (P->Pai != NULL)
             {
                 if (P->Pai->Dir == P)
@@ -360,8 +362,10 @@ void PrintAVL(DataStructure AVLTree)
 
     Raiz *Tree = AVLTree;
     NodeTree *No = Tree->No;
-    Lista Stack = createLst(-1);
+    LigaNo(ARQDOT, NULL, Tree->No);
+
     /*Insere o primeiro Nó no Stack de verificação*/
+    Lista Stack = createLst(-1);
     insertLst(Stack, No);
 
     /*Percorre a árvore em largura marcando as ligações*/
