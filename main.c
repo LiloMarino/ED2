@@ -12,14 +12,11 @@ int main()
     /*Rotação LL*/
     DataStructure AVLTree = NovaArvoreAVL();
     FNARQDOT = "../logs/RotacaoLL";
-    ARQDOT = CriaLog(FNARQDOT, "dot");
-    InicializaDot(ARQDOT);
 
     InsereAVL(AVLTree,12);
     InsereAVL(AVLTree,10);
     InsereAVL(AVLTree,5);
 
-    TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
     DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
@@ -27,14 +24,11 @@ int main()
     /*Rotação LR*/
     AVLTree = NovaArvoreAVL();
     FNARQDOT = "../logs/RotacaoLR";
-    ARQDOT = CriaLog(FNARQDOT, "dot");
-    InicializaDot(ARQDOT);
 
     InsereAVL(AVLTree,12);
     InsereAVL(AVLTree,5);
     InsereAVL(AVLTree,10);
 
-    TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
     DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
@@ -42,14 +36,11 @@ int main()
     /*Rotação RR*/
     AVLTree = NovaArvoreAVL();
     FNARQDOT = "../logs/RotacaoRR";
-    ARQDOT = CriaLog(FNARQDOT, "dot");
-    InicializaDot(ARQDOT);
 
     InsereAVL(AVLTree,5);
     InsereAVL(AVLTree,10);
     InsereAVL(AVLTree,12);
 
-    TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
     DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
@@ -57,14 +48,11 @@ int main()
     /*Rotação RL*/
     AVLTree = NovaArvoreAVL();
     FNARQDOT = "../logs/RotacaoRL";
-    ARQDOT = CriaLog(FNARQDOT, "dot");
-    InicializaDot(ARQDOT);
 
     InsereAVL(AVLTree,5);
     InsereAVL(AVLTree,12);
     InsereAVL(AVLTree,10);
 
-    TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
     DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
@@ -72,8 +60,6 @@ int main()
     /*Exclusão em AVL*/
     AVLTree = NovaArvoreAVL();
     FNARQDOT = "../logs/Exclusao";
-    ARQDOT = CriaLog(FNARQDOT, "dot");
-    InicializaDot(ARQDOT);
 
     InsereAVL(AVLTree,2);
     InsereAVL(AVLTree,4);
@@ -82,7 +68,6 @@ int main()
     InsereAVL(AVLTree,5);
     InsereAVL(AVLTree,6);
 
-    TerminaDot(ARQDOT);
     CriaPngDot(FNARQDOT);
     DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);

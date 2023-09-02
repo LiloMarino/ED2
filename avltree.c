@@ -44,7 +44,6 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
     {
         /*Primeiro nó da árvore*/
         Tree->No = No;
-        LigaNo(ARQDOT, NULL, No);
     }
     else
     {
@@ -59,7 +58,6 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 {
                     P->Fb += 1;
                     P->Dir = No;
-                    LigaNo(ARQDOT, P, No);
                     No->Pai = P;
                     do
                     {
@@ -85,7 +83,6 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 {
                     P->Fb -= 1;
                     P->Esq = No;
-                    LigaNo(ARQDOT, P, No);
                     No->Pai = P;
                     do
                     {
@@ -217,6 +214,7 @@ void FreeAVL(DataStructure *AVLTree)
 
 void AjustaAVL(DataStructure AVLTree, Node N)
 {
+    PrintAVL(AVLTree);
     Raiz *Tree = AVLTree;
     NodeTree *P = N;
     NodeTree *U;
@@ -361,7 +359,6 @@ void AjustaAVL(DataStructure AVLTree, Node N)
 
 void PrintAVL(DataStructure AVLTree)
 {
-    TerminaDot(ARQDOT);
     ARQDOT = CriaLog(FNARQDOT, "dot");
     InicializaDot(ARQDOT);
 
@@ -392,4 +389,5 @@ void PrintAVL(DataStructure AVLTree)
         }
     }
     killLst(Stack);
+    TerminaDot(ARQDOT);
 }
