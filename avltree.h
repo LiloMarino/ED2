@@ -16,7 +16,7 @@ TIPOCHAVE GetChaveAVL(Node N);
 
 int GetFbAVL(Node N);
 
-void RemoveNodeAVL(DataStructure AVLTree, Node N);
+void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave);
 
 void FreeAVL(DataStructure *AVLTree);
 

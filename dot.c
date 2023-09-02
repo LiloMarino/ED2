@@ -95,10 +95,12 @@ void CriaPngDot(const char nome[])
         fclose(vrfy);
         char command[2 * strlen(nomearq) + 30];
         sprintf(command, "dot -Tpng %s -o %s", nomearq, nomepng);
+#if MOSTRAR_TEMPO != 0
         printf("\nTempo para gerar o %s\n", nomepng);
         iniciarTempo();
         system(command);
         finalizarTempo();
+#endif
         n++;
         sprintf(nomearq, "%s-%d.dot", nome, n);
         sprintf(nomepng, "%s-%d.png", nome, n);

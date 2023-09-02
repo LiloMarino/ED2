@@ -61,12 +61,13 @@ int main()
     AVLTree = NovaArvoreAVL();
     FNARQDOT = "../logs/Exclusao";
 
+    InsereAVL(AVLTree,15);
+    InsereAVL(AVLTree,8);
+    InsereAVL(AVLTree,23);
     InsereAVL(AVLTree,2);
-    InsereAVL(AVLTree,4);
-    InsereAVL(AVLTree,3);
-    InsereAVL(AVLTree,1);
-    InsereAVL(AVLTree,5);
-    InsereAVL(AVLTree,6);
+    InsereAVL(AVLTree,20);
+    InsereAVL(AVLTree,12);
+    RemoveNodeAVL(AVLTree,15);
 
     CriaPngDot(FNARQDOT);
     DeleteDuplicates(FNARQDOT, "dot");

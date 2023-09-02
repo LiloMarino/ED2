@@ -155,8 +155,99 @@ int GetFbAVL(Node N)
     return No->Fb;
 }
 
-void RemoveNodeAVL(DataStructure AVLTree, Node N)
+void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
 {
+    PrintAVL(AVLTree);
+    Raiz *Tree = AVLTree;
+    NodeTree *Rmv = GetNodeAVL(AVLTree,Chave);
+    if (Rmv == NULL)
+    {
+        printf("Erro: A chave %d não existe\n", Chave);
+        return;
+    }
+    
+    if (Rmv->Dir == NULL && Rmv->Esq == NULL)
+    {
+        /*Nó não tem filhos*/
+        if (Rmv->Pai != NULL)
+        {
+            if (Rmv->Pai->Dir == Rmv)
+            {
+                /* Rmv é filho direito */
+                Rmv->Pai->Dir = NULL;
+            }
+            else
+            {
+                /* Rmv é filho esquerdo */
+                Rmv->Pai->Esq = NULL;
+            }
+        }
+        else
+        {
+            /* A árvore se torna vazia */
+            Tree->No = NULL;
+        }
+        Tree->NumTotalNos -= 1;
+        free(Rmv);
+    }
+    else
+    {
+        /* O nó tem pelo menos 1 filho */
+
+        /*Verifica se o nó é filho direito ou filho esquerdo ou se ele é o primeiro nó*/
+        if (Rmv->Pai != NULL)
+        {
+            if (Rmv->Pai->Dir == Rmv)
+            {
+                /* Rmv é filho direito */
+                Rmv->Pai->Dir = Rmv->Esq != NULL ? Rmv->Esq : Rmv->Dir;
+            }
+            else
+            {
+                /* Rmv é filho esquerdo */
+                Rmv->Pai->Esq = Rmv->Esq != NULL ? Rmv->Esq : Rmv->Dir;
+            }
+        }
+        else
+        {
+            /* É o primeiro nó */
+            Tree->No = Rmv->Esq != NULL ? Rmv->Esq : Rmv->Dir;
+        }
+
+        /* Verifica se Rmv possui 2 filhos */
+        if (Rmv->Dir != NULL && Rmv->Esq != NULL)
+        {
+            /*Possui filho direito e esquerdo*/
+            Rmv->Esq->Pai = Rmv->Pai;
+
+            /*Procura pelo primeiro nó vazio à direita do filho esquerdo de Rmv para que ele adote o filho direito do Rmv*/
+            NodeTree *P = Rmv->Esq;
+            while (P->Dir != NULL)
+            {
+                P->Fb += 1;
+                P = P->Dir;
+            }
+            /* Adota */
+            P->Fb += 1;
+            P->Dir = Rmv->Dir;
+            Rmv->Dir->Pai = P;
+
+            /* Verifica se a árvore não foi desbalanceada */
+            do
+            {
+                if (P->Fb == 2 || P->Fb == -2)
+                {   
+                    NodeTree *Pai = P->Pai;
+                    AjustaAVL(AVLTree, P);
+                    P = Pai;
+                }
+                P = P->Pai;
+            } while (P != NULL);
+        }
+        Tree->NumTotalNos -= 1;
+        free(Rmv);
+    }
+    PrintAVL(AVLTree);
 }
 
 void FreeAVL(DataStructure *AVLTree)
@@ -375,8 +466,8 @@ void PrintAVL(DataStructure AVLTree)
     {
         No = popLst(Stack);
         /*Marca as ligações do Nó no .dot*/
-        LigaNo(ARQDOT, No, No->Dir);
         LigaNo(ARQDOT, No, No->Esq);
+        LigaNo(ARQDOT, No, No->Dir);
 
         /*Insere os filhos do Nó para o Stack de verificação*/
         if (No->Dir != NULL)

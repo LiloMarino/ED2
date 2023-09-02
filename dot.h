@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "avltree.h"
+#define MOSTRAR_TEMPO 0 /* 1 = True, 0 = False, Define se mostra no terminal o tempo de criação dos arquivos */
 
 typedef void *ArqDot;
 
