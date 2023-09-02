@@ -158,14 +158,15 @@ int GetFbAVL(Node N)
 void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
 {
     PrintAVL(AVLTree);
+    bool Print = true;
     Raiz *Tree = AVLTree;
-    NodeTree *Rmv = GetNodeAVL(AVLTree,Chave);
+    NodeTree *Rmv = GetNodeAVL(AVLTree, Chave);
     if (Rmv == NULL)
     {
         printf("Erro: A chave %d não existe\n", Chave);
         return;
     }
-    
+
     if (Rmv->Dir == NULL && Rmv->Esq == NULL)
     {
         /*Nó não tem filhos*/
@@ -200,18 +201,18 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             if (Rmv->Pai->Dir == Rmv)
             {
                 /* Rmv é filho direito */
-                Rmv->Pai->Dir = Rmv->Esq != NULL ? Rmv->Esq : Rmv->Dir;
+                Rmv->Pai->Dir = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
             }
             else
             {
                 /* Rmv é filho esquerdo */
-                Rmv->Pai->Esq = Rmv->Esq != NULL ? Rmv->Esq : Rmv->Dir;
+                Rmv->Pai->Esq = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
             }
         }
         else
         {
             /* É o primeiro nó */
-            Tree->No = Rmv->Esq != NULL ? Rmv->Esq : Rmv->Dir;
+            Tree->No = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
         }
 
         /* Verifica se Rmv possui 2 filhos */
@@ -228,7 +229,7 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 P = P->Dir;
             }
             /* Adota */
-            P->Fb += 1;
+            P->Fb += 1 + abs(Rmv->Dir->Fb);
             P->Dir = Rmv->Dir;
             Rmv->Dir->Pai = P;
 
@@ -236,9 +237,10 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             do
             {
                 if (P->Fb == 2 || P->Fb == -2)
-                {   
+                {
                     NodeTree *Pai = P->Pai;
                     AjustaAVL(AVLTree, P);
+                    Print = false;
                     P = Pai;
                 }
                 P = P->Pai;
@@ -247,7 +249,10 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
         Tree->NumTotalNos -= 1;
         free(Rmv);
     }
-    PrintAVL(AVLTree);
+    if (Print)
+    {
+        PrintAVL(AVLTree);
+    }
 }
 
 void FreeAVL(DataStructure *AVLTree)

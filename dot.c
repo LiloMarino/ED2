@@ -98,7 +98,9 @@ void CriaPngDot(const char nome[])
 #if MOSTRAR_TEMPO != 0
         printf("\nTempo para gerar o %s\n", nomepng);
         iniciarTempo();
+#endif
         system(command);
+#if MOSTRAR_TEMPO != 0
         finalizarTempo();
 #endif
         n++;
