@@ -25,6 +25,10 @@ void TerminaDot(ArqDot fdot)
 
 void LigaNo(ArqDot fdot, Node pai, Node filho)
 {
+    if (filho == NULL)
+    {
+        return;
+    }
     if (pai == NULL)
     {
         TIPOCHAVE Chave = GetChaveAVL(filho);

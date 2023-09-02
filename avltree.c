@@ -354,30 +354,28 @@ void PrintAVL(DataStructure AVLTree)
     ARQDOT = CriaLog(FNARQDOT, "dot");
     InicializaDot(ARQDOT);
 
-    Raiz *Tree = t;
-    NodeTree *No = Tree->node;
+    Raiz *Tree = AVLTree;
+    NodeTree *No = Tree->No;
     Lista Stack = createLst(-1);
+    /*Insere o primeiro Nó no Stack de verificação*/
     insertLst(Stack, No);
 
+    /*Percorre a árvore em largura marcando as ligações*/
     while (!isEmptyLst(Stack))
     {
         No = popLst(Stack);
-        if (No->removido)
-        {
-            LigaNo(file, t, No->pai, No);
-            MarcaNoRemovido(file, t, No);
-        }
-        else
-        {
-            LigaNo(file, t, No->pai, No);
-        }
+        /*Marca as ligações do Nó no .dot*/
+        LigaNo(ARQDOT, No, No->Dir);
+        LigaNo(ARQDOT, No, No->Esq);
 
-        for (int i = 0; i < Tree->numSetores; i++)
+        /*Insere os filhos do Nó para o Stack de verificação*/
+        if (No->Dir != NULL)
         {
-            if (No->filhos[i] != NULL)
-            {
-                insertLst(Stack, No->filhos[i]);
-            }
+            insertLst(Stack, No->Dir);
+        }
+        if (No->Esq != NULL)
+        {
+            insertLst(Stack, No->Esq);
         }
     }
     killLst(Stack);
