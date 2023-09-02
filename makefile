@@ -1,8 +1,14 @@
 # Nome do projeto
 PROJETO = ted
 
-# Arquivos fonte
-FONTES = main.c avltree.c dot.c Bibliotecas/geradores.c Bibliotecas/efficiency.c Bibliotecas/learquivo.c
+# Lista de arquivos fontes
+FONTES = main.c avltree.c dot.c Bibliotecas/geradores.c Bibliotecas/efficiency.c Bibliotecas/learquivo.c Bibliotecas/listadupla.c
+
+# Lista de arquivos de cabeçalho correspondentes aos arquivos fontes
+HEADERS = $(filter-out main.h, $(FONTES:.c=.h))
+
+# Nome do arquivo zip
+ZIP_FILE = source_code.zip
 
 # Pasta de saída
 OUTPUT = output/
@@ -39,11 +45,15 @@ clean:
 	rm -rf $(LOGS)
 
 # Regra para executar o programa
-run:
+run: all
 	cd $(OUTPUT) && ./$(PROJETO)
 
 # Regra para executar o programa com o Valgrind
-valgrind:
+valgrind: all
 	cd $(OUTPUT) && valgrind --leak-check=full --show-leak-kinds=all ./$(PROJETO)
 
-.PHONY: all run clean
+# Comando para criar o arquivo zip
+zip: $(FONTES) $(HEADERS)
+	zip $(ZIP_FILE) $(FONTES) $(HEADERS)
+
+finish: all valgrind zip clean
