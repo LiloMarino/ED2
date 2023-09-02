@@ -33,7 +33,7 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
     {
         TIPOCHAVE Chave = GetChaveAVL(filho);
         int Fb = GetFbAVL(filho);
-        fprintf(fdot, "    Raiz -> \"%d\nFb:%d\"\n", Chave, Fb);
+        fprintf(fdot, "    Raiz -> \"%d\\nFb:%d\"\n", Chave, Fb);
     }
     else
     {
@@ -42,7 +42,7 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
         TIPOCHAVE Chave2 = GetChaveAVL(filho);
         int Fb1 = GetFbAVL(pai);
         int Fb2 = GetFbAVL(filho);
-        fprintf(fdot, "    \"%d\nFb:%d\" -> \"%d\nFb:%d\"\n", Chave1, Fb1, Chave2, Fb2);
+        fprintf(fdot, "    \"%d\\nFb:%d\" -> \"%d\\nFb:%d\"\n", Chave1, Fb1, Chave2, Fb2);
     }
     fflush(fdot);
 }

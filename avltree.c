@@ -57,13 +57,13 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 /* Se é maior então direita */
                 if (P->Dir == NULL)
                 {
+                    P->Fb += 1;
                     P->Dir = No;
                     LigaNo(ARQDOT, P, No);
                     No->Pai = P;
                     do
                     {
-                        P->Fb += 1;
-                        if (P->Fb == 2)
+                        if (P->Fb == 2 || P->Fb == -2)
                         {
                             AjustaAVL(AVLTree, P);
                             break;
@@ -74,6 +74,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 }
                 else
                 {
+                    P->Fb += 1;
                     P = P->Dir;
                 }
             }
@@ -82,13 +83,13 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 /* Se é menor então esquerda */
                 if (P->Esq == NULL)
                 {
+                    P->Fb -= 1;
                     P->Esq = No;
                     LigaNo(ARQDOT, P, No);
                     No->Pai = P;
                     do
                     {
-                        P->Fb -= 1;
-                        if (P->Fb == -2)
+                        if (P->Fb == -2 || P->Fb == 2)
                         {
                             AjustaAVL(AVLTree, P);
                             break;
@@ -99,6 +100,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 }
                 else
                 {
+                    P->Fb -= 1;
                     P = P->Esq;
                 }
             }
@@ -351,6 +353,9 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             P->Pai = U;
         }
     }
+    P->Fb = 0;
+    U->Fb = 0;
+    V->Fb = 0;
     PrintAVL(AVLTree);
 }
 
