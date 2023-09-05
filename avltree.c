@@ -243,7 +243,10 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                     Print = false;
                     P = Pai;
                 }
-                P = P->Pai;
+                else
+                {
+                    P = P->Pai;
+                }
             } while (P != NULL);
         }
         Tree->NumTotalNos -= 1;

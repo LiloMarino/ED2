@@ -18,7 +18,6 @@ int main()
     InsereAVL(AVLTree,5);
 
     CriaPngDot(FNARQDOT);
-    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Rotação LR*/
@@ -30,7 +29,6 @@ int main()
     InsereAVL(AVLTree,10);
 
     CriaPngDot(FNARQDOT);
-    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Rotação RR*/
@@ -42,7 +40,6 @@ int main()
     InsereAVL(AVLTree,12);
 
     CriaPngDot(FNARQDOT);
-    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Rotação RL*/
@@ -54,7 +51,6 @@ int main()
     InsereAVL(AVLTree,10);
 
     CriaPngDot(FNARQDOT);
-    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 
     /*Exclusão em AVL*/
@@ -70,6 +66,5 @@ int main()
     RemoveNodeAVL(AVLTree,15);
 
     CriaPngDot(FNARQDOT);
-    DeleteDuplicates(FNARQDOT, "dot");
     FreeAVL(&AVLTree);
 }

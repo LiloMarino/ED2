@@ -54,6 +54,6 @@ valgrind: all
 
 # Comando para criar o arquivo zip
 zip: $(FONTES) $(HEADERS)
-	zip $(ZIP_FILE) $(FONTES) $(HEADERS)
+	zip $(ZIP_FILE) $(FONTES) $(HEADERS) makefile
 
 finish: all valgrind zip clean
