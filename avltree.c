@@ -161,6 +161,7 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
     bool Print = true;
     Raiz *Tree = AVLTree;
     NodeTree *Rmv = GetNodeAVL(AVLTree, Chave);
+    NodeTree *Pai = Rmv->Pai;
     if (Rmv == NULL)
     {
         printf("Erro: A chave %d não existe\n", Chave);
@@ -176,11 +177,13 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             {
                 /* Rmv é filho direito */
                 Rmv->Pai->Dir = NULL;
+                Rmv->Pai->Fb -= 1;
             }
             else
             {
                 /* Rmv é filho esquerdo */
                 Rmv->Pai->Esq = NULL;
+                Rmv->Pai->Fb += 1;
             }
         }
         else
@@ -188,70 +191,44 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             /* A árvore se torna vazia */
             Tree->No = NULL;
         }
-        Tree->NumTotalNos -= 1;
-        free(Rmv);
     }
     else
     {
         /* O nó tem pelo menos 1 filho */
 
-        /*Verifica se o nó é filho direito ou filho esquerdo ou se ele é o primeiro nó*/
-        if (Rmv->Pai != NULL)
-        {
-            if (Rmv->Pai->Dir == Rmv)
-            {
-                /* Rmv é filho direito */
-                Rmv->Pai->Dir = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
-            }
-            else
-            {
-                /* Rmv é filho esquerdo */
-                Rmv->Pai->Esq = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
-            }
-        }
-        else
-        {
-            /* É o primeiro nó */
-            Tree->No = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
-        }
-
         /* Verifica se Rmv possui 2 filhos */
         if (Rmv->Dir != NULL && Rmv->Esq != NULL)
         {
-            /*Possui filho direito e esquerdo*/
-            Rmv->Esq->Pai = Rmv->Pai;
-
-            /*Procura pelo primeiro nó vazio à direita do filho esquerdo de Rmv para que ele adote o filho direito do Rmv*/
-            NodeTree *P = Rmv->Esq;
-            while (P->Dir != NULL)
+            /*Possui 2 filhos*/
+        }
+        else
+        {
+            /*Possui apenas 1 filho*/
+            /*Verifica se o nó é filho direito ou filho esquerdo ou se ele é o primeiro nó*/
+            if (Rmv->Pai != NULL)
             {
-                P->Fb += 1;
-                P = P->Dir;
-            }
-            /* Adota */
-            P->Fb += 1 + abs(Rmv->Dir->Fb);
-            P->Dir = Rmv->Dir;
-            Rmv->Dir->Pai = P;
-
-            /* Verifica se a árvore não foi desbalanceada */
-            do
-            {
-                if (P->Fb == 2 || P->Fb == -2)
+                if (Rmv->Pai->Dir == Rmv)
                 {
-                    NodeTree *Pai = P->Pai;
-                    AjustaAVL(AVLTree, P);
-                    Print = false;
-                    P = Pai;
+                    /* Rmv é filho direito */
+                    Rmv->Pai->Dir = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
+                    Rmv->Pai->Fb -= 1;
                 }
                 else
                 {
-                    P = P->Pai;
+                    /* Rmv é filho esquerdo */
+                    Rmv->Pai->Esq = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
+                    Rmv->Pai->Fb += 1;
                 }
-            } while (P != NULL);
+            }
+            else
+            {
+                /* É o primeiro nó */
+                Tree->No = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
+            }
         }
-        Tree->NumTotalNos -= 1;
-        free(Rmv);
     }
+    Tree->NumTotalNos -= 1;
+    free(Rmv);
     if (Print)
     {
         PrintAVL(AVLTree);
@@ -263,7 +240,7 @@ void FreeAVL(DataStructure *AVLTree)
     Raiz *Tree = *AVLTree;
     NodeTree *No = Tree->No;
     NodeTree *Clear = NULL;
-    while (Tree->NumTotalNos != 0)
+    while (Tree->NumTotalNos > 0)
     {
         bool Vazio = true;
         if (No->Dir != NULL)
