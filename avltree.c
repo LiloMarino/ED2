@@ -161,6 +161,7 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
     bool Print = true;
     Raiz *Tree = AVLTree;
     NodeTree *Rmv = GetNodeAVL(AVLTree, Chave);
+    NodeTree *P = Rmv->Pai;
     if (Rmv == NULL)
     {
         printf("Erro: A chave %d não existe\n", Chave);
@@ -190,6 +191,8 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             /* A árvore se torna vazia */
             Tree->No = NULL;
         }
+        Tree->NumTotalNos -= 1;
+        free(Rmv);
     }
     else
     {
@@ -199,6 +202,16 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
         if (Rmv->Dir != NULL && Rmv->Esq != NULL)
         {
             /*Possui 2 filhos*/
+
+            /*Procura o filho maior à esquerda*/
+            NodeTree *MaiorEsq = Rmv->Esq;
+            while (MaiorEsq->Dir != NULL)
+            {
+                MaiorEsq = MaiorEsq->Dir;
+            }
+            TIPOCHAVE Chave = MaiorEsq->Chave;
+            RemoveNodeAVL(AVLTree, Chave);
+            Rmv->Chave = Chave;
         }
         else
         {
@@ -224,27 +237,22 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 /* É o primeiro nó */
                 Tree->No = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
             }
+            Tree->NumTotalNos -= 1;
+            free(Rmv);
         }
     }
-    NodeTree *P = Rmv->Pai;
-    Tree->NumTotalNos -= 1;
-    free(Rmv);
 
     /* Verifica se a árvore não foi desbalanceada */
-    do
+    while (P != NULL)
     {
         if (P->Fb == 2 || P->Fb == -2)
         {
-            NodeTree *Pai = P->Pai;
             AjustaAVL(AVLTree, P);
             Print = false;
-            P = Pai;
+            break;
         }
-        else
-        {
-            P = P->Pai;
-        }
-    } while (P != NULL);
+        P = P->Pai;
+    }
 
     if (Print)
     {
