@@ -8,7 +8,7 @@ FONTES = main.c avltree.c dot.c Bibliotecas/geradores.c Bibliotecas/efficiency.c
 HEADERS = $(filter-out main.h, $(FONTES:.c=.h))
 
 # Nome do arquivo zip
-ZIP_FILE = source_code.zip
+ZIP_FILE = muriloa.zip
 
 # Pasta de saída
 OUTPUT = output/
