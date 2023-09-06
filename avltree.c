@@ -12,7 +12,7 @@ struct StNodeTree
     struct StNodeTree *Pai;
     struct StNodeTree *Dir;
     struct StNodeTree *Esq;
-    int Fb;
+    int Hmax; // Profundidade máxima da subárvore pertencente ao nó
 };
 
 struct StRaiz
@@ -38,6 +38,7 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
     Tree->NumTotalNos += 1;
     NodeTree *No = calloc(1, sizeof(NodeTree));
     No->Chave = Chave;
+    No->Hmax = 1;
 
     /*Atribui o nó a árvore*/
     if (Tree->No == NULL)
@@ -56,23 +57,27 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 /* Se é maior então direita */
                 if (P->Dir == NULL)
                 {
-                    P->Fb += 1;
+                    /*Insere*/
                     P->Dir = No;
                     No->Pai = P;
                     do
                     {
-                        if (P->Fb == 2 || P->Fb == -2)
+                        P->Hmax = GetHmaxAVL(P);
+                        if (GetFbAVL(P) == 2 || GetFbAVL(P) == -2)
                         {
+                            NodeTree *Pai = P->Pai;
                             AjustaAVL(AVLTree, P);
-                            break;
+                            P = Pai;
                         }
-                        P = P->Pai;
+                        else
+                        {
+                            P = P->Pai;
+                        }
                     } while (P != NULL);
                     return No;
                 }
                 else
                 {
-                    P->Fb += 1;
                     P = P->Dir;
                 }
             }
@@ -81,30 +86,34 @@ Node InsereAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 /* Se é menor então esquerda */
                 if (P->Esq == NULL)
                 {
-                    P->Fb -= 1;
+                    /*Insere*/
                     P->Esq = No;
                     No->Pai = P;
                     do
                     {
-                        if (P->Fb == -2 || P->Fb == 2)
+                        P->Hmax = GetHmaxAVL(P);
+                        if (GetFbAVL(P) == 2 || GetFbAVL(P) == -2)
                         {
+                            NodeTree *Pai = P->Pai;
                             AjustaAVL(AVLTree, P);
-                            break;
+                            P = Pai;
                         }
-                        P = P->Pai;
+                        else
+                        {
+                            P = P->Pai;
+                        }
                     } while (P != NULL);
                     return No;
                 }
                 else
                 {
-                    P->Fb -= 1;
                     P = P->Esq;
                 }
             }
             else
             {
                 /* Não pode ser igual */
-                printf("Erro: Chave já existe na árvore\n");
+                printf("Erro: Chave %d já existe na árvore\n", Chave);
                 free(No);
                 Tree->NumTotalNos -= 1;
                 return NULL;
@@ -149,10 +158,22 @@ TIPOCHAVE GetChaveAVL(Node N)
     return No->Chave;
 }
 
+int GetHmaxAVL(Node N)
+{
+    NodeTree *No = N;
+    int HmaxDir = (No->Dir != NULL) ? No->Dir->Hmax : 0;
+    int HmaxEsq = (No->Esq != NULL) ? No->Esq->Hmax : 0;
+    int Hmax = ((HmaxDir > HmaxEsq) ? HmaxDir : HmaxEsq) + 1;
+    return Hmax;
+}
+
 int GetFbAVL(Node N)
 {
     NodeTree *No = N;
-    return No->Fb;
+    int HmaxDir = (No->Dir != NULL) ? No->Dir->Hmax : 0;
+    int HmaxEsq = (No->Esq != NULL) ? No->Esq->Hmax : 0;
+    int Fb = HmaxDir - HmaxEsq;
+    return Fb;
 }
 
 void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)

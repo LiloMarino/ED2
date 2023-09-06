@@ -36,6 +36,13 @@ Node GetNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave);
 TIPOCHAVE GetChaveAVL(Node N);
 
 /**
+ * @brief Obtém a profundidade máxima (Hmax) do nó N 
+ * @param N Nó da árvore AVL
+ * @return Retorna a profundidade máxima do nó (por padrão é 1)
+ */
+int GetHmaxAVL(Node N);
+
+/**
  * @brief Dado um nó retorna seu fator de balanceamento
  * @param N Nó da árvore AVL
  * @return Retorna o fator de balanceamento

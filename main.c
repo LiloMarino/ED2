@@ -4,7 +4,36 @@
 
 FILE *ARQDOT;
 char *FNARQDOT;
+#define TESTE 1
 
+int main()
+{
+    DataStructure AVLTree = NovaArvoreAVL();
+    FNARQDOT = "../logs/Teste";
+
+    InsereAVL(AVLTree,8);
+    InsereAVL(AVLTree,3);
+    InsereAVL(AVLTree,14);
+    InsereAVL(AVLTree,7);
+    InsereAVL(AVLTree,5);
+    InsereAVL(AVLTree,17);
+    InsereAVL(AVLTree,6);
+    InsereAVL(AVLTree,10);
+    InsereAVL(AVLTree,16);
+    InsereAVL(AVLTree,9);
+    InsereAVL(AVLTree,11);
+    InsereAVL(AVLTree,4);
+    InsereAVL(AVLTree,13);
+    InsereAVL(AVLTree,2);
+    InsereAVL(AVLTree,12);
+    InsereAVL(AVLTree,1);
+    InsereAVL(AVLTree,15);
+
+    CriaPngDot(FNARQDOT);
+    FreeAVL(&AVLTree);
+}
+
+#if TESTE == 0
 int main()
 {
     /*Inicia as operações da árvore e registra em vários .dot para a visualização separada*/
@@ -68,3 +97,4 @@ int main()
     CriaPngDot(FNARQDOT);
     FreeAVL(&AVLTree);
 }
+#endif
