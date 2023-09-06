@@ -4,7 +4,7 @@
 
 FILE *ARQDOT;
 char *FNARQDOT;
-#define TESTE 1
+#define TESTE 0
 
 #if TESTE == 0
 int main()
