@@ -228,9 +228,9 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             {
                 MaiorEsq = MaiorEsq->Dir;
             }
-            TIPOCHAVE Chave = MaiorEsq->Chave;
-            RemoveNodeAVL(AVLTree, Chave);
-            Rmv->Chave = Chave;
+            TIPOCHAVE Aux = MaiorEsq->Chave;
+            RemoveNodeAVL(AVLTree, Aux);
+            Rmv->Chave = Aux;
         }
         else
         {
@@ -242,11 +242,13 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 {
                     /* Rmv é filho direito */
                     Rmv->Pai->Dir = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
+                    Rmv->Pai->Dir->Pai = Rmv->Pai;
                 }
                 else
                 {
                     /* Rmv é filho esquerdo */
                     Rmv->Pai->Esq = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
+                    Rmv->Pai->Esq->Pai = Rmv->Pai;
                 }
             }
             else
@@ -308,6 +310,7 @@ void FreeAVL(DataStructure *AVLTree)
             Clear = No;
             No = No->Pai;
             free(Clear);
+            Tree->NumTotalNos -= 1;
             if (No != NULL)
             {
                 /*Atribui NULL ao filho desalocado*/
@@ -374,6 +377,10 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             U->Pai = P->Pai;
             U->Esq = P;
             P->Pai = U;
+            if (P->Dir != NULL)
+            {
+                P->Dir->Pai = P;
+            }
 
             P->Hmax -= 2;
         }
@@ -482,6 +489,10 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             U->Pai = P->Pai;
             U->Dir = P;
             P->Pai = U;
+            if (P->Esq != NULL)
+            {
+                P->Esq->Pai = P;
+            }
 
             P->Hmax -= 2;
         }

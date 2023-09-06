@@ -6,6 +6,7 @@ FILE *ARQDOT;
 char *FNARQDOT;
 #define TESTE 1
 
+#if TESTE == 0
 int main()
 {
     DataStructure AVLTree = NovaArvoreAVL();
@@ -28,12 +29,15 @@ int main()
     InsereAVL(AVLTree,12);
     InsereAVL(AVLTree,1);
     InsereAVL(AVLTree,15);
+    RemoveNodeAVL(AVLTree,1);
+    RemoveNodeAVL(AVLTree,7);
+    RemoveNodeAVL(AVLTree,8);
 
     CriaPngDot(FNARQDOT);
     FreeAVL(&AVLTree);
 }
 
-#if TESTE == 0
+#elif TESTE == 1
 int main()
 {
     /*Inicia as operações da árvore e registra em vários .dot para a visualização separada*/
