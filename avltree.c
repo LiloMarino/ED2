@@ -198,13 +198,11 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
             {
                 /* Rmv é filho direito */
                 Rmv->Pai->Dir = NULL;
-                Rmv->Pai->Fb -= 1;
             }
             else
             {
                 /* Rmv é filho esquerdo */
                 Rmv->Pai->Esq = NULL;
-                Rmv->Pai->Fb += 1;
             }
         }
         else
@@ -244,13 +242,11 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
                 {
                     /* Rmv é filho direito */
                     Rmv->Pai->Dir = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
-                    Rmv->Pai->Fb -= 1;
                 }
                 else
                 {
                     /* Rmv é filho esquerdo */
                     Rmv->Pai->Esq = (Rmv->Esq != NULL) ? Rmv->Esq : Rmv->Dir;
-                    Rmv->Pai->Fb += 1;
                 }
             }
             else
@@ -263,16 +259,21 @@ void RemoveNodeAVL(DataStructure AVLTree, TIPOCHAVE Chave)
         }
     }
 
-    /* Verifica se a árvore não foi desbalanceada */
+    /* Verifica se a árvore não foi desbalanceada e atualiza os Hmax */
     while (P != NULL)
     {
-        if (P->Fb == 2 || P->Fb == -2)
+        P->Hmax = GetHmaxAVL(P);
+        if (GetFbAVL(P) == 2 || GetFbAVL(P) == -2)
         {
+            NodeTree *Pai = P->Pai;
             AjustaAVL(AVLTree, P);
             Print = false;
-            break;
+            P = Pai;
         }
-        P = P->Pai;
+        else
+        {
+            P = P->Pai;
+        }
     }
 
     if (Print)
@@ -341,11 +342,11 @@ void AjustaAVL(DataStructure AVLTree, Node N)
     NodeTree *P = N;
     NodeTree *U;
     NodeTree *V;
-    if (P->Fb > 0)
+    if (GetFbAVL(P) > 0)
     {
         /* Positivo então direita */
         U = P->Dir;
-        if (U->Fb > 0)
+        if (GetFbAVL(U) > 0)
         {
             /* Positivo então direita */
             V = U->Dir;
@@ -374,8 +375,7 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             U->Esq = P;
             P->Pai = U;
 
-            P->Fb -= 2;
-            U->Fb -= 1;
+            P->Hmax -= 2;
         }
         else
         {
@@ -409,15 +409,16 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             V->Esq = P;
             P->Pai = V;
 
-            P->Fb -= 2;
-            U->Fb += 1;
+            V->Hmax += 1;
+            U->Hmax -= 1;
+            P->Hmax -= 2;
         }
     }
     else
     {
         /* Negativo então esquerda */
         U = P->Esq;
-        if (U->Fb > 0)
+        if (GetFbAVL(U) > 0)
         {
             /* Positivo então direita */
             V = U->Dir;
@@ -449,8 +450,9 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             V->Esq = U;
             U->Pai = V;
 
-            P->Fb += 2;
-            U->Fb -= 1;
+            V->Hmax += 1;
+            U->Hmax -= 1;
+            P->Hmax -= 2;
         }
         else
         {
@@ -481,8 +483,7 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             U->Dir = P;
             P->Pai = U;
 
-            P->Fb += 2;
-            U->Fb += 1;
+            P->Hmax -= 2;
         }
     }
     PrintAVL(AVLTree);
