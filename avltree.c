@@ -416,6 +416,14 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             U->Pai = V;
             V->Esq = P;
             P->Pai = V;
+            if (P->Dir != NULL)
+            {
+                P->Dir->Pai = P;
+            }
+            if (U->Esq != NULL)
+            {
+                U->Esq->Pai = U;
+            }
 
             V->Hmax += 1;
             U->Hmax -= 1;
@@ -457,6 +465,14 @@ void AjustaAVL(DataStructure AVLTree, Node N)
             P->Pai = V;
             V->Esq = U;
             U->Pai = V;
+            if (P->Esq != NULL)
+            {
+                P->Esq->Pai = P;
+            }
+            if (U->Dir != NULL)
+            {
+                U->Dir->Pai = U;
+            }
 
             V->Hmax += 1;
             U->Hmax -= 1;
