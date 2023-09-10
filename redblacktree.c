@@ -36,8 +36,58 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
 
     /*Inicializa o nó*/
     Tree->NumTotalNos += 1;
-    NodeTree *No = calloc(1, sizeof(NodeTree));
+    NodeTree *No = calloc(1, sizeof(NodeTree)); // Como é calloc já atribui por padrão preto ao nó, ou seja, vermelho = false = 0
     No->Chave = Chave;
+
+    /*Atribui o nó a árvore*/
+    if (Tree->No == NULL)
+    {
+        /*Primeiro nó da árvore*/
+        Tree->No = No;
+    }
+    else
+    {
+        /*Procura a posição que nó pertence e o insere*/
+        NodeTree *P = Tree->No;
+        do
+        {
+            if (P->Chave < Chave)
+            {
+                /* Se é maior então direita */
+                if (P->Dir == NULL)
+                {
+                    /*Insere*/
+                    return No;
+                }
+                else
+                {
+                    P = P->Dir;
+                }
+            }
+            else if (P->Chave > Chave)
+            {
+                /* Se é menor então esquerda */
+                if (P->Esq == NULL)
+                {
+                    /*Insere*/
+                    return No;
+                }
+                else
+                {
+                    P = P->Esq;
+                }
+            }
+            else
+            {
+                /* Não pode ser igual */
+                printf("Erro: Chave %d já existe na árvore\n", Chave);
+                free(No);
+                Tree->NumTotalNos -= 1;
+                return NULL;
+            }
+        } while (true);
+    }
+    return No;
 }
 
 Node GetNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
@@ -77,6 +127,19 @@ TIPOCHAVE GetChaveRB(Node N)
 
 void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
 {
+    Raiz *Tree = RBTree;
+    NodeTree *Rmv = GetNodeRB(RBTree, Chave);
+    NodeTree *P = Rmv->Pai;
+    if (Rmv == NULL)
+    {
+        printf("Erro: A chave %d não existe\n", Chave);
+        return;
+    }
+    PrintRB(RBTree);
+
+
+    
+    PrintRB(RBTree);
 }
 
 void FreeRB(DataStructure *RBTree)

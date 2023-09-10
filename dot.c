@@ -10,7 +10,7 @@
 void InicializaDot(ArqDot fdot)
 {
     fprintf(fdot, "digraph Tree {\n");
-    fprintf(fdot, "    node [shape=circle];\n");
+    fprintf(fdot, "\tnode [shape=circle];\n");
     fflush(fdot);
 }
 
@@ -25,7 +25,7 @@ void TerminaDot(ArqDot fdot)
 
 void CriaNo(ArqDot fdot, Node N, const char *fillcolor)
 {
-    TIPOCHAVE Chave = GetChaveFB(N);
+    TIPOCHAVE Chave = GetChaveRB(N);
     fprintf(fdot,"\"%d\" [label=\"%d\", fillcolor=\"%s\"];\n",Chave, Chave, fillcolor);
 }
 
@@ -37,13 +37,13 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
     }
     if (pai == NULL)
     {
-        TIPOCHAVE Chave = GetChaveFB(filho);
+        TIPOCHAVE Chave = GetChaveRB(filho);
         fprintf(fdot, "\tRaiz -> %d;\n", Chave);
     }
     else
     {
-        TIPOCHAVE Chave1 = GetChaveFB(pai);
-        TIPOCHAVE Chave2 = GetChaveFB(filho);
+        TIPOCHAVE Chave1 = GetChaveRB(pai);
+        TIPOCHAVE Chave2 = GetChaveRB(filho);
         fprintf(fdot, "\t%d -> %d;\n", Chave1, Chave2);
     }
     fflush(fdot);
@@ -51,7 +51,7 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
 
 void MarcaNoRemovido(ArqDot fdot, Node removido)
 {
-    TIPOCHAVE Chave = GetChaveFB(removido);
+    TIPOCHAVE Chave = GetChaveRB(removido);
     fprintf(fdot, "\t%d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Chave);
     fflush(fdot);
 }
