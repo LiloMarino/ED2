@@ -21,6 +21,13 @@ DataStructure NovaArvoreRB();
 Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave);
 
 /**
+ * @brief Faz as verificações dos casos de inserção da árvore Red-Black
+ * @param RBTree Ponteiro para a árvore Red-Black
+ * @param N Nó da árvore Red-Black a ser analisado
+ */
+void VerificaRB(DataStructure RBTree, Node N);
+
+/**
  * @brief Dado uma chave a função retornará o nó respectivo a chave
  * @param RBTree Ponteiro para a árvore Red-Black
  * @param Chave Conteúdo do nó 

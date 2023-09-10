@@ -26,7 +26,7 @@ void TerminaDot(ArqDot fdot)
 void CriaNo(ArqDot fdot, Node N, const char *fillcolor)
 {
     TIPOCHAVE Chave = GetChaveRB(N);
-    fprintf(fdot,"\"%d\" [label=\"%d\", fillcolor=\"%s\"];\n",Chave, Chave, fillcolor);
+    fprintf(fdot,"\t%d [label=\"%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n",Chave, Chave, fillcolor);
 }
 
 void LigaNo(ArqDot fdot, Node pai, Node filho)

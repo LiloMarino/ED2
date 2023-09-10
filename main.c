@@ -11,7 +11,10 @@ int main()
 
     DataStructure RBTree = NovaArvoreRB();
     FNARQDOT = "../logs/TesteRB";
-
+    InsereRB(RBTree,24);
+    InsereRB(RBTree,10);
+    InsereRB(RBTree,32);
+    InsereRB(RBTree,5);
     CriaPngDot(FNARQDOT);
     FreeRB(&RBTree);
 

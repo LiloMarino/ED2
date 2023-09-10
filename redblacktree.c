@@ -12,7 +12,7 @@ struct StNodeTree
     struct StNodeTree *Pai;
     struct StNodeTree *Dir;
     struct StNodeTree *Esq;
-    bool vermelho;
+    bool Preto;
 };
 
 struct StRaiz
@@ -36,13 +36,14 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
 
     /*Inicializa o nó*/
     Tree->NumTotalNos += 1;
-    NodeTree *No = calloc(1, sizeof(NodeTree)); // Como é calloc já atribui por padrão preto ao nó, ou seja, vermelho = false = 0
+    NodeTree *No = calloc(1, sizeof(NodeTree)); // Como é calloc já atribui por padrão vermelho ao nó, ou seja, preto = false = 0 e !preto = vermelho
     No->Chave = Chave;
 
     /*Atribui o nó a árvore*/
     if (Tree->No == NULL)
     {
         /*Primeiro nó da árvore*/
+        No->Preto = true;
         Tree->No = No;
     }
     else
@@ -57,6 +58,9 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 if (P->Dir == NULL)
                 {
                     /*Insere*/
+                    P->Dir = No;
+                    No->Pai = P;
+                    VerificaRB(RBTree,No);
                     return No;
                 }
                 else
@@ -70,6 +74,9 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 if (P->Esq == NULL)
                 {
                     /*Insere*/
+                    P->Esq = No;
+                    No->Pai = P;
+                    VerificaRB(RBTree,No);
                     return No;
                 }
                 else
@@ -88,6 +95,45 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
         } while (true);
     }
     return No;
+}
+
+void VerificaRB(DataStructure RBTree, Node N)
+{
+    Raiz *Tree = RBTree;
+    NodeTree *No = N;
+    NodeTree *Pai = No->Pai;
+    if (Pai->Preto)
+    {
+        /*Caso 0*/
+        return;
+    }
+    else
+    {
+        PrintRB(RBTree);
+        NodeTree *Avo = Pai->Pai;
+        NodeTree *Bisavo = (Avo != NULL) ? Avo->Pai : NULL;
+        NodeTree *Tio = (Avo->Esq == Pai) ? Avo->Dir : Avo->Esq; // Se o filho esquerdo do avô é o pai então o filho direito é o tio, senão o contrário
+        if (Tio != NULL && !Tio->Preto && Avo->Esq == Pai)
+        {
+            /*Caso 1*/
+            Pai->Preto = !Pai->Preto;
+            Avo->Preto = !Avo->Preto;
+            Tio->Preto = !Tio->Preto;
+            if (Bisavo == NULL || Bisavo->Preto)
+            {
+                PrintRB(RBTree);
+                return;
+            }
+            else
+            {
+                printf("ZIKOU");
+            }
+        }
+        else
+        {
+            printf("ZIKOU");
+        }
+    }
 }
 
 Node GetNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
@@ -137,8 +183,6 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
     }
     PrintRB(RBTree);
 
-
-    
     PrintRB(RBTree);
 }
 
@@ -204,36 +248,8 @@ void PrintRB(DataStructure RBTree)
     Raiz *Tree = RBTree;
     NodeTree *No = Tree->No;
 
-    /*Percorre a árvore em largura criando os nós */
+    /*Percorre a árvore em largura criando os nós marcando as ligações*/
     Lista Stack = createLst(-1);
-    insertLst(Stack, Tree->No);
-
-    while (!isEmptyLst(Stack))
-    {
-        No = popLst(Stack);
-        if (No->vermelho)
-        {
-            CriaNo(ARQDOT, No, "red");
-        }
-        else
-        {
-            CriaNo(ARQDOT, No, "black");
-        }
-
-        /*Insere os filhos do Nó para o Stack de verificação*/
-        if (No->Dir != NULL)
-        {
-            insertLst(Stack, No->Dir);
-        }
-        if (No->Esq != NULL)
-        {
-            insertLst(Stack, No->Esq);
-        }
-    }
-    killLst(Stack);
-
-    /*Percorre a árvore em largura marcando as ligações*/
-    Stack = createLst(-1);
     insertLst(Stack, Tree->No);
     LigaNo(ARQDOT, NULL, Tree->No);
 
@@ -243,6 +259,15 @@ void PrintRB(DataStructure RBTree)
         /*Marca as ligações do Nó no .dot*/
         LigaNo(ARQDOT, No, No->Esq);
         LigaNo(ARQDOT, No, No->Dir);
+        if (No->Preto)
+        {
+            CriaNo(ARQDOT, No, "black");
+        }
+        else
+        {
+            CriaNo(ARQDOT, No, "red");
+        }
+
 
         /*Insere os filhos do Nó para o Stack de verificação*/
         if (No->Dir != NULL)
