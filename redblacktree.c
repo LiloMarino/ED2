@@ -32,17 +32,47 @@ DataStructure NovaArvoreRB()
 
 Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
 {
-    return Node();
+    Raiz *Tree = RBTree;
+
+    /*Inicializa o nó*/
+    Tree->NumTotalNos += 1;
+    NodeTree *No = calloc(1, sizeof(NodeTree));
+    No->Chave = Chave;
 }
 
 Node GetNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
 {
-    return Node();
+    /*Procura o nó com a Chave especificada*/
+    Raiz *Tree = RBTree;
+    NodeTree *P = Tree->No;
+    do
+    {
+        if (P->Chave == Chave)
+        {
+            /* É igual, portanto, retorna*/
+            return P;
+        }
+        else
+        {
+            if (P->Chave < Chave)
+            {
+                /* Se é maior então direita */
+                P = P->Dir;
+            }
+            else if (P->Chave > Chave)
+            {
+                /* Se é menor então esquerda */
+                P = P->Esq;
+            }
+        }
+    } while (P != NULL);
+    return NULL;
 }
 
 TIPOCHAVE GetChaveRB(Node N)
 {
-    return TIPOCHAVE();
+    NodeTree *No = N;
+    return No->Chave;
 }
 
 void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
@@ -51,6 +81,56 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
 
 void FreeRB(DataStructure *RBTree)
 {
+    Raiz *Tree = *RBTree;
+    NodeTree *No = Tree->No;
+    NodeTree *Clear = NULL;
+    while (Tree->NumTotalNos > 0)
+    {
+        bool Vazio = true;
+        if (No->Dir != NULL)
+        {
+            /*Primeiro filho diferente de NULL encontrado do nó*/
+            No = No->Dir;
+            Vazio = false;
+        }
+        else if (No->Esq != NULL)
+        {
+            /*Primeiro filho diferente de NULL encontrado do nó*/
+            No = No->Esq;
+            Vazio = false;
+        }
+        if (Vazio)
+        {
+            /*Nó não tem filhos*/
+            Clear = No;
+            No = No->Pai;
+            free(Clear);
+            Tree->NumTotalNos -= 1;
+            if (No != NULL)
+            {
+                /*Atribui NULL ao filho desalocado*/
+                if (No->Dir != NULL)
+                {
+                    No->Dir = NULL;
+                }
+                else if (No->Esq != NULL)
+                {
+                    No->Esq = NULL;
+                }
+            }
+            else
+            {
+                /*Nó raiz*/
+                free(Tree);
+                *RBTree = NULL;
+                return;
+            }
+        }
+    }
+    /*Árvore vazia*/
+    free(Tree);
+    *RBTree = NULL;
+    return;
 }
 
 void PrintRB(DataStructure RBTree)
