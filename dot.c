@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "dot.h"
-#include "avltree.h"
+#include "redblacktree.h"
 #include "Bibliotecas/geradores.h"
 #include "Bibliotecas/efficiency.h"
 #include "Bibliotecas/learquivo.h"
@@ -23,6 +23,12 @@ void TerminaDot(ArqDot fdot)
     }
 }
 
+void CriaNo(ArqDot fdot, Node N, const char *fillcolor)
+{
+    TIPOCHAVE Chave = GetChaveFB(N);
+    fprintf(fdot,"\"%d\" [label=\"%d\", fillcolor=\"%s\"];\n",Chave, Chave, fillcolor);
+}
+
 void LigaNo(ArqDot fdot, Node pai, Node filho)
 {
     if (filho == NULL)
@@ -31,26 +37,22 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
     }
     if (pai == NULL)
     {
-        TIPOCHAVE Chave = GetChaveAVL(filho);
-        int Fb = GetFbAVL(filho);
-        fprintf(fdot, "    Raiz -> \"%d\\nFb:%d\"\n", Chave, Fb);
+        TIPOCHAVE Chave = GetChaveFB(filho);
+        fprintf(fdot, "\tRaiz -> %d;\n", Chave);
     }
     else
     {
-
-        TIPOCHAVE Chave1 = GetChaveAVL(pai);
-        TIPOCHAVE Chave2 = GetChaveAVL(filho);
-        int Fb1 = GetFbAVL(pai);
-        int Fb2 = GetFbAVL(filho);
-        fprintf(fdot, "    \"%d\\nFb:%d\" -> \"%d\\nFb:%d\"\n", Chave1, Fb1, Chave2, Fb2);
+        TIPOCHAVE Chave1 = GetChaveFB(pai);
+        TIPOCHAVE Chave2 = GetChaveFB(filho);
+        fprintf(fdot, "\t%d -> %d;\n", Chave1, Chave2);
     }
     fflush(fdot);
 }
 
 void MarcaNoRemovido(ArqDot fdot, Node removido)
 {
-    TIPOCHAVE Chave = GetChaveAVL(removido);
-    fprintf(fdot, "    %d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Chave);
+    TIPOCHAVE Chave = GetChaveFB(removido);
+    fprintf(fdot, "\t%d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Chave);
     fflush(fdot);
 }
 

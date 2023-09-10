@@ -65,7 +65,7 @@ void FreeAVL(DataStructure *AVLTree);
 /**
  * @brief Realiza o ajuste na AVL quando o fator de degração for acionado
  * @param AVLTree Ponteiro para a árvore AVL
- * @param N 
+ * @param N Nó a ser ajustado com Fb == 2 ou Fb == -2 (P)
  */
 void AjustaAVL(DataStructure AVLTree, Node N);
 

@@ -23,6 +23,14 @@ void InicializaDot(ArqDot fdot);
 void TerminaDot(ArqDot fdot);
 
 /**
+ * @brief Cria o nó com as especificações dadas
+ * @param fdot Ponteiro para o arquivo .dot
+ * @param N Ponteiro para o nó
+ * @param cor Cor do nó
+ */
+void CriaNo(ArqDot fdot, Node N, const char *fillcolor);
+
+/**
  * @brief Liga o Pai->Filho
  * @param fdot Ponteiro para o arquivo .dot
  * @param All Ponteiro para a árvore radial
