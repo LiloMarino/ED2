@@ -277,6 +277,7 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
     }
     else
     {
+        NodeTree *Irmao = (Pai->Dir == Rmv) ? Pai->Esq : Pai->Dir;
         if (Rmv->Dir != NULL && !Rmv->Dir->Preto && Rmv->Esq != NULL && !Rmv->Esq->Preto)
         {
             /* 2 Filhos Rubros */
@@ -291,6 +292,12 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
             RemoveNodeRB(RBTree, Aux);
             /*Altera o valor da chave pela chave do sucessor*/
             Rmv->Chave = Aux;
+        }
+        else if (Irmao != NULL && !Irmao->Preto)
+        {
+            /*Irmão é vermelho Caso 3.1*/
+            Pai->Preto = false;
+            
         }
         else
         {
