@@ -278,10 +278,10 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
     else
     {
         NodeTree *Irmao = (Pai->Dir == Rmv) ? Pai->Esq : Pai->Dir;
-        if (Rmv->Dir != NULL && !Rmv->Dir->Preto && Rmv->Esq != NULL && !Rmv->Esq->Preto)
+        if ((Rmv->Dir != NULL && !Rmv->Dir->Preto) || (Rmv->Esq != NULL && !Rmv->Esq->Preto))
         {
-            /* 2 Filhos Rubros */
-            
+            /* 1 ou 2 Filhos Rubros */
+
             /*Procura o sucessor*/
             NodeTree *Sucessor = Rmv->Dir;
             while (Sucessor->Esq != NULL)
@@ -293,12 +293,46 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
             /*Altera o valor da chave pela chave do sucessor*/
             Rmv->Chave = Aux;
         }
-        else if (Irmao != NULL && !Irmao->Preto)
+        else if (Rmv->Dir == NULL && Rmv->Esq == NULL && Irmao != NULL && !Irmao->Preto)
         {
             /*Irmão é vermelho Caso 3.1*/
             Pai->Preto = false;
-            
+            Irmao->Preto = true;
+            if (Pai->Esq == Rmv)
+            {
+                Pai->Dir = Irmao->Esq;
+                if (Irmao->Esq != NULL)
+                {
+                    Irmao->Esq->Pai = Pai;
+                }
+                Irmao->Esq = Pai;
+                Pai->Pai = Irmao;
+            }
+            else
+            {
+                Pai->Esq = Irmao->Dir;
+                if (Irmao->Dir != NULL)
+                {
+                    Irmao->Dir->Pai = Pai;
+                }
+                Irmao->Dir = Pai;
+                Pai->Pai = Irmao;
+            }
+            Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
+            Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
+            free(Rmv);
+            return;
         }
+        else if (Rmv->Dir == NULL && Rmv->Esq == NULL && Irmao == NULL || Irmao->Preto)
+        {
+            /*O irmão é preto e os filhos do irmão são pretos Caso 3.2*/
+            Irmao->Preto = false;   
+            Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
+            Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
+            free(Rmv);
+            return;
+        }
+
         else
         {
             printf("ZIKOU!\n");
