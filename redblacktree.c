@@ -60,7 +60,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                     /*Insere*/
                     P->Dir = No;
                     No->Pai = P;
-                    VerificaRB(RBTree,No);
+                    VerificaRB(RBTree, No);
                     return No;
                 }
                 else
@@ -76,7 +76,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                     /*Insere*/
                     P->Esq = No;
                     No->Pai = P;
-                    VerificaRB(RBTree,No);
+                    VerificaRB(RBTree, No);
                     return No;
                 }
                 else
@@ -113,11 +113,11 @@ void VerificaRB(DataStructure RBTree, Node N)
         NodeTree *Avo = Pai->Pai;
         NodeTree *Bisavo = (Avo != NULL) ? Avo->Pai : NULL;
         NodeTree *Tio = (Avo->Esq == Pai) ? Avo->Dir : Avo->Esq; // Se o filho esquerdo do avô é o pai então o filho direito é o tio, senão o contrário
-        if (Tio != NULL && !Tio->Preto && Avo->Esq == Pai)
+        if (Tio != NULL && !Tio->Preto)
         {
             /*Caso 1*/
             Pai->Preto = !Pai->Preto;
-            Avo->Preto = !Avo->Preto;
+            Avo->Preto = (Bisavo != NULL) ? !Avo->Preto : true; // Se Bisavô é NULL então é a raiz
             Tio->Preto = !Tio->Preto;
             if (Bisavo == NULL || Bisavo->Preto)
             {
@@ -126,12 +126,69 @@ void VerificaRB(DataStructure RBTree, Node N)
             }
             else
             {
-                printf("ZIKOU");
+                printf("ZIKOU\n");
             }
         }
-        else
+        else if (Tio == NULL || Tio->Preto)
         {
-            printf("ZIKOU");
+            if (Pai->Esq == No)
+            {
+                /*Caso 3*/
+                if (Bisavo != NULL)
+                {
+                    if (Bisavo->Dir == Avo)
+                    {
+                        Bisavo->Dir = Pai;
+                    }
+                    else
+                    {
+                        Bisavo->Esq = Pai;
+                    }
+                }
+                else
+                {
+                    Tree->No = Pai;
+                }
+                Pai->Pai = Bisavo;
+                if (Avo->Dir == Pai)
+                {
+                    Avo->Dir = NULL;
+                }
+                else
+                {
+                    Avo->Esq = NULL;
+                }
+                Pai->Dir = Avo;
+                Avo->Pai = Pai;
+            
+                printf("ZIKOU\n");
+            }
+            else if (Pai->Dir == No)
+            {
+                /*Caso 2*/
+                if (Tio != NULL)
+                {
+                    Tio->Pai = Pai;
+                }
+                Pai->Dir = Tio; // Ver Depois
+                if (Tio == Avo->Dir)
+                {
+                    Avo->Esq = No;
+                }
+                else
+                {
+                    Avo->Dir = No;
+                }
+                No->Pai = Avo;
+                No->Esq = Pai;
+                Pai->Pai = No;
+                PrintRB(RBTree);
+                VerificaRB(RBTree, Pai);
+                return;
+            }
+            else
+            {
+            }
         }
     }
 }
@@ -267,7 +324,6 @@ void PrintRB(DataStructure RBTree)
         {
             CriaNo(ARQDOT, No, "red");
         }
-
 
         /*Insere os filhos do Nó para o Stack de verificação*/
         if (No->Dir != NULL)

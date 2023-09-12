@@ -15,6 +15,11 @@ int main()
     InsereRB(RBTree,10);
     InsereRB(RBTree,32);
     InsereRB(RBTree,5);
+    InsereRB(RBTree,15);
+    InsereRB(RBTree,28);
+    InsereRB(RBTree,49);    
+    InsereRB(RBTree,12);    
+    InsereRB(RBTree,14);    
     CriaPngDot(FNARQDOT);
     FreeRB(&RBTree);
 
