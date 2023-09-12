@@ -160,17 +160,16 @@ void VerificaRB(DataStructure RBTree, Node N)
                 }
                 Pai->Dir = Avo;
                 Avo->Pai = Pai;
-            
-                printf("ZIKOU\n");
+                /*Recolori*/
+                Pai->Preto = true;
+                Avo->Preto = false;
+                PrintRB(RBTree);
+                return;
             }
             else if (Pai->Dir == No)
             {
                 /*Caso 2*/
-                if (Tio != NULL)
-                {
-                    Tio->Pai = Pai;
-                }
-                Pai->Dir = Tio; // Ver Depois
+                Pai->Dir = NULL;
                 if (Tio == Avo->Dir)
                 {
                     Avo->Esq = No;
@@ -185,9 +184,6 @@ void VerificaRB(DataStructure RBTree, Node N)
                 PrintRB(RBTree);
                 VerificaRB(RBTree, Pai);
                 return;
-            }
-            else
-            {
             }
         }
     }
