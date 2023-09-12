@@ -228,14 +228,75 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
 {
     Raiz *Tree = RBTree;
     NodeTree *Rmv = GetNodeRB(RBTree, Chave);
-    NodeTree *P = Rmv->Pai;
+    NodeTree *Pai = Rmv->Pai;
     if (Rmv == NULL)
     {
         printf("Erro: A chave %d não existe\n", Chave);
         return;
     }
     PrintRB(RBTree);
-
+    if (!Rmv->Preto)
+    {
+        if (Rmv->Dir == NULL && Rmv->Esq == NULL)
+        {
+            /*Nó não tem filhos*/
+            if (Pai != NULL)
+            {
+                if (Pai->Dir == Rmv)
+                {
+                    /* Rmv é filho direito */
+                    Pai->Dir = NULL;
+                }
+                else
+                {
+                    /* Rmv é filho esquerdo */
+                    Pai->Esq = NULL;
+                }
+            }
+            else
+            {
+                /* A árvore se torna vazia */
+                Tree->No = NULL;
+            }
+            Tree->NumTotalNos -= 1;
+            free(Rmv);
+        }
+        else
+        {
+            /*Procura o sucessor*/
+            NodeTree *Sucessor = Rmv->Dir;
+            while (Sucessor->Esq != NULL)
+            {
+                Sucessor = Sucessor->Esq;
+            }
+            TIPOCHAVE Aux = Sucessor->Chave;
+            RemoveNodeRB(RBTree, Aux);
+            /*Altera o valor da chave pela chave do sucessor*/
+            Rmv->Chave = Aux;
+        }
+    }
+    else
+    {
+        if (Rmv->Dir != NULL && !Rmv->Dir->Preto && Rmv->Esq != NULL && !Rmv->Esq->Preto)
+        {
+            /* 2 Filhos Rubros */
+            
+            /*Procura o sucessor*/
+            NodeTree *Sucessor = Rmv->Dir;
+            while (Sucessor->Esq != NULL)
+            {
+                Sucessor = Sucessor->Esq;
+            }
+            TIPOCHAVE Aux = Sucessor->Chave;
+            RemoveNodeRB(RBTree, Aux);
+            /*Altera o valor da chave pela chave do sucessor*/
+            Rmv->Chave = Aux;
+        }
+        else
+        {
+            printf("ZIKOU!\n");
+        }
+    }
     PrintRB(RBTree);
 }
 

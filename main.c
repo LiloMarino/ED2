@@ -19,7 +19,10 @@ int main()
     InsereRB(RBTree,28);
     InsereRB(RBTree,49);    
     InsereRB(RBTree,12);    
-    InsereRB(RBTree,14);    
+    InsereRB(RBTree,14);
+    //RemoveNodeRB(RBTree,15);    
+    RemoveNodeRB(RBTree,10);
+    RemoveNodeRB(RBTree,32);
     CriaPngDot(FNARQDOT);
     FreeRB(&RBTree);
 
