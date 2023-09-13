@@ -17,24 +17,18 @@ int main()
     // InsereRB(RBTree,5);
     // InsereRB(RBTree,15);
     // InsereRB(RBTree,28);
-    // InsereRB(RBTree,49);    
-    // InsereRB(RBTree,12);    
+    // InsereRB(RBTree,49);
+    // InsereRB(RBTree,12);
     // InsereRB(RBTree,14);
-    // //RemoveNodeRB(RBTree,15);    
+    // //RemoveNodeRB(RBTree,15);
     // RemoveNodeRB(RBTree,10);
     // RemoveNodeRB(RBTree,32);
-    InsereRB(RBTree,10);
-    InsereRB(RBTree,8);
-    InsereRB(RBTree,12);
-    InsereRB(RBTree,7);
-    InsereRB(RBTree,9);
-    InsereRB(RBTree,11);
-    InsereRB(RBTree,14);
-    InsereRB(RBTree,6);
-    RemoveNodeRB(RBTree,12);
-    RemoveNodeRB(RBTree,14);
-    RemoveNodeRB(RBTree,11);
+
+    for (int i = 1; i < 11; i++)
+    {
+        InsereRB(RBTree, i);
+    }
+
     CriaPngDot(FNARQDOT);
     FreeRB(&RBTree);
-
 }
