@@ -149,7 +149,7 @@ void VerificaRB(DataStructure RBTree, Node N)
                 {
                     Avo->Esq = NULL;
                 }
-                Conecta(Pai,Avo,true);
+                Conecta(Pai, Avo, true);
                 /*Recolori*/
                 Pai->Preto = true;
                 Avo->Preto = false;
@@ -158,12 +158,21 @@ void VerificaRB(DataStructure RBTree, Node N)
             }
             else if (Pai->Dir == No)
             {
-                /*Caso 2*/
-                Pai->Dir = NULL;
-                Conecta(Avo,No,!(Tio == Avo->Dir));
-                Conecta(No,Pai,false);
-                PrintRB(RBTree);
-                VerificaRB(RBTree, Pai);
+                /*Single Rotate Left*/
+                if (Bisavo != NULL)
+                {
+                    Conecta(Bisavo, Pai, Bisavo->Dir == Avo);
+                    Pai->Preto = !Pai->Preto;
+                }
+                else
+                {
+                    Tree->No = Pai;
+                    Pai->Pai = NULL;
+                    Pai->Preto = true;
+                }
+                Avo->Preto = !Avo->Preto;
+                Conecta(Pai, Avo, false);
+                Avo->Dir = NULL; 
                 return;
             }
         }
@@ -284,18 +293,18 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
                 Pai->Dir = NULL;
                 if (Irmao->Esq != NULL)
                 {
-                    Conecta(Pai,Irmao->Esq,true);
+                    Conecta(Pai, Irmao->Esq, true);
                 }
-                Conecta(Irmao,Pai,false);
+                Conecta(Irmao, Pai, false);
             }
             else
             {
                 Pai->Esq = NULL;
                 if (Irmao->Dir != NULL)
                 {
-                    Conecta(Pai,Irmao->Dir,true);
+                    Conecta(Pai, Irmao->Dir, true);
                 }
-                Conecta(Irmao,Pai,true);
+                Conecta(Irmao, Pai, true);
             }
             Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
             Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
