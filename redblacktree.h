@@ -1,6 +1,7 @@
 #ifndef REDBLACKTREE_H
 #define REDBLACKTREE_H
 
+#include <stdbool.h>
 
 typedef void *DataStructure; // Ponteiro para a estrutura de dados especificada
 typedef void *Node; // Ponteiro para um nó
@@ -60,5 +61,14 @@ void FreeRB(DataStructure *RBTree);
  * @param RBTree Ponteiro para a árvore Red-Black
  */
 void PrintRB(DataStructure RBTree);
+
+/**
+ * @brief Faz a conexão do nó pai com o nó filho, ou seja, o P adota o F
+ * @param P Nó pai
+ * @param F Nó filho
+ * @param Dir Determina se o filho será filho da direita caso seja true, 
+ * e filho da esquerda caso seja false.
+ */
+void Conecta(Node P, Node F, bool Dir);
 
 #endif

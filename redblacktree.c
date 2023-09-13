@@ -58,8 +58,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 if (P->Dir == NULL)
                 {
                     /*Insere*/
-                    P->Dir = No;
-                    No->Pai = P;
+                    Conecta(P, No, true);
                     VerificaRB(RBTree, No);
                     return No;
                 }
@@ -74,8 +73,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 if (P->Esq == NULL)
                 {
                     /*Insere*/
-                    P->Esq = No;
-                    No->Pai = P;
+                    Conecta(P, No, false);
                     VerificaRB(RBTree, No);
                     return No;
                 }
@@ -126,7 +124,7 @@ void VerificaRB(DataStructure RBTree, Node N)
             }
             else
             {
-                printf("ZIKOU\n");
+                printf("Erro!\n");
             }
         }
         else if (Tio == NULL || Tio->Preto)
@@ -136,20 +134,13 @@ void VerificaRB(DataStructure RBTree, Node N)
                 /*Caso 3*/
                 if (Bisavo != NULL)
                 {
-                    if (Bisavo->Dir == Avo)
-                    {
-                        Bisavo->Dir = Pai;
-                    }
-                    else
-                    {
-                        Bisavo->Esq = Pai;
-                    }
+                    Conecta(Bisavo, Pai, Bisavo->Dir == Avo);
                 }
                 else
                 {
                     Tree->No = Pai;
+                    Pai->Pai = NULL;
                 }
-                Pai->Pai = Bisavo;
                 if (Avo->Dir == Pai)
                 {
                     Avo->Dir = NULL;
@@ -158,8 +149,7 @@ void VerificaRB(DataStructure RBTree, Node N)
                 {
                     Avo->Esq = NULL;
                 }
-                Pai->Dir = Avo;
-                Avo->Pai = Pai;
+                Conecta(Pai,Avo,true);
                 /*Recolori*/
                 Pai->Preto = true;
                 Avo->Preto = false;
@@ -170,17 +160,8 @@ void VerificaRB(DataStructure RBTree, Node N)
             {
                 /*Caso 2*/
                 Pai->Dir = NULL;
-                if (Tio == Avo->Dir)
-                {
-                    Avo->Esq = No;
-                }
-                else
-                {
-                    Avo->Dir = No;
-                }
-                No->Pai = Avo;
-                No->Esq = Pai;
-                Pai->Pai = No;
+                Conecta(Avo,No,!(Tio == Avo->Dir));
+                Conecta(No,Pai,false);
                 PrintRB(RBTree);
                 VerificaRB(RBTree, Pai);
                 return;
@@ -300,23 +281,21 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
             Irmao->Preto = true;
             if (Pai->Esq == Rmv)
             {
-                Pai->Dir = Irmao->Esq;
+                Pai->Dir = NULL;
                 if (Irmao->Esq != NULL)
                 {
-                    Irmao->Esq->Pai = Pai;
+                    Conecta(Pai,Irmao->Esq,true);
                 }
-                Irmao->Esq = Pai;
-                Pai->Pai = Irmao;
+                Conecta(Irmao,Pai,false);
             }
             else
             {
-                Pai->Esq = Irmao->Dir;
+                Pai->Esq = NULL;
                 if (Irmao->Dir != NULL)
                 {
-                    Irmao->Dir->Pai = Pai;
+                    Conecta(Pai,Irmao->Dir,true);
                 }
-                Irmao->Dir = Pai;
-                Pai->Pai = Irmao;
+                Conecta(Irmao,Pai,true);
             }
             Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
             Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
@@ -326,7 +305,7 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
         else if (Rmv->Dir == NULL && Rmv->Esq == NULL && Irmao == NULL || Irmao->Preto)
         {
             /*O irmão é preto e os filhos do irmão são pretos Caso 3.2*/
-            Irmao->Preto = false;   
+            Irmao->Preto = false;
             Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
             Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
             free(Rmv);
@@ -436,4 +415,19 @@ void PrintRB(DataStructure RBTree)
     killLst(Stack);
 
     TerminaDot(ARQDOT);
+}
+
+void Conecta(Node P, Node F, bool Dir)
+{
+    NodeTree *Pai = P;
+    NodeTree *Filho = F;
+    if (Dir)
+    {
+        Pai->Dir = Filho;
+    }
+    else
+    {
+        Pai->Esq = Filho;
+    }
+    Filho->Pai = Pai;
 }
