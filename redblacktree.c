@@ -126,7 +126,6 @@ void VerificaRB(DataStructure RBTree, Node N)
             Tio->Preto = true;
             Avo->Preto = false;
             VerificaRB(Tree, Avo);
-            return;
         }
         else
         {
@@ -137,14 +136,12 @@ void VerificaRB(DataStructure RBTree, Node N)
                 /*Nó é filho da direita e pai da esquerda*/
                 RotacionaEsquerda(Tree, No);
                 VerificaRB(Tree, Pai);
-                return;
             }
             else if (No == Pai->Esq && Pai == Avo->Dir)
             {
                 /*Nó é filho da esquerda e pai da direita*/
                 RotacionaDireita(Tree, No);
                 VerificaRB(Tree, Pai);
-                return;
             }
             else
             {
@@ -185,7 +182,7 @@ void RotacionaEsquerda(DataStructure RBTree, Node N)
 
     Conecta(RBTree, Pai, No->Esq, true);
     Conecta(RBTree, No, Pai, false);
-    Conecta(RBTree, Avo, No, false);
+    Conecta(RBTree, Avo, No, true);
 }
 
 Node GetNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
