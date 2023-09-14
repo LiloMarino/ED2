@@ -29,6 +29,20 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave);
 void VerificaRB(DataStructure RBTree, Node N);
 
 /**
+ * @brief Realiza o Single Rotate Right
+ * @param RBTree Ponteiro para a árvore Red-Black
+ * @param N Nó filho
+ */
+void RotacionaDireita(DataStructure RBTree, Node N);
+
+/**
+ * @brief Realiza o Single Rotate Left
+ * @param RBTree Ponteiro para a árvore Red-Black
+ * @param N Nó filho
+ */
+void RotacionaEsquerda(DataStructure RBTree, Node N);
+
+/**
  * @brief Dado uma chave a função retornará o nó respectivo a chave
  * @param RBTree Ponteiro para a árvore Red-Black
  * @param Chave Conteúdo do nó 
@@ -64,11 +78,12 @@ void PrintRB(DataStructure RBTree);
 
 /**
  * @brief Faz a conexão do nó pai com o nó filho, ou seja, o P adota o F
+ * @param RBTree Ponteiro para a árvore Red-Black
  * @param P Nó pai
  * @param F Nó filho
  * @param Dir Determina se o filho será filho da direita caso seja true, 
  * e filho da esquerda caso seja false.
  */
-void Conecta(Node P, Node F, bool Dir);
+void Conecta(DataStructure RBTree, Node P, Node F, bool Dir);
 
 #endif

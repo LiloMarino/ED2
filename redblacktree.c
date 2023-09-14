@@ -58,7 +58,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 if (P->Dir == NULL)
                 {
                     /*Insere*/
-                    Conecta(P, No, true);
+                    Conecta(RBTree, P, No, true);
                     VerificaRB(RBTree, No);
                     return No;
                 }
@@ -73,7 +73,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 if (P->Esq == NULL)
                 {
                     /*Insere*/
-                    Conecta(P, No, false);
+                    Conecta(RBTree, P, No, false);
                     VerificaRB(RBTree, No);
                     return No;
                 }
@@ -116,9 +116,8 @@ void VerificaRB(DataStructure RBTree, Node N)
     else
     {
         NodeTree *Avo = Pai->Pai;
-        NodeTree *Bisavo = (Avo != NULL) ? Avo->Pai : NULL;
         NodeTree *Tio = (Avo->Esq == Pai) ? Avo->Dir : Avo->Esq; // Se o filho esquerdo do avô é o pai então o filho direito é o tio, senão o contrário
-        PrintRB(RBTree);
+        PrintRB(Tree);
         if (Tio != NULL && !Tio->Preto)
         {
             /*Caso 3*/
@@ -126,7 +125,7 @@ void VerificaRB(DataStructure RBTree, Node N)
             Pai->Preto = true;
             Tio->Preto = true;
             Avo->Preto = false;
-            VerificaRB(RBTree, Avo);
+            VerificaRB(Tree, Avo);
             return;
         }
         else
@@ -136,15 +135,15 @@ void VerificaRB(DataStructure RBTree, Node N)
             if (No == Pai->Dir && Pai == Avo->Esq)
             {
                 /*Nó é filho da direita e pai da esquerda*/
-                RotacionaEsquerda(No);
-                VerificaRB(RBTree, Pai);
+                RotacionaEsquerda(Tree, No);
+                VerificaRB(Tree, Pai);
                 return;
             }
             else if (No == Pai->Esq && Pai == Avo->Dir)
             {
                 /*Nó é filho da esquerda e pai da direita*/
-                RotacionaDireita(No);
-                VerificaRB(RBTree, Pai);
+                RotacionaDireita(Tree, No);
+                VerificaRB(Tree, Pai);
                 return;
             }
             else
@@ -155,37 +154,38 @@ void VerificaRB(DataStructure RBTree, Node N)
                 if (No == Pai->Esq && Pai == Avo->Esq)
                 {
                     /*Nó é filho da esquerda e pai da esquerda*/
-                    RotacionaDireita(No);
+                    RotacionaDireita(Tree, Pai);
                 }
                 else
                 {
                     /*Nó é filho da direita e pai da direita*/
-                    RotacionaEsquerda(No);
+                    RotacionaEsquerda(Tree, Pai);
                 }
             }
         }
-        PrintRB(RBTree);
+        PrintRB(Tree);
     }
 }
 
-void RotacionaDireita(Node N)
+void RotacionaDireita(DataStructure RBTree, Node N)
 {
     NodeTree *No = N;
     NodeTree *Pai = No->Pai;
     NodeTree *Avo = Pai->Pai;
-    Conecta(Pai, No->Dir, true); //Verificar se está correto!
-    Conecta(No, Pai, false);
-    Conecta(Avo, No, false);
+    Conecta(RBTree, Pai, No->Dir, true); // Verificar se está correto!
+    Conecta(RBTree, No, Pai, false);
+    Conecta(RBTree, Avo, No, false);
 }
 
-void RotacionaEsquerda(Node N)
+void RotacionaEsquerda(DataStructure RBTree, Node N)
 {
     NodeTree *No = N;
     NodeTree *Pai = No->Pai;
     NodeTree *Avo = Pai->Pai;
-    Conecta(Pai, No->Esq, true);
-    Conecta(No, Pai, false);
-    Conecta(Avo, No, false);
+
+    Conecta(RBTree, Pai, No->Esq, true);
+    Conecta(RBTree, No, Pai, false);
+    Conecta(RBTree, Avo, No, false);
 }
 
 Node GetNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
@@ -302,18 +302,18 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
                 Pai->Dir = NULL;
                 if (Irmao->Esq != NULL)
                 {
-                    Conecta(Pai, Irmao->Esq, true);
+                    Conecta(RBTree, Pai, Irmao->Esq, true);
                 }
-                Conecta(Irmao, Pai, false);
+                Conecta(RBTree, Irmao, Pai, false);
             }
             else
             {
                 Pai->Esq = NULL;
                 if (Irmao->Dir != NULL)
                 {
-                    Conecta(Pai, Irmao->Dir, true);
+                    Conecta(RBTree, Pai, Irmao->Dir, true);
                 }
-                Conecta(Irmao, Pai, true);
+                Conecta(RBTree, Irmao, Pai, true);
             }
             Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
             Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
@@ -435,17 +435,28 @@ void PrintRB(DataStructure RBTree)
     TerminaDot(ARQDOT);
 }
 
-void Conecta(Node P, Node F, bool Dir)
+void Conecta(DataStructure RBTree, Node P, Node F, bool Dir)
 {
+    Raiz *Tree = RBTree;
     NodeTree *Pai = P;
     NodeTree *Filho = F;
-    if (Dir)
+    if (Pai == NULL)
     {
-        Pai->Dir = Filho;
+        Tree->No = Filho;
     }
     else
     {
-        Pai->Esq = Filho;
+        if (Dir)
+        {
+            Pai->Dir = Filho;
+        }
+        else
+        {
+            Pai->Esq = Filho;
+        }
     }
-    Filho->Pai = Pai;
+    if (Filho != NULL)
+    {
+        Filho->Pai = Pai;
+    }
 }
