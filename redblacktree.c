@@ -44,7 +44,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
     {
         /*Primeiro nó da árvore*/
         Tree->No = No;
-        VerificaRB(RBTree, No);
+        VerificaInsertRB(RBTree, No);
     }
     else
     {
@@ -59,7 +59,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 {
                     /*Insere*/
                     Conecta(RBTree, P, No, true);
-                    VerificaRB(RBTree, No);
+                    VerificaInsertRB(RBTree, No);
                     return No;
                 }
                 else
@@ -74,7 +74,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
                 {
                     /*Insere*/
                     Conecta(RBTree, P, No, false);
-                    VerificaRB(RBTree, No);
+                    VerificaInsertRB(RBTree, No);
                     return No;
                 }
                 else
@@ -95,7 +95,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave)
     return No;
 }
 
-void VerificaRB(DataStructure RBTree, Node N)
+void VerificaInsertRB(DataStructure RBTree, Node N)
 {
     Raiz *Tree = RBTree;
     NodeTree *No = N;
@@ -125,7 +125,7 @@ void VerificaRB(DataStructure RBTree, Node N)
             Pai->Preto = true;
             Tio->Preto = true;
             Avo->Preto = false;
-            VerificaRB(Tree, Avo);
+            VerificaInsertRB(Tree, Avo);
         }
         else
         {
@@ -135,13 +135,13 @@ void VerificaRB(DataStructure RBTree, Node N)
             {
                 /*Nó é filho da direita e pai da esquerda*/
                 RotacionaEsquerda(Tree, Pai);
-                VerificaRB(Tree, Pai);
+                VerificaInsertRB(Tree, Pai);
             }
             else if (No == Pai->Esq && Pai == Avo->Dir)
             {
                 /*Nó é filho da esquerda e pai da direita*/
                 RotacionaDireita(Tree, Pai);
-                VerificaRB(Tree, Pai);
+                VerificaInsertRB(Tree, Pai);
             }
             else
             {
@@ -230,116 +230,46 @@ TIPOCHAVE GetChaveRB(Node N)
 void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
 {
     Raiz *Tree = RBTree;
-    NodeTree *Rmv = GetNodeRB(RBTree, Chave);
-    NodeTree *Pai = Rmv->Pai;
+    NodeTree *Rmv = GetNodeRB(Tree, Chave);
     if (Rmv == NULL)
     {
         printf("Erro: A chave %d não existe\n", Chave);
         return;
     }
-    PrintRB(RBTree);
-    if (!Rmv->Preto)
+    PrintRB(Tree);
+
+    // Caso 1: O nó não possui filhos ou apenas um filho não nulo.
+    if (Rmv->Esq == NULL || Rmv->Dir == NULL)
     {
-        if (Rmv->Dir == NULL && Rmv->Esq == NULL)
+        NodeTree *Filho = (Rmv->Esq == NULL) ? Rmv->Dir : Rmv->Esq;
+        SubstituiNo(Tree, Rmv, Filho);
+
+        // Se o nó removido era preto, chama FixRemoveRB para corrigir
+        if (Rmv->Preto)
         {
-            /*Nó não tem filhos*/
-            if (Pai != NULL)
+            if (Filho != NULL && !Filho->Preto)
             {
-                if (Pai->Dir == Rmv)
-                {
-                    /* Rmv é filho direito */
-                    Pai->Dir = NULL;
-                }
-                else
-                {
-                    /* Rmv é filho esquerdo */
-                    Pai->Esq = NULL;
-                }
+                Filho->Preto = true;
             }
             else
             {
-                /* A árvore se torna vazia */
-                Tree->No = NULL;
+                FixRemoveRB(Tree, Filho);
             }
-            Tree->NumTotalNos -= 1;
-            free(Rmv);
         }
-        else
-        {
-            /*Procura o sucessor*/
-            NodeTree *Sucessor = Rmv->Dir;
-            while (Sucessor->Esq != NULL)
-            {
-                Sucessor = Sucessor->Esq;
-            }
-            TIPOCHAVE Aux = Sucessor->Chave;
-            RemoveNodeRB(RBTree, Aux);
-            /*Altera o valor da chave pela chave do sucessor*/
-            Rmv->Chave = Aux;
-        }
+        free(Rmv);
     }
     else
     {
-        NodeTree *Irmao = (Pai->Dir == Rmv) ? Pai->Esq : Pai->Dir;
-        if ((Rmv->Dir != NULL && !Rmv->Dir->Preto) || (Rmv->Esq != NULL && !Rmv->Esq->Preto))
+        // Caso 2: O nó possui dois filhos
+        NodeTree *Sucessor = Rmv->Dir;
+        while (Sucessor->Esq != NULL)
         {
-            /* 1 ou 2 Filhos Rubros */
-
-            /*Procura o sucessor*/
-            NodeTree *Sucessor = Rmv->Dir;
-            while (Sucessor->Esq != NULL)
-            {
-                Sucessor = Sucessor->Esq;
-            }
-            TIPOCHAVE Aux = Sucessor->Chave;
-            RemoveNodeRB(RBTree, Aux);
-            /*Altera o valor da chave pela chave do sucessor*/
-            Rmv->Chave = Aux;
+            Sucessor = Sucessor->Esq;
         }
-        else if (Rmv->Dir == NULL && Rmv->Esq == NULL && Irmao != NULL && !Irmao->Preto)
-        {
-            /*Irmão é vermelho Caso 3.1*/
-            Pai->Preto = false;
-            Irmao->Preto = true;
-            if (Pai->Esq == Rmv)
-            {
-                Pai->Dir = NULL;
-                if (Irmao->Esq != NULL)
-                {
-                    Conecta(RBTree, Pai, Irmao->Esq, true);
-                }
-                Conecta(RBTree, Irmao, Pai, false);
-            }
-            else
-            {
-                Pai->Esq = NULL;
-                if (Irmao->Dir != NULL)
-                {
-                    Conecta(RBTree, Pai, Irmao->Dir, true);
-                }
-                Conecta(RBTree, Irmao, Pai, true);
-            }
-            Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
-            Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
-            free(Rmv);
-            return;
-        }
-        else if (Rmv->Dir == NULL && Rmv->Esq == NULL && Irmao == NULL || Irmao->Preto)
-        {
-            /*O irmão é preto e os filhos do irmão são pretos Caso 3.2*/
-            Irmao->Preto = false;
-            Pai->Dir = (Pai->Dir == Rmv) ? NULL : Pai->Dir;
-            Pai->Esq = (Pai->Esq == Rmv) ? NULL : Pai->Esq;
-            free(Rmv);
-            return;
-        }
-
-        else
-        {
-            printf("ZIKOU!\n");
-        }
+        Rmv->Chave = Sucessor->Chave;
+        RemoveRB(Tree, Sucessor->Chave);
     }
-    PrintRB(RBTree);
+    PrintRB(Tree);
 }
 
 void FreeRB(DataStructure *RBTree)

@@ -26,7 +26,7 @@ Node InsereRB(DataStructure RBTree, TIPOCHAVE Chave);
  * @param RBTree Ponteiro para a árvore Red-Black
  * @param N Nó da árvore Red-Black a ser analisado
  */
-void VerificaRB(DataStructure RBTree, Node N);
+void VerificaInsertRB(DataStructure RBTree, Node N);
 
 /**
  * @brief Realiza o Single Rotate Right

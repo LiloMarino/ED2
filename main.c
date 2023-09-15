@@ -22,27 +22,10 @@ int main()
     // //RemoveNodeRB(RBTree,15);
     // RemoveNodeRB(RBTree,10);
     // RemoveNodeRB(RBTree,32);
-
     DataStructure RBTree = NovaArvoreRB();
-    InsereRB(RBTree, 1);
-    InsereRB(RBTree, 2);
-    InsereRB(RBTree, 3);
+    for (int i = 1; i < 21; i++)
+    {
+        InsereRB(RBTree,i);
+    }
     FreeRB(&RBTree);
-    RBTree = NovaArvoreRB();
-    InsereRB(RBTree, 1);
-    InsereRB(RBTree, 3);
-    InsereRB(RBTree, 2);
-    FreeRB(&RBTree);
-    RBTree = NovaArvoreRB();
-    InsereRB(RBTree, 3);
-    InsereRB(RBTree, 2);
-    InsereRB(RBTree, 1);
-    FreeRB(&RBTree);
-    RBTree = NovaArvoreRB();
-    InsereRB(RBTree, 3);
-    InsereRB(RBTree, 1);
-    InsereRB(RBTree, 2);
-    FreeRB(&RBTree);
-
-    CriaPngDot(FNARQDOT);
 }
