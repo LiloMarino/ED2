@@ -9,7 +9,6 @@ int main()
 {
     /*Inicia as operações da árvore e registra em vários .dot para a visualização separada*/
 
-    DataStructure RBTree = NovaArvoreRB();
     FNARQDOT = "../logs/TesteRB";
     // InsereRB(RBTree,24);
     // InsereRB(RBTree,10);
@@ -24,11 +23,26 @@ int main()
     // RemoveNodeRB(RBTree,10);
     // RemoveNodeRB(RBTree,32);
 
-    for (int i = 1; i < 11; i++)
-    {
-        InsereRB(RBTree, i);
-    }
+    DataStructure RBTree = NovaArvoreRB();
+    InsereRB(RBTree, 1);
+    InsereRB(RBTree, 2);
+    InsereRB(RBTree, 3);
+    FreeRB(&RBTree);
+    RBTree = NovaArvoreRB();
+    InsereRB(RBTree, 1);
+    InsereRB(RBTree, 3);
+    InsereRB(RBTree, 2);
+    FreeRB(&RBTree);
+    RBTree = NovaArvoreRB();
+    InsereRB(RBTree, 3);
+    InsereRB(RBTree, 2);
+    InsereRB(RBTree, 1);
+    FreeRB(&RBTree);
+    RBTree = NovaArvoreRB();
+    InsereRB(RBTree, 3);
+    InsereRB(RBTree, 1);
+    InsereRB(RBTree, 2);
+    FreeRB(&RBTree);
 
     CriaPngDot(FNARQDOT);
-    FreeRB(&RBTree);
 }

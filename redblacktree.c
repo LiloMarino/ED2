@@ -134,13 +134,13 @@ void VerificaRB(DataStructure RBTree, Node N)
             if (No == Pai->Dir && Pai == Avo->Esq)
             {
                 /*Nó é filho da direita e pai da esquerda*/
-                RotacionaEsquerda(Tree, No);
+                RotacionaEsquerda(Tree, Pai);
                 VerificaRB(Tree, Pai);
             }
             else if (No == Pai->Esq && Pai == Avo->Dir)
             {
                 /*Nó é filho da esquerda e pai da direita*/
-                RotacionaDireita(Tree, No);
+                RotacionaDireita(Tree, Pai);
                 VerificaRB(Tree, Pai);
             }
             else
@@ -151,12 +151,12 @@ void VerificaRB(DataStructure RBTree, Node N)
                 if (No == Pai->Esq && Pai == Avo->Esq)
                 {
                     /*Nó é filho da esquerda e pai da esquerda*/
-                    RotacionaDireita(Tree, Pai);
+                    RotacionaDireita(Tree, Avo);
                 }
                 else
                 {
                     /*Nó é filho da direita e pai da direita*/
-                    RotacionaEsquerda(Tree, Pai);
+                    RotacionaEsquerda(Tree, Avo);
                 }
             }
         }
@@ -164,25 +164,32 @@ void VerificaRB(DataStructure RBTree, Node N)
     }
 }
 
-void RotacionaDireita(DataStructure RBTree, Node N)
-{
-    NodeTree *No = N;
-    NodeTree *Pai = No->Pai;
-    NodeTree *Avo = Pai->Pai;
-    Conecta(RBTree, Pai, No->Dir, true); // Verificar se está correto!
-    Conecta(RBTree, No, Pai, false);
-    Conecta(RBTree, Avo, No, false);
-}
-
 void RotacionaEsquerda(DataStructure RBTree, Node N)
 {
+    Raiz *Tree = RBTree;
     NodeTree *No = N;
     NodeTree *Pai = No->Pai;
-    NodeTree *Avo = Pai->Pai;
+    NodeTree *FilhoDir = No->Dir;
 
-    Conecta(RBTree, Pai, No->Esq, true);
-    Conecta(RBTree, No, Pai, false);
-    Conecta(RBTree, Avo, No, true);
+    /*Tecnicamente consiste em trocar de posição o FilhoDir com o No
+    Quem é Pai de No passará a ser Pai de FilhoDir e FilhoDir passará a ser pai de No*/
+    Conecta(Tree, No, FilhoDir->Esq, true);                        // Para não perder nó, o No adota na sua direita o filho esquerdo do FilhoDir "Menor à direita"
+    Conecta(Tree, Pai, FilhoDir, (Pai != NULL && No == Pai->Dir)); // O Pai de No adotará na mesma posição que No o filho direito de No, PAI -> FD
+    Conecta(Tree, FilhoDir, No, false);                            // O filho direito de No adotará em sua esquerda o próprio No, pois FD > N
+}
+
+void RotacionaDireita(DataStructure RBTree, Node N)
+{
+    Raiz *Tree = RBTree;
+    NodeTree *No = N;
+    NodeTree *Pai = No->Pai;
+    NodeTree *FilhoEsq = No->Esq;
+
+    /*Tecnicamente consiste em trocar de posição o FilhoEsq com o No
+    Quem é Pai de No passará a ser Pai de FilhoEsq e FilhoEsq passará a ser pai de No*/
+    Conecta(Tree, No, FilhoEsq->Dir, false);                       // Para não perder nó, o No adota na sua esquerda o filho direito do FilhoEsq "Maior à esquerda"
+    Conecta(Tree, Pai, FilhoEsq, (Pai != NULL && No == Pai->Dir)); // O Pai de No adotará na mesma posição que No o filho esquerdo de No, PAI -> FE
+    Conecta(Tree, FilhoEsq, No, true);                             // O filho esquerdo de No adotará em sua direita o próprio No, pois FE < N
 }
 
 Node GetNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
