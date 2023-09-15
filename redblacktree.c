@@ -227,7 +227,7 @@ TIPOCHAVE GetChaveRB(Node N)
     return No->Chave;
 }
 
-void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
+void RemoveRB(DataStructure RBTree, TIPOCHAVE Chave)
 {
     Raiz *Tree = RBTree;
     NodeTree *Rmv = GetNodeRB(Tree, Chave);
@@ -238,13 +238,13 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
     }
     PrintRB(Tree);
 
-    // Caso 1: O nó não possui filhos ou apenas um filho não nulo.
     if (Rmv->Esq == NULL || Rmv->Dir == NULL)
     {
+        /* Caso 1: O nó não possui filhos ou apenas um filho não nulo */
         NodeTree *Filho = (Rmv->Esq == NULL) ? Rmv->Dir : Rmv->Esq;
-        SubstituiNo(Tree, Rmv, Filho);
+        Conecta(Tree, Rmv->Pai, Filho, (Rmv == Rmv->Pai->Dir)); // O pai de do nó removido adotará o filho não nulo do nó a ser removido
 
-        // Se o nó removido era preto, chama FixRemoveRB para corrigir
+        /*Se o nó removido era preto, chama FixRemoveRB para corrigir*/
         if (Rmv->Preto)
         {
             if (Filho != NULL && !Filho->Preto)
@@ -260,7 +260,7 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
     }
     else
     {
-        // Caso 2: O nó possui dois filhos
+        /* Caso 2: O nó possui dois filhos */
         NodeTree *Sucessor = Rmv->Dir;
         while (Sucessor->Esq != NULL)
         {
@@ -270,6 +270,107 @@ void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave)
         RemoveRB(Tree, Sucessor->Chave);
     }
     PrintRB(Tree);
+}
+
+void FixRemoveRB(DataStructure RBTree, Node N)
+{
+    Raiz *Tree = RBTree;
+    NodeTree *No = N;
+    while (No != Tree->No && (No == NULL || No->Preto))
+    {
+        /*Verifica se irmão é filho direito ou esquerdo*/
+        if (No == No->Pai->Esq)
+        {
+            NodeTree *Irmao = No->Pai->Dir;
+
+            if (Irmao == NULL)
+            {
+                return;
+            }
+
+            /*Caso 1: O irmão é vermelho*/
+            if (!Irmao->Preto)
+            {
+                Irmao->Preto = true;
+                No->Pai->Preto = false;
+                RotacionaEsquerda(Tree, No->Pai);
+                Irmao = No->Pai->Dir;
+            }
+
+            /*Caso 2: Ambos os filhos do irmão são pretos*/
+            if ((Irmao->Esq == NULL || Irmao->Esq->Preto) && (Irmao->Dir == NULL || Irmao->Dir->Preto))
+            {
+                Irmao->Preto = false;
+                No = No->Pai;
+            }
+            else
+            {
+                /*Caso 3: O filho direito do irmão é preto*/
+                if (Irmao->Dir == NULL || Irmao->Dir->Preto)
+                {
+                    Irmao->Esq->Preto = true;
+                    Irmao->Preto = false;
+                    RotacionaDireita(Tree, Irmao);
+                    Irmao = No->Pai->Dir;
+                }
+
+                /*Caso 4: O filho direito do irmão é vermelho*/
+                Irmao->Preto = No->Pai->Preto;
+                No->Pai->Preto = true;
+                Irmao->Dir->Preto = true;
+                RotacionaEsquerda(Tree, No->Pai);
+                No = Tree->No; // Isso sai do loop
+            }
+        }
+        else
+        {
+            NodeTree *Irmao = No->Pai->Esq;
+
+            if (Irmao == NULL)
+            {
+                return;
+            }
+
+            /* Caso 1: O irmão é vermelho*/
+            if (!Irmao->Preto)
+            {
+                Irmao->Preto = true;
+                No->Pai->Preto = false;
+                RotacionaDireita(Tree, No->Pai);
+                Irmao = No->Pai->Esq;
+            }
+
+            /* Caso 2: Ambos os filhos do irmão são pretos*/
+            if ((Irmao->Dir == NULL || Irmao->Dir->Preto) && (Irmao->Esq == NULL || Irmao->Esq->Preto))
+            {
+                Irmao->Preto = false;
+                No = No->Pai;
+            }
+            else
+            {
+                /* Caso 3: O filho esquerdo do irmão é preto*/
+                if (Irmao->Esq == NULL || Irmao->Esq->Preto)
+                {
+                    Irmao->Dir->Preto = true;
+                    Irmao->Preto = false;
+                    RotacionaEsquerda(Tree, Irmao);
+                    Irmao = No->Pai->Esq;
+                }
+
+                /* Caso 4: O filho esquerdo do irmão é vermelho*/
+                Irmao->Preto = No->Pai->Preto;
+                No->Pai->Preto = true;
+                Irmao->Esq->Preto = true;
+                RotacionaDireita(Tree, No->Pai);
+                No = Tree->No; // Isso sai do loop
+            }
+        }
+    }
+
+    if (No != NULL)
+    {
+        No->Preto = true;
+    }
 }
 
 void FreeRB(DataStructure *RBTree)

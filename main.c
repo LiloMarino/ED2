@@ -19,9 +19,9 @@ int main()
     // InsereRB(RBTree,49);
     // InsereRB(RBTree,12);
     // InsereRB(RBTree,14);
-    // //RemoveNodeRB(RBTree,15);
-    // RemoveNodeRB(RBTree,10);
-    // RemoveNodeRB(RBTree,32);
+    // //RemoveRB(RBTree,15);
+    // RemoveRB(RBTree,10);
+    // RemoveRB(RBTree,32);
     DataStructure RBTree = NovaArvoreRB();
     for (int i = 1; i < 21; i++)
     {

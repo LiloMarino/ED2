@@ -62,7 +62,14 @@ TIPOCHAVE GetChaveRB(Node N);
  * @param RBTree Ponteiro para a árvore Red-Black
  * @param Chave Conteúdo do nó 
  */
-void RemoveNodeRB(DataStructure RBTree, TIPOCHAVE Chave);
+void RemoveRB(DataStructure RBTree, TIPOCHAVE Chave);
+
+/**
+ * @brief Semelhante ao VerificaInsertRB ele faz as verificações de remoção e corrige a árvore
+ * @param RBTree Ponteiro para a árvore Red-Black
+ * @param N Nó da árvore Red-Black
+ */
+void FixRemoveRB(DataStructure RBTree, Node N);
 
 /**
  * @brief Realiza o free da árvore
