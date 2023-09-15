@@ -231,6 +231,7 @@ void RemoveRB(DataStructure RBTree, TIPOCHAVE Chave)
 {
     Raiz *Tree = RBTree;
     NodeTree *Rmv = GetNodeRB(Tree, Chave);
+    NodeTree *Pai = Rmv->Pai;
     if (Rmv == NULL)
     {
         printf("Erro: A chave %d não existe\n", Chave);
@@ -242,7 +243,7 @@ void RemoveRB(DataStructure RBTree, TIPOCHAVE Chave)
     {
         /* Caso 1: O nó não possui filhos ou apenas um filho não nulo */
         NodeTree *Filho = (Rmv->Esq == NULL) ? Rmv->Dir : Rmv->Esq;
-        Conecta(Tree, Rmv->Pai, Filho, (Rmv == Rmv->Pai->Dir)); // O pai de do nó removido adotará o filho não nulo do nó a ser removido
+        Conecta(Tree, Pai, Filho, (Pai != NULL && Rmv == Pai->Dir)); // O pai do nó removido adotará o filho não nulo do nó
 
         /*Se o nó removido era preto, chama FixRemoveRB para corrigir*/
         if (Rmv->Preto)
@@ -253,10 +254,11 @@ void RemoveRB(DataStructure RBTree, TIPOCHAVE Chave)
             }
             else
             {
-                FixRemoveRB(Tree, Filho);
+                FixRemoveRB(Tree, Rmv);
             }
         }
         free(Rmv);
+        Tree->NumTotalNos -= 1;
     }
     else
     {
@@ -276,10 +278,17 @@ void FixRemoveRB(DataStructure RBTree, Node N)
 {
     Raiz *Tree = RBTree;
     NodeTree *No = N;
+
+    if (Tree->No == NULL)
+    {
+        /*Removeu o último nó*/
+        return;
+    }
+
     while (No != Tree->No && (No == NULL || No->Preto))
     {
         /*Verifica se irmão é filho direito ou esquerdo*/
-        if (No == No->Pai->Esq)
+        if (No == No->Pai->Esq || No->Pai->Esq == NULL)
         {
             NodeTree *Irmao = No->Pai->Dir;
 
@@ -437,7 +446,10 @@ void PrintRB(DataStructure RBTree)
 
     /*Percorre a árvore em largura criando os nós marcando as ligações*/
     Lista Stack = createLst(-1);
-    insertLst(Stack, Tree->No);
+    if (Tree->No != NULL)
+    {
+        insertLst(Stack, Tree->No);
+    }
     LigaNo(ARQDOT, NULL, Tree->No);
 
     while (!isEmptyLst(Stack))

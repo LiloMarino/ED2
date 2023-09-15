@@ -25,7 +25,12 @@ int main()
     DataStructure RBTree = NovaArvoreRB();
     for (int i = 1; i < 21; i++)
     {
-        InsereRB(RBTree,i);
+        InsereRB(RBTree, i);
+    }
+    for (int i = 1; i < 21; i++)
+    {
+        RemoveRB(RBTree, i);
     }
     FreeRB(&RBTree);
+    CriaPngDot(FNARQDOT);
 }
