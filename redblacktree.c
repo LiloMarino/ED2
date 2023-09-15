@@ -268,8 +268,9 @@ void RemoveRB(DataStructure RBTree, TIPOCHAVE Chave)
         {
             Sucessor = Sucessor->Esq;
         }
-        Rmv->Chave = Sucessor->Chave;
+        TIPOCHAVE Aux = Sucessor->Chave;
         RemoveRB(Tree, Sucessor->Chave);
+        Rmv->Chave = Aux;
     }
     PrintRB(Tree);
 }
