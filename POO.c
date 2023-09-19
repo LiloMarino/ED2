@@ -5,6 +5,7 @@
 typedef char *(*Get)();
 typedef void (*Set)(char *String);
 typedef int (*Print)(const char *String, ...);
+typedef Print (*PrintLn)(const char *String);
 typedef int (*Soma)(int a, int b);
 
 struct StCaneta
@@ -17,6 +18,7 @@ struct StCaneta
 struct Stout
 {
     Print print;
+    PrintLn println;
 };
 struct Stmath
 {
@@ -34,6 +36,13 @@ typedef struct Stmath math;
 int soma(int a, int b)
 {
     return a + b;
+}
+Print println(const char *String)
+{
+    char variavel[strlen(String) + 2];
+    strcpy(variavel,String);
+    strcat(variavel,"\n");
+    return printf(variavel);
 }
 // Caneta this;
 
@@ -59,6 +68,7 @@ struct StSystem System;
 int main()
 {
     System.out.print = printf;
+    System.out.println = println;
     System.math.soma = soma;
 
 
@@ -69,6 +79,6 @@ int main()
 
 
 
-    System.out.print("Ola Mundo!\n");
+    System.out.println("Ola Mundo!");
     System.out.print("%d\n",System.math.soma(5,10));
 }
