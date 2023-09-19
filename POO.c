@@ -4,8 +4,8 @@
 
 typedef char *(*Get)();
 typedef void (*Set)(char *String);
-typedef int (*Print)(const char *String);
- 
+typedef int (*Print)(const char *String, ...);
+typedef int (*Soma)(int a, int b);
 
 struct StCaneta
 {
@@ -18,14 +18,23 @@ struct Stout
 {
     Print print;
 };
+struct Stmath
+{
+    Soma soma;
+};
 struct StSystem
 {
     struct Stout out;
+    struct Stmath math;
 };
 
 typedef struct StCaneta Caneta;
 typedef struct Stout out;
-
+typedef struct Stmath math;
+int soma(int a, int b)
+{
+    return a + b;
+}
 // Caneta this;
 
 // char getCor()
@@ -50,6 +59,16 @@ struct StSystem System;
 int main()
 {
     System.out.print = printf;
-    System.out.print("Ola Mundo!\n");
-}
+    System.math.soma = soma;
 
+
+
+
+
+
+
+
+
+    System.out.print("Ola Mundo!\n");
+    System.out.print("%d\n",System.math.soma(5,10));
+}
