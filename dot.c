@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "dot.h"
-#include "redblacktree.h"
+#include "tabelahash.h"
 #include "Bibliotecas/geradores.h"
 #include "Bibliotecas/efficiency.h"
 #include "Bibliotecas/learquivo.h"
@@ -10,7 +10,8 @@
 void InicializaDot(ArqDot fdot)
 {
     fprintf(fdot, "digraph Tree {\n");
-    fprintf(fdot, "\tnode [shape=circle];\n");
+    fprintf(fdot, "\tnode [shape=record];\n");
+    fprintf(fdot, "\tgraph [rankdir = LR];\n");
     fflush(fdot);
 }
 
@@ -25,7 +26,7 @@ void TerminaDot(ArqDot fdot)
 
 void CriaNo(ArqDot fdot, Node N, const char *fillcolor)
 {
-    TIPOCHAVE Chave = GetChaveRB(N);
+    TIPOCHAVE Chave = HashGetChave(N);
     fprintf(fdot,"\t%d [label=\"%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n",Chave, Chave, fillcolor);
 }
 
@@ -37,13 +38,13 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
     }
     if (pai == NULL)
     {
-        TIPOCHAVE Chave = GetChaveRB(filho);
+        TIPOCHAVE Chave = HashGetChave(filho);
         fprintf(fdot, "\tRaiz -> %d;\n", Chave);
     }
     else
     {
-        TIPOCHAVE Chave1 = GetChaveRB(pai);
-        TIPOCHAVE Chave2 = GetChaveRB(filho);
+        TIPOCHAVE Chave1 = HashGetChave(pai);
+        TIPOCHAVE Chave2 = HashGetChave(filho);
         fprintf(fdot, "\t%d -> %d;\n", Chave1, Chave2);
     }
     fflush(fdot);
@@ -51,7 +52,7 @@ void LigaNo(ArqDot fdot, Node pai, Node filho)
 
 void MarcaNoRemovido(ArqDot fdot, Node removido)
 {
-    TIPOCHAVE Chave = GetChaveRB(removido);
+    TIPOCHAVE Chave = HashGetChave(removido);
     fprintf(fdot, "\t%d [shape=none, label=\"X\", color=red, fontcolor=red, fontsize=20, width=0.3, height=0.3];\n", Chave);
     fflush(fdot);
 }

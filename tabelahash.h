@@ -9,9 +9,10 @@ typedef int TIPOCHAVE; // Tipo do dado contido em cada nó
 
 /**
  * @brief Cria uma nova tabela hash
+ * @param tamanho Tamanho do array da tabela hash
  * @return Retorna o ponteiro para a tabela hash
  */
-DataStructure HashCreate();
+DataStructure HashCreate(int tamanho);
 
 /**
  * @brief Insere o nó com a chave especificada na tabela

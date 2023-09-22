@@ -9,6 +9,8 @@ int main()
 {
     /*Inicia as operações da tabela hash e registra em vários .dot para a visualização separada*/
     FNARQDOT = "../logs/TesteHash";
+    DataStructure HTable = HashCreate(20);
+    
 
 
     CriaPngDot(FNARQDOT);

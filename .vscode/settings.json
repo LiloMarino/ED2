@@ -23,7 +23,8 @@
         "stdlib.h": "c",
         "dot.h": "c",
         "efficiency.h": "c",
-        "tabelahash.h": "c"
+        "tabelahash.h": "c",
+        "string": "c"
     },
     "makefile.launchConfigurations": [
         {
