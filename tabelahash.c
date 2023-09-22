@@ -16,8 +16,8 @@ typedef struct StTabela Tabela;
 
 DataStructure HashCreate(unsigned int Tamanho)
 {
-    Tabela *HTable = malloc(1,sizeof(Tabela));
-    HTable->Elemento = calloc(Tamanho,sizeof(Lista));
+    Tabela *HTable = malloc(1, sizeof(Tabela));
+    HTable->Elemento = calloc(Tamanho, sizeof(Lista));
     HTable->Tamanho = Tamanho;
     return HTable;
 }
@@ -25,19 +25,19 @@ DataStructure HashCreate(unsigned int Tamanho)
 Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
-    unsigned int Indice = HashingDobra(Chave,Table->Tamanho);
+    unsigned int Indice = HashingDobra(Chave, Table->Tamanho);
     TIPOCHAVE *Elemento = malloc(sizeof(TIPOCHAVE));
     *Elemento = Chave;
-    if(Table->Elemento[Indice] != NULL)
+    if (Table->Elemento[Indice] != NULL)
     {
         /*Não existe nenhum elemento na posição*/
         Table->Elemento[Indice] = createLst(-1);
-        insertLst(Table->Elemento[Indice],Elemento);
+        insertLst(Table->Elemento[Indice], Elemento);
     }
     else
     {
         /*Existe pelo menos um elemento na posição*/
-        insertLst(Table->Elemento[Indice],Elemento);
+        insertLst(Table->Elemento[Indice], Elemento);
     }
 }
 
@@ -74,14 +74,25 @@ unsigned int HashingDobra(TIPOCHAVE Chave, unsigned int Tamanho)
     return Hash % Tamanho;
 }
 
-Node HashGetNode(DataStructure HTable, TIPOCHAVE Chave)
+TIPOCHAVE HashGetChave(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
-}
-
-TIPOCHAVE HashGetChave(Node N)
-{
-    Elemento *Elem = N;
+    Lista L = Table->Elemento[HashingDobra(Chave, Table->Tamanho)];
+    if (L != NULL)
+    {
+        Iterador I = createIterador(L, false);
+        while (!isIteratorEmpty(L, I))
+        {
+            TIPOCHAVE *Elemento = getIteratorNext(L, I);
+            if (*Elemento == Chave)
+            {
+                killIterator(I);
+                return *Elemento;
+            }
+        }
+        killIterator(I);
+    }
+    return -1;
 }
 
 void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
