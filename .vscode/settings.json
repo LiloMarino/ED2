@@ -22,7 +22,8 @@
         "stdbool.h": "c",
         "stdlib.h": "c",
         "dot.h": "c",
-        "efficiency.h": "c"
+        "efficiency.h": "c",
+        "tabelahash.h": "c"
     },
     "makefile.launchConfigurations": [
         {
