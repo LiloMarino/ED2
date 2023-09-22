@@ -17,15 +17,23 @@ DataStructure HashCreate(int tamanho);
 /**
  * @brief Insere o nó com a chave especificada na tabela
  * @param HTable Ponteiro para a tabela hash
- * @param Chave Conteúdo do nó a ser inserido
+ * @param Chave Chave a ser inserida
  * @return Retorna o ponteiro para o nó
  */
 Node HashInsert(DataStructure HTable, TIPOCHAVE Chave);
 
 /**
+ * @brief Faz o Hashing de Dobra para a dispersão
+ * @param Chave Chave a ser inserida
+ * @param Tamanho 
+ * @return 
+ */
+unsigned int HashingDobra(TIPOCHAVE Chave, unsigned int Tamanho);
+
+/**
  * @brief Dado uma chave a função retornará o nó respectivo a chave
  * @param HTable Ponteiro para a tabela hash
- * @param Chave Conteúdo do nó 
+ * @param Chave Chave a ser inserida
  * @return Retorna o ponteiro para o nó
  */
 Node HashGetNode(DataStructure HTable, TIPOCHAVE Chave);
@@ -40,7 +48,7 @@ TIPOCHAVE HashGetChave(Node N);
 /**
  * @brief Dado uma chave remove o nó que possui a chave especificada
  * @param HTable Ponteiro para a tabela hash
- * @param Chave Conteúdo do nó 
+ * @param Chave Chave a ser inserida
  */
 void HashRemove(DataStructure HTable, TIPOCHAVE Chave);
 

@@ -6,34 +6,42 @@
 #include "tabelahash.h"
 #include "dot.h"
 
-struct StElemento
-{
-    Lista lst;
-};
-
 struct StTabela
 {
-    struct StElemento *elemento;
-    unsigned int tamanho;
+    Lista *Elemento;
+    unsigned int Tamanho;
 };
 
-typedef struct StElemento Elemento;
 typedef struct StTabela Tabela;
 
-DataStructure HashCreate(unsigned int tamanho)
+DataStructure HashCreate(unsigned int Tamanho)
 {
     Tabela *HTable = malloc(1,sizeof(Tabela));
-    HTable->elemento = calloc(tamanho,sizeof(Elemento));
-    HTable->tamanho = tamanho;
+    HTable->Elemento = calloc(Tamanho,sizeof(Lista));
+    HTable->Tamanho = Tamanho;
     return HTable;
 }
 
 Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
+    unsigned int Indice = HashingDobra(Chave,Table->Tamanho);
+    TIPOCHAVE *Elemento = malloc(sizeof(TIPOCHAVE));
+    *Elemento = Chave;
+    if(Table->Elemento[Indice] != NULL)
+    {
+        /*Não existe nenhum elemento na posição*/
+        Table->Elemento[Indice] = createLst(-1);
+        insertLst(Table->Elemento[Indice],Elemento);
+    }
+    else
+    {
+        /*Existe pelo menos um elemento na posição*/
+        insertLst(Table->Elemento[Indice],Elemento);
+    }
 }
 
-unsigned int HashingDobra(unsigned int Chave, unsigned int Tamanho)
+unsigned int HashingDobra(TIPOCHAVE Chave, unsigned int Tamanho)
 {
     /*Descobre quantos dígitos tem o tamanho*/
     unsigned int tam = Tamanho;
