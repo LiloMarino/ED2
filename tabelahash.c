@@ -11,6 +11,7 @@ struct StTabela
 {
     Lista *Elemento;
     int Tamanho;
+    size_t Digitos;
 };
 
 typedef struct StTabela Tabela;
@@ -20,6 +21,12 @@ DataStructure HashCreate(int Tamanho)
     Tabela *HTable = malloc(sizeof(Tabela));
     HTable->Elemento = calloc(Tamanho, sizeof(Lista));
     HTable->Tamanho = Tamanho;
+    size_t Digitos;
+    for (Digitos = 0; Tamanho > 0; Digitos++)
+    {
+        Tamanho /= 10;
+    }
+    HTable->Digitos= Digitos;
     return HTable;
 }
 
@@ -31,35 +38,29 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
         /*Chave inválida*/
         return NULL;
     }
-    int Indice = HashingDobra(Chave, Table->Tamanho);
+    int Indice = HashingDobra(Table, Chave);
     TIPOCHAVE *Elemento = malloc(sizeof(TIPOCHAVE));
     *Elemento = Chave;
     if (Table->Elemento[Indice] != NULL)
+    {
+        /*Existe pelo menos um elemento na posição*/
+        return insertLst(Table->Elemento[Indice], Elemento);
+    }
+    else
     {
         /*Não existe nenhum elemento na posição*/
         Table->Elemento[Indice] = createLst(-1);
         return insertLst(Table->Elemento[Indice], Elemento);
     }
-    else
-    {
-        /*Existe pelo menos um elemento na posição*/
-        return insertLst(Table->Elemento[Indice], Elemento);
-    }
 }
 
-int HashingDobra(TIPOCHAVE Chave, int Tamanho)
+int HashingDobra(DataStructure HTable, TIPOCHAVE Chave)
 {
-    /*Descobre quantos dígitos tem o tamanho*/
-    int tam = Tamanho;
-    size_t digitos;
-    for (digitos = 0; tam > 0; digitos++)
-    {
-        tam /= 10;
-    }
-
+    Tabela *Table = HTable;
     char string[64]; // Suporta até 64 dígitos
+    char string2[64];
     sprintf(string, "%d", Chave);
-    while (strlen(string) >= digitos)
+    while (strlen(string) > Table->Digitos)
     {
         /*Faz as dobras de 2 em 2*/
         char dobra[5];
@@ -74,16 +75,17 @@ int HashingDobra(TIPOCHAVE Chave, int Tamanho)
         char aux = num[0];
         num[0] = num[1];
         num[1] = aux;
-        sprintf(string, "%s%s", num, string + 4);
+        sprintf(string2, "%s%s", num, string + 4);
+        strcpy(string,string2);
     }
     int Hash = atoi(string);
-    return Hash % Tamanho;
+    return Hash % Table->Tamanho;
 }
 
 Node HashGetNode(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
-    Lista L = Table->Elemento[HashingDobra(Chave, Table->Tamanho)];
+    Lista L = Table->Elemento[HashingDobra(Table, Chave)];
     if (L != NULL)
     {
         Iterador I = createIterador(L, false);
@@ -110,7 +112,7 @@ TIPOCHAVE HashGetChave(Node N)
 void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
-    Lista L = Table->Elemento[HashingDobra(Chave, Table->Tamanho)];
+    Lista L = Table->Elemento[HashingDobra(Table, Chave)];
     if (L != NULL)
     {
         Posic Del = getFirstLst(L);

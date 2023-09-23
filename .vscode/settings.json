@@ -25,7 +25,8 @@
         "efficiency.h": "c",
         "tabelahash.h": "c",
         "string": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "utilities.h": "c"
     },
     "makefile.launchConfigurations": [
         {

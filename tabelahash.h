@@ -22,13 +22,8 @@ DataStructure HashCreate(int tamanho);
  */
 Node HashInsert(DataStructure HTable, TIPOCHAVE Chave);
 
-/**
- * @brief Faz o Hashing de Dobra para a dispersão
- * @param Chave Chave a ser inserida
- * @param Tamanho 
- * @return 
- */
-int HashingDobra(TIPOCHAVE Chave, int Tamanho);
+
+int HashingDobra(DataStructure HTable, TIPOCHAVE Chave);
 
 /**
  * @brief Dado uma chave a função retornará o nó respectivo a chave
