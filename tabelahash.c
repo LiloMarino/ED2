@@ -26,7 +26,7 @@ DataStructure HashCreate(int Tamanho)
     {
         Tamanho /= 10;
     }
-    HTable->Digitos= Digitos;
+    HTable->Digitos = Digitos;
     return HTable;
 }
 
@@ -57,7 +57,7 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
 int HashingDobra(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
-    char string[64]; // Suporta até 64 dígitos
+    char string[64] = {'\0'}; // Suporta até 64 dígitos
     char string2[64];
     sprintf(string, "%d", Chave);
     while (strlen(string) > Table->Digitos)
@@ -65,18 +65,31 @@ int HashingDobra(DataStructure HTable, TIPOCHAVE Chave)
         /*Faz as dobras de 2 em 2*/
         char dobra[5];
         char num[3];
-        for (int i = 0; i < 2; i++)
+        if (strlen(string) % 2 != 0)
         {
-            strncpy(dobra, string, 4);
-            char ini = dobra[i];
-            char fim = dobra[3 - i];
-            num[i] = (((ini - '0') + (fim - '0')) % 10) + '0';
+            /*Se é ímpar dobra apenas os 2 primeiros dígitos para ficar par*/
+            strncpy(dobra, string, 2);
+            char ini = dobra[0];
+            char fim = dobra[1];
+            num[0] = (((ini - '0') + (fim - '0')) % 10) + '0';
+            sprintf(string2, "%s%s", num, (char *)string + 2);
         }
-        char aux = num[0];
-        num[0] = num[1];
-        num[1] = aux;
-        sprintf(string2, "%s%s", num, string + 4);
-        strcpy(string,string2);
+        else
+        {
+            /*Se é par dobra*/
+            for (int i = 0; i < 2; i++)
+            {
+                strncpy(dobra, string, 4);
+                char ini = dobra[i];
+                char fim = dobra[3 - i];
+                num[i] = (((ini - '0') + (fim - '0')) % 10) + '0';
+            }
+            char aux = num[0];
+            num[0] = num[1];
+            num[1] = aux;
+            sprintf(string2, "%s%s", num, (char *)string + 4);
+        }
+        strcpy(string, string2);
     }
     int Hash = atoi(string);
     return Hash % Table->Tamanho;
@@ -169,14 +182,14 @@ void PrintHash(DataStructure HTable)
             {
                 /*Obtém o primeiro elemento da lista se ele existir*/
                 ElementoAnterior = getLst(P);
-                LigaArray(ARQDOT,"Tabela",i,ElementoAnterior);
+                LigaArray(ARQDOT, "Tabela", i, ElementoAnterior);
                 P = getNextLst(L, P);
             }
             while (P != NULL)
             {
                 /*Obtém os próximos elementos da lista*/
                 TIPOCHAVE *Elemento = getLst(P);
-                LigaNo(ARQDOT,ElementoAnterior,Elemento);
+                LigaNo(ARQDOT, ElementoAnterior, Elemento);
                 ElementoAnterior = Elemento;
                 P = getNextLst(L, P);
             }

@@ -12,6 +12,7 @@ int main()
     FNARQDOT = "../logs/TesteHash";
     DataStructure HTable = HashCreate(20);
     InicializaRand();
+    HashInsert(HTable,11233);
     for (int i = 0; i < 100; i++)
     {
         int n = GerarNumeroInt(0,1000000);
