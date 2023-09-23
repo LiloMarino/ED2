@@ -31,6 +31,23 @@ void TerminaDot(ArqDot fdot);
 void CriaNo(ArqDot fdot, Node N, const char *fillcolor);
 
 /**
+ * @brief Cria o array com as especificações dadas
+ * @param fdot Ponteiro para o arquivo .dot
+ * @param nome Nome do array
+ * @param tamanho Tamanho do array
+ */
+void CriaArray(ArqDot fdot, const char *nome, unsigned int tamanho);
+
+/**
+ * @brief Liga o nó ao índice do array
+ * @param fdot Ponteiro para o arquivo .dot
+ * @param nome Nome do array
+ * @param indice Indice do elemento do array
+ * @param elemento Elemento do array
+ */
+void LigaArray(ArqDot fdot, const char *nome, unsigned indice, Node elemento);
+
+/**
  * @brief Liga o Pai->Filho
  * @param fdot Ponteiro para o arquivo .dot
  * @param All Ponteiro para a árvore radial

@@ -24,7 +24,8 @@
         "dot.h": "c",
         "efficiency.h": "c",
         "tabelahash.h": "c",
-        "string": "c"
+        "string": "c",
+        "stdio.h": "c"
     },
     "makefile.launchConfigurations": [
         {

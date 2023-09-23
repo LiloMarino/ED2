@@ -10,7 +10,7 @@
 void InicializaDot(ArqDot fdot)
 {
     fprintf(fdot, "digraph Tree {\n");
-    fprintf(fdot, "\tnode [shape=record];\n");
+    fprintf(fdot, "\tnode [shape=rectangle];\n");
     fprintf(fdot, "\tgraph [rankdir = LR];\n");
     fflush(fdot);
 }
@@ -27,7 +27,25 @@ void TerminaDot(ArqDot fdot)
 void CriaNo(ArqDot fdot, Node N, const char *fillcolor)
 {
     TIPOCHAVE Chave = HashGetChave(N);
-    fprintf(fdot,"\t%d [label=\"%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n",Chave, Chave, fillcolor);
+    fprintf(fdot, "\t%d [label=\"%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n", Chave, Chave, fillcolor);
+}
+
+void CriaArray(ArqDot fdot, const char *nome, unsigned int tamanho)
+{
+    fprintf(fdot, "\t%s [label=\"", nome);
+    for (unsigned int i = 0; i < tamanho; i++)
+    {
+        fprintf(fdot, "<%d> %d |",i);
+    }
+    fprintf(fdot, "\", shape=\"record\"];\n");
+    fflush(fdot);
+}
+
+void LigaArray(ArqDot fdot, const char *nome, unsigned indice, Node elemento)
+{
+    TIPOCHAVE Chave = HashGetChave(elemento);
+    fprintf(fdot, "\t%s:%d -> %d;\n", Chave);
+    fflush(fdot);
 }
 
 void LigaNo(ArqDot fdot, Node pai, Node filho)
