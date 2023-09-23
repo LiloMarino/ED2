@@ -25,6 +25,11 @@ DataStructure HashCreate(unsigned int Tamanho)
 Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
+    if (Chave == -1)
+    {
+        /*Chave inválida*/
+        return NULL;
+    }
     unsigned int Indice = HashingDobra(Chave, Table->Tamanho);
     TIPOCHAVE *Elemento = malloc(sizeof(TIPOCHAVE));
     *Elemento = Chave;
@@ -32,12 +37,12 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
     {
         /*Não existe nenhum elemento na posição*/
         Table->Elemento[Indice] = createLst(-1);
-        insertLst(Table->Elemento[Indice], Elemento);
+        return insertLst(Table->Elemento[Indice], Elemento);
     }
     else
     {
         /*Existe pelo menos um elemento na posição*/
-        insertLst(Table->Elemento[Indice], Elemento);
+        return insertLst(Table->Elemento[Indice], Elemento);
     }
 }
 
@@ -98,14 +103,56 @@ TIPOCHAVE HashGetChave(DataStructure HTable, TIPOCHAVE Chave)
 void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
+    Lista L = Table->Elemento[HashingDobra(Chave, Table->Tamanho)];
+    if (L != NULL)
+    {
+        Posic Del = getFirstLst(L);
+        while (Del != NULL)
+        {
+            TIPOCHAVE *Elemento = getLst(Del);
+            if (*Elemento == Chave)
+            {
+                /*Elemento encontrado*/
+                removeLst(L, Del);
+                return;
+            }
+            Del = getNextLst(Afetados, Del);
+        }
+    }
+    /*Elemento não existe*/
+    printf("Chave %d não existe!", Chave);
 }
 
 void HashFree(DataStructure *HTable)
 {
     Tabela *Table = HTable;
+    for (int i = 0; i < Table->Tamanho; i++)
+    {
+        Lista L = Table->Elemento[i];
+        if (L != NULL)
+        {
+            killLst(L);
+        }
+    }
+    free(Table->Elemento);
+    free(Table);
 }
 
 void PrintHash(DataStructure HTable)
 {
     Tabela *Table = HTable;
+    
+    for (int i = 0; i < Table->Tamanho; i++)
+    {
+        Lista L = Table->Elemento[i];
+        if (L != NULL)
+        {
+            Iterador I = createIterador(L, false);
+            while (!isIteratorEmpty(L, I))
+            {
+                TIPOCHAVE *Elemento = getIteratorNext(L, I);
+            }
+            killIterator(I);
+        }
+    }
 }
