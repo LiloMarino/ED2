@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "Bibliotecas/geradores.h"
 #include "Bibliotecas/listadupla.h"
 #include "tabelahash.h"
@@ -16,7 +17,7 @@ typedef struct StTabela Tabela;
 
 DataStructure HashCreate(int Tamanho)
 {
-    Tabela *HTable = malloc(1, sizeof(Tabela));
+    Tabela *HTable = malloc(sizeof(Tabela));
     HTable->Elemento = calloc(Tamanho, sizeof(Lista));
     HTable->Tamanho = Tamanho;
     return HTable;
@@ -46,11 +47,11 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
     }
 }
 
-int HashingDobra(TIPOCHAVE Chave, int
+int HashingDobra(TIPOCHAVE Chave, int Tamanho)
 {
     /*Descobre quantos dígitos tem o tamanho*/
     int tam = Tamanho;
-    int digitos;
+    size_t digitos;
     for (digitos = 0; tam > 0; digitos++)
     {
         tam /= 10;
@@ -79,25 +80,31 @@ int HashingDobra(TIPOCHAVE Chave, int
     return Hash % Tamanho;
 }
 
-TIPOCHAVE HashGetChave(DataStructure HTable, TIPOCHAVE Chave)
+Node HashGetNode(DataStructure HTable, TIPOCHAVE Chave)
 {
     Tabela *Table = HTable;
     Lista L = Table->Elemento[HashingDobra(Chave, Table->Tamanho)];
     if (L != NULL)
     {
         Iterador I = createIterador(L, false);
-        while (!isIteratorEmpty(L, I))
+        while (!isIteratorEmpty(I))
         {
             TIPOCHAVE *Elemento = getIteratorNext(L, I);
             if (*Elemento == Chave)
             {
                 killIterator(I);
-                return *Elemento;
+                return Elemento;
             }
         }
         killIterator(I);
     }
-    return -1;
+    return NULL;
+}
+
+TIPOCHAVE HashGetChave(Node N)
+{
+    TIPOCHAVE *Elemento = N;
+    return (Elemento != NULL) ? *Elemento : -1;
 }
 
 void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
@@ -125,13 +132,17 @@ void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
 
 void HashFree(DataStructure *HTable)
 {
-    Tabela *Table = HTable;
+    Tabela *Table = *HTable;
     for (int i = 0; i < Table->Tamanho; i++)
     {
         Lista L = Table->Elemento[i];
         if (L != NULL)
         {
-            killLst(L);
+            while (!isEmptyLst(L))
+            {
+                TIPOCHAVE *Elemento = popLst(L);
+                free(Elemento);
+            }
         }
     }
     free(Table->Elemento);
@@ -156,14 +167,14 @@ void PrintHash(DataStructure HTable)
             {
                 /*Obtém o primeiro elemento da lista se ele existir*/
                 ElementoAnterior = getLst(P);
-                LigaArray(ARQDOT,"Tabela",i,*ElementoAnterior)
+                LigaArray(ARQDOT,"Tabela",i,ElementoAnterior);
                 P = getNextLst(L, P);
             }
             while (P != NULL)
             {
                 /*Obtém os próximos elementos da lista*/
                 TIPOCHAVE *Elemento = getLst(P);
-                LigaNo(ARQDOT,*ElementoAnterior,*Elemento);
+                LigaNo(ARQDOT,ElementoAnterior,Elemento);
                 ElementoAnterior = Elemento;
                 P = getNextLst(L, P);
             }

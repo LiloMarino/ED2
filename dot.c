@@ -35,7 +35,7 @@ void CriaArray(ArqDot fdot, const char *nome, int tamanho)
     fprintf(fdot, "\t%s [label=\"", nome);
     for (int i = 0; i < tamanho; i++)
     {
-        fprintf(fdot, "<%d> %d |",i);
+        fprintf(fdot, "<%d> %d |", i, i);
     }
     fprintf(fdot, "\", shape=\"record\"];\n");
     fflush(fdot);
@@ -44,7 +44,7 @@ void CriaArray(ArqDot fdot, const char *nome, int tamanho)
 void LigaArray(ArqDot fdot, const char *nome, int indice, Node elemento)
 {
     TIPOCHAVE Chave = HashGetChave(elemento);
-    fprintf(fdot, "\t%s:%d -> %d;\n", Chave);
+    fprintf(fdot, "\t%s:%d -> %d;\n", nome, indice, Chave);
     fflush(fdot);
 }
 

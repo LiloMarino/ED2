@@ -38,11 +38,6 @@ int HashingDobra(TIPOCHAVE Chave, int Tamanho);
  */
 Node HashGetNode(DataStructure HTable, TIPOCHAVE Chave);
 
-/**
- * @brief Dado um nó retorna a chave respectiva ao nó
- * @param N Nó da tabela hash
- * @return Retorna a chave
- */
 TIPOCHAVE HashGetChave(Node N);
 
 /**

@@ -45,7 +45,7 @@ void CriaArray(ArqDot fdot, const char *nome, int tamanho);
  * @param indice Indice do elemento do array
  * @param elemento Elemento do array
  */
-void LigaArray(ArqDot fdot, const char *nome, unsigned indice, Node elemento);
+void LigaArray(ArqDot fdot, const char *nome, int indice, Node elemento);
 
 /**
  * @brief Liga o Pai->Filho
