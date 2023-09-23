@@ -9,9 +9,9 @@
 
 struct StTabela
 {
-    Lista *Elemento;
     int Tamanho;
     size_t Digitos;
+    Lista *Elemento;
 };
 
 typedef struct StTabela Tabela;
@@ -36,6 +36,7 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
     if (Chave == -1)
     {
         /*Chave inválida*/
+        printf("Chave %d é inválida!\n",Chave);
         return NULL;
     }
     int Indice = HashingDobra(Table, Chave);
@@ -63,8 +64,8 @@ int HashingDobra(DataStructure HTable, TIPOCHAVE Chave)
     while (strlen(string) > Table->Digitos)
     {
         /*Faz as dobras de 2 em 2*/
-        char dobra[5];
-        char num[3];
+        char dobra[5] = {'\0'};
+        char num[3] = {'\0'};
         if (strlen(string) % 2 != 0)
         {
             /*Se é ímpar dobra apenas os 2 primeiros dígitos para ficar par*/
@@ -113,6 +114,7 @@ Node HashGetNode(DataStructure HTable, TIPOCHAVE Chave)
         }
         killIterator(I);
     }
+    printf("Chave %d não existe!\n",Chave);
     return NULL;
 }
 
@@ -135,6 +137,7 @@ void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
             if (*Elemento == Chave)
             {
                 /*Elemento encontrado*/
+                free(Elemento);
                 removeLst(L, Del);
                 return;
             }
@@ -142,7 +145,7 @@ void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
         }
     }
     /*Elemento não existe*/
-    printf("Chave %d não existe!", Chave);
+    printf("Chave %d não existe!\n", Chave);
 }
 
 void HashFree(DataStructure *HTable)
@@ -158,6 +161,7 @@ void HashFree(DataStructure *HTable)
                 TIPOCHAVE *Elemento = popLst(L);
                 free(Elemento);
             }
+            killLst(L);
         }
     }
     free(Table->Elemento);

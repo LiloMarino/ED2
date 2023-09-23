@@ -35,7 +35,12 @@ void CriaArray(ArqDot fdot, const char *nome, int tamanho)
     fprintf(fdot, "\t%s [label=\"", nome);
     for (int i = 0; i < tamanho; i++)
     {
-        fprintf(fdot, "<%d> %d |", i, i);
+        fprintf(fdot, "<%d> %d", i, i);
+        if (i != tamanho-1)
+        {
+            fprintf(fdot,"|");
+        }
+        
     }
     fprintf(fdot, "\", shape=\"record\"];\n");
     fflush(fdot);
