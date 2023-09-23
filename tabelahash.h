@@ -28,7 +28,7 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave);
  * @param Tamanho 
  * @return 
  */
-unsigned int HashingDobra(TIPOCHAVE Chave, unsigned int Tamanho);
+int HashingDobra(TIPOCHAVE Chave, int Tamanho);
 
 /**
  * @brief Dado uma chave a função retornará o nó respectivo a chave

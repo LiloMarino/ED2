@@ -30,10 +30,10 @@ void CriaNo(ArqDot fdot, Node N, const char *fillcolor)
     fprintf(fdot, "\t%d [label=\"%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n", Chave, Chave, fillcolor);
 }
 
-void CriaArray(ArqDot fdot, const char *nome, unsigned int tamanho)
+void CriaArray(ArqDot fdot, const char *nome, int tamanho)
 {
     fprintf(fdot, "\t%s [label=\"", nome);
-    for (unsigned int i = 0; i < tamanho; i++)
+    for (int i = 0; i < tamanho; i++)
     {
         fprintf(fdot, "<%d> %d |",i);
     }
@@ -41,7 +41,7 @@ void CriaArray(ArqDot fdot, const char *nome, unsigned int tamanho)
     fflush(fdot);
 }
 
-void LigaArray(ArqDot fdot, const char *nome, unsigned indice, Node elemento)
+void LigaArray(ArqDot fdot, const char *nome, int indice, Node elemento)
 {
     TIPOCHAVE Chave = HashGetChave(elemento);
     fprintf(fdot, "\t%s:%d -> %d;\n", Chave);

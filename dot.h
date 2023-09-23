@@ -36,7 +36,7 @@ void CriaNo(ArqDot fdot, Node N, const char *fillcolor);
  * @param nome Nome do array
  * @param tamanho Tamanho do array
  */
-void CriaArray(ArqDot fdot, const char *nome, unsigned int tamanho);
+void CriaArray(ArqDot fdot, const char *nome, int tamanho);
 
 /**
  * @brief Liga o nó ao índice do array

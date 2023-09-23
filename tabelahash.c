@@ -9,12 +9,12 @@
 struct StTabela
 {
     Lista *Elemento;
-    unsigned int Tamanho;
+    int Tamanho;
 };
 
 typedef struct StTabela Tabela;
 
-DataStructure HashCreate(unsigned int Tamanho)
+DataStructure HashCreate(int Tamanho)
 {
     Tabela *HTable = malloc(1, sizeof(Tabela));
     HTable->Elemento = calloc(Tamanho, sizeof(Lista));
@@ -30,7 +30,7 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
         /*Chave inválida*/
         return NULL;
     }
-    unsigned int Indice = HashingDobra(Chave, Table->Tamanho);
+    int Indice = HashingDobra(Chave, Table->Tamanho);
     TIPOCHAVE *Elemento = malloc(sizeof(TIPOCHAVE));
     *Elemento = Chave;
     if (Table->Elemento[Indice] != NULL)
@@ -46,10 +46,10 @@ Node HashInsert(DataStructure HTable, TIPOCHAVE Chave)
     }
 }
 
-unsigned int HashingDobra(TIPOCHAVE Chave, unsigned int Tamanho)
+int HashingDobra(TIPOCHAVE Chave, int
 {
     /*Descobre quantos dígitos tem o tamanho*/
-    unsigned int tam = Tamanho;
+    int tam = Tamanho;
     int digitos;
     for (digitos = 0; tam > 0; digitos++)
     {
@@ -75,7 +75,7 @@ unsigned int HashingDobra(TIPOCHAVE Chave, unsigned int Tamanho)
         num[1] = aux;
         sprintf(string, "%s%s", num, string + 4);
     }
-    unsigned int Hash = atoi(string);
+    int Hash = atoi(string);
     return Hash % Tamanho;
 }
 
@@ -116,7 +116,7 @@ void HashRemove(DataStructure HTable, TIPOCHAVE Chave)
                 removeLst(L, Del);
                 return;
             }
-            Del = getNextLst(Afetados, Del);
+            Del = getNextLst(L, Del);
         }
     }
     /*Elemento não existe*/
@@ -141,18 +141,33 @@ void HashFree(DataStructure *HTable)
 void PrintHash(DataStructure HTable)
 {
     Tabela *Table = HTable;
-    
+    ARQDOT = CriaLog(FNARQDOT, "dot");
+    InicializaDot(ARQDOT);
+    CriaArray(ARQDOT, "Tabela", Table->Tamanho);
+
     for (int i = 0; i < Table->Tamanho; i++)
     {
         Lista L = Table->Elemento[i];
         if (L != NULL)
         {
-            Iterador I = createIterador(L, false);
-            while (!isIteratorEmpty(L, I))
+            TIPOCHAVE *ElementoAnterior;
+            Posic P = getFirstLst(L);
+            if (P != NULL)
             {
-                TIPOCHAVE *Elemento = getIteratorNext(L, I);
+                /*Obtém o primeiro elemento da lista se ele existir*/
+                ElementoAnterior = getLst(P);
+                LigaArray(ARQDOT,"Tabela",i,*ElementoAnterior)
+                P = getNextLst(L, P);
             }
-            killIterator(I);
+            while (P != NULL)
+            {
+                /*Obtém os próximos elementos da lista*/
+                TIPOCHAVE *Elemento = getLst(P);
+                LigaNo(ARQDOT,*ElementoAnterior,*Elemento);
+                ElementoAnterior = Elemento;
+                P = getNextLst(L, P);
+            }
         }
     }
+    TerminaDot(ARQDOT);
 }
