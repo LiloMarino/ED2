@@ -23,6 +23,12 @@ DataStructure HashCreate(int tamanho);
 Node HashInsert(DataStructure HTable, TIPOCHAVE Chave);
 
 
+/**
+ * @brief Faz o hashing para determinada chave
+ * @param HTable Ponteiro para a tabela hash
+ * @param Chave Chave a ser inserida
+ * @return Retorna o índice do nó
+ */
 int HashingDobra(DataStructure HTable, TIPOCHAVE Chave);
 
 /**
@@ -33,6 +39,11 @@ int HashingDobra(DataStructure HTable, TIPOCHAVE Chave);
  */
 Node HashGetNode(DataStructure HTable, TIPOCHAVE Chave);
 
+/**
+ * @brief Dado um nó retorna sua chave
+ * @param N Nó da tabela hash 
+ * @return Retorna a chave respectiva ao nó
+ */
 TIPOCHAVE HashGetChave(Node N);
 
 /**
