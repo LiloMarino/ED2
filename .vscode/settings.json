@@ -5,14 +5,14 @@
         "clang-analyzer-security.insecureAPI.strcpy"
     ],
     "files.associations": {
+        "*.c": "c",
+        "*.txt": "plaintext",
         "*.json.liquid": "json",
         "*.yaml.liquid": "yaml",
         "*.md.liquid": "markdown",
         "*.js.liquid": "liquid-javascript",
         "*.css.liquid": "liquid-css",
         "*.scss.liquid": "liquid-scss",
-        "*.c": "c",
-        "*.txt": "plaintext",
         "avltree.h": "c",
         "string.h": "c",
         "geradores.h": "c",
@@ -26,7 +26,9 @@
         "tabelahash.h": "c",
         "string": "c",
         "stdio.h": "c",
-        "utilities.h": "c"
+        "utilities.h": "c",
+        "array": "c",
+        "string_view": "c"
     },
     "makefile.launchConfigurations": [
         {
