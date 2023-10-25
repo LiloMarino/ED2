@@ -2,7 +2,7 @@
 PROJETO = ted
 
 # Lista de arquivos fontes
-FONTES = main.c
+FONTES = main.c grafos.c Bibliotecas/geradores.c Bibliotecas/utilities.c
 
 # Lista de arquivos de cabeçalho correspondentes aos arquivos fontes
 HEADERS = $(filter-out main.h, $(FONTES:.c=.h))

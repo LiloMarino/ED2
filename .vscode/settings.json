@@ -28,7 +28,8 @@
         "stdio.h": "c",
         "utilities.h": "c",
         "array": "c",
-        "string_view": "c"
+        "string_view": "c",
+        "grafos.h": "c"
     },
     "makefile.launchConfigurations": [
         {
