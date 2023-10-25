@@ -29,7 +29,8 @@
         "utilities.h": "c",
         "array": "c",
         "string_view": "c",
-        "grafos.h": "c"
+        "grafos.h": "c",
+        "dotgrafos.h": "c"
     },
     "makefile.launchConfigurations": [
         {

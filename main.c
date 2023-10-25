@@ -1,5 +1,5 @@
-#include "tabelahash.h"
-#include "dot.h"
+#include "grafos.h"
+#include "dotgrafos.h"
 #include "Bibliotecas/geradores.h"
 #include "Bibliotecas/utilities.h"
 
@@ -9,19 +9,14 @@ char *FNARQDOT;
 int main()
 {
     /*Inicia as operações da tabela hash e registra em vários .dot para a visualização separada*/
-    FNARQDOT = "../logs/TesteHash";
-    DataStructure HTable = HashCreate(30);
-    InicializaRand();
-    for (int i = 0; i < 100; i++)
-    {
-        int n = GerarNumeroInt(0,1000000);
-        HashInsert(HTable,n);
-        if (Chance(0.1))
-        {
-            HashRemove(HTable,n);
-        }
-    }
-    PrintHash(HTable);
-    HashFree(&HTable);
+    FNARQDOT = "../logs/Grafo";
+    DataStructure Grafo = criarGrafo();
+    adicionarVertice(Grafo, 0, 1);
+    adicionarVertice(Grafo, 0, 2);
+    adicionarVertice(Grafo, 1, 3);
+    adicionarVertice(Grafo, 1, 4);
+    adicionarVertice(Grafo, 2, 5);
+    buscarGrafoLargura(Grafo);
+    freeGrafo(Grafo);
     CriaPngDot(FNARQDOT);
 }

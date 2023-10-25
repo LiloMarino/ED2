@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "grafos.h"
+#include "dotgrafos.h"
 #include "Bibliotecas/listadupla.h"
+#include "Bibliotecas/geradores.h"
 
 struct StVertice
 {
@@ -108,6 +110,8 @@ void buscarGrafoLargura(DataStructure grafo)
 {
     Grafo *G = grafo;
     Vertice *V = G->vertices[0];
+    ARQDOT = CriaLog(FNARQDOT, "dot");
+    InicializaDot(ARQDOT);
 
     Verifica vrfy[G->numVertices];
     for (int i = 0; i < G->numVertices; i++)
@@ -122,7 +126,7 @@ void buscarGrafoLargura(DataStructure grafo)
     while (!isEmptyLst(Stack))
     {
         V = popLst(Stack);
-        printf("%d\n", V->valor);
+        CriaVertice(ARQDOT,V->valor,"green");
         /*Insere os Arestas conectadas para o Stack de verificação*/
         for (int i = 0; i < V->numArestas; i++)
         {
@@ -139,9 +143,11 @@ void buscarGrafoLargura(DataStructure grafo)
                 vrfy[j].verificado = true;
                 insertLst(Stack, V->vertices[i]);
             }
-            printf("%d -> %d\n", V->valor, V->vertices[i]->valor);
+            CriaAresta(ARQDOT,V->valor,V->vertices[i]->valor);
         }
+        CopiaDot(ARQDOT,FNARQDOT);
     }
+    TerminaDot(ARQDOT);
     killLst(Stack);
 }
 

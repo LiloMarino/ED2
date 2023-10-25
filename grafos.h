@@ -5,6 +5,7 @@
 
 typedef void *DataStructure;
 typedef void *Node;
+typedef void (*Print)(void *);
 
 DataStructure criarGrafo();
 
