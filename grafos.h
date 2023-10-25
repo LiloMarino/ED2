@@ -16,4 +16,6 @@ void freeGrafo(DataStructure grafo);
 
 void buscarGrafoLargura(DataStructure grafo);
 
+void printGrafo(DataStructure grafo);
+
 #endif
