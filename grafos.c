@@ -48,6 +48,32 @@ bool existsVerticeIn(DataStructure grafo, int vertice)
     return false;
 }
 
+Node searchVertice(DataStructure grafo, int vertice)
+{
+    Grafo *G = grafo;
+    for (int i = 0; i < G->numVertices; i++)
+    {
+        if (G->vertices[i]->valor == vertice)
+        {
+            return G->vertices[i];
+        }
+    }
+    return NULL;
+}
+
+int searchVerticeID(DataStructure grafo, int vertice)
+{
+    Grafo *G = grafo;
+    for (int i = 0; i < G->numVertices; i++)
+    {
+        if (G->vertices[i]->valor == vertice)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
 void adicionarVertice(DataStructure grafo, int src, int dest)
 {
     Grafo *G = grafo;
@@ -129,17 +155,10 @@ void buscarGrafoLargura(DataStructure grafo)
         /*Insere os Arestas conectadas para o Stack de verificação*/
         for (int i = 0; i < V->numArestas; i++)
         {
-            int j;
-            for (j = 0; j < G->numVertices; j++)
+            int index = searchVerticeID(G,V->vertices[i]->valor);
+            if (!vrfy[index].verificado)
             {
-                if (vrfy[j].valor == V->vertices[i]->valor)
-                {
-                    break;
-                }
-            }
-            if (!vrfy[j].verificado)
-            {
-                vrfy[j].verificado = true;
+                vrfy[index].verificado = true;
                 insertLst(Stack, V->vertices[i]);
             }
         }
@@ -186,8 +205,51 @@ void printGrafo(DataStructure grafo)
                 vrfy[j].verificado = true;
                 insertLst(Stack, V->vertices[i]);
             }
-            CriaAresta(ARQDOT,V->valor,V->vertices[i]->valor);
+            CriaAresta(ARQDOT,V->valor,V->vertices[i]->valor,0);
         }
+    }
+    TerminaDot(ARQDOT);
+    killLst(Stack);
+}
+
+void executarDijkstra(DataStructure grafo, int inicio)
+{
+    if (!existsVerticeIn(grafo,inicio))
+    {
+        printf("Não exite o vértice %d no grafo\n", inicio);
+        return;
+    }
+
+    Grafo *G = grafo;
+    Vertice *V = searchVertice(G,inicio);
+    ARQDOT = CopiaDot(FNARQDOT);
+
+    Verifica vrfy[G->numVertices];
+    for (int i = 0; i < G->numVertices; i++)
+    {
+        vrfy[i].valor = G->vertices[i]->valor;
+        vrfy[i].verificado = false;
+    }
+    vrfy[searchVerticeID(G,V->valor)].verificado = true;
+
+    Lista Stack = createLst(-1);
+    insertLst(Stack, V);
+    while (!isEmptyLst(Stack))
+    {
+        V = popLst(Stack);
+        CriaVertice(ARQDOT,V->valor,"green");
+        /*Insere os Arestas conectadas para o Stack de verificação*/
+        for (int i = 0; i < V->numArestas; i++)
+        {
+            int index = searchVerticeID(G,V->vertices[i]->valor);
+            if (!vrfy[index].verificado)
+            {
+                vrfy[index].verificado = true;
+                insertLst(Stack, V->vertices[i]);
+            }
+        }
+        TerminaDot(ARQDOT);
+        ARQDOT = CopiaDot(FNARQDOT);
     }
     TerminaDot(ARQDOT);
     killLst(Stack);

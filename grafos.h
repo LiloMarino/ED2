@@ -21,6 +21,22 @@ DataStructure criarGrafo();
 bool existsVerticeIn(DataStructure grafo, int vertice);
 
 /**
+ * @brief Procura o vértice
+ * @param grafo Ponteiro para o grafo
+ * @param vertice Número do vertice 
+ * @return Retorna o vértice
+ */
+Node searchVertice(DataStructure grafo, int vertice);
+
+/**
+ * @brief Procura o vértice
+ * @param grafo Ponteiro para o grafo
+ * @param vertice Número do vertice 
+ * @return Retorna o índice do vértice
+ */
+int searchVerticeID(DataStructure grafo, int vertice);
+
+/**
  * @brief Adiciona um vértice ao grafo
  * @param grafo Ponteiro para o grafo
  * @param src Número do vértice de origem 
@@ -45,5 +61,7 @@ void buscarGrafoLargura(DataStructure grafo);
  * @param grafo Ponteiro para o grafo
  */
 void printGrafo(DataStructure grafo);
+
+void executarDijkstra(DataStructure grafo, int inicio);
 
 #endif
