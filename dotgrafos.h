@@ -35,8 +35,9 @@ void CriaVertice(ArqDot fdot, int vertice, const char *fillcolor);
  * @param fdot Ponteiro para o arquivo .dot
  * @param src  Número do vértice de origem
  * @param dest Número do vértice de destino
+ * @param peso Peso da aresta
  */
-void CriaAresta(ArqDot fdot, int src, int dest);
+void CriaAresta(ArqDot fdot, int src, int dest, int peso);
 
 /**
  * @brief Copia o .dot porém não fecha o arquivo

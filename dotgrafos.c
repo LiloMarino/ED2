@@ -28,9 +28,16 @@ void CriaVertice(ArqDot fdot, int vertice, const char *fillcolor)
     fflush(fdot);
 }
 
-void CriaAresta(ArqDot fdot, int src, int dest)
+void CriaAresta(ArqDot fdot, int src, int dest, int peso)
 {
-    fprintf(fdot, "\t%d -> %d;\n", src, dest);
+    if (peso > 0)
+    {
+        fprintf(fdot, "\t%d -> %d [label=\" %d\"];\n", src, dest, peso);
+    }
+    else
+    {
+        fprintf(fdot, "\t%d -> %d;\n", src, dest);
+    }
     fflush(fdot);
 }
 
@@ -38,8 +45,8 @@ ArqDot CopiaDot(char *NomeArqDot)
 {
     FILE *fdot;
     char *fn = CriaLogNome(NomeArqDot, "dot", &fdot);
-    fn = realloc(fn,(strlen(fn) + 5)*sizeof(char));
-    strcat(fn,".dot");
+    fn = realloc(fn, (strlen(fn) + 5) * sizeof(char));
+    strcat(fn, ".dot");
     FILE *faux = fopen(fn, "r");
     if (!faux)
     {
