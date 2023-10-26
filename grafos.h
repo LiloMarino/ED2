@@ -62,6 +62,11 @@ void buscarGrafoLargura(DataStructure grafo);
  */
 void printGrafo(DataStructure grafo);
 
+/**
+ * @brief Executa o algoritmo de Dijkstra
+ * @param grafo Ponteiro para o grafo
+ * @param inicio Número do vértice de início
+ */
 void executarDijkstra(DataStructure grafo, int inicio);
 
 #endif
