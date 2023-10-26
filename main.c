@@ -16,6 +16,7 @@ int main()
     adicionarVertice(Grafo, 1, 3);
     adicionarVertice(Grafo, 1, 4);
     adicionarVertice(Grafo, 2, 5);
+    printGrafo(Grafo);
     buscarGrafoLargura(Grafo);
     freeGrafo(Grafo);
     CriaPngDot(FNARQDOT);

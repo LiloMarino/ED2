@@ -5,7 +5,6 @@
 
 typedef void *DataStructure;
 typedef void *Node;
-typedef void (*Print)(void *);
 
 DataStructure criarGrafo();
 
@@ -16,5 +15,7 @@ void adicionarVertice(DataStructure grafo, int src, int dest);
 void freeGrafo(DataStructure grafo);
 
 void buscarGrafoLargura(DataStructure grafo);
+
+void printGrafo(DataStructure grafo);
 
 #endif

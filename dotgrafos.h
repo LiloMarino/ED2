@@ -40,10 +40,10 @@ void CriaAresta(ArqDot fdot, int src, int dest);
 
 /**
  * @brief Copia o .dot porém não fecha o arquivo
- * @param fdot Ponteiro para o arquivo .dot
  * @param NomeArqDot Nome do arquivo .dot 
+ * @return Ponteiro para o arquivo .dot
  */
-void CopiaDot(ArqDot fdot, const char *NomeArqDot);
+ArqDot CopiaDot(char *NomeArqDot);
 
 /**
  * @brief Cria o png a partir do .dot

@@ -110,8 +110,7 @@ void buscarGrafoLargura(DataStructure grafo)
 {
     Grafo *G = grafo;
     Vertice *V = G->vertices[0];
-    ARQDOT = CriaLog(FNARQDOT, "dot");
-    InicializaDot(ARQDOT);
+    ARQDOT = CopiaDot(FNARQDOT);
 
     Verifica vrfy[G->numVertices];
     for (int i = 0; i < G->numVertices; i++)
@@ -143,12 +142,53 @@ void buscarGrafoLargura(DataStructure grafo)
                 vrfy[j].verificado = true;
                 insertLst(Stack, V->vertices[i]);
             }
-            CriaAresta(ARQDOT,V->valor,V->vertices[i]->valor);
         }
-        CopiaDot(ARQDOT,FNARQDOT);
+        TerminaDot(ARQDOT);
+        ARQDOT = CopiaDot(FNARQDOT);
     }
     TerminaDot(ARQDOT);
     killLst(Stack);
 }
 
-void printVertice(Node vertice);
+void printGrafo(DataStructure grafo)
+{
+    Grafo *G = grafo;
+    Vertice *V = G->vertices[0];
+    ARQDOT = CriaLog(FNARQDOT, "dot");
+    InicializaDot(ARQDOT);
+
+    Verifica vrfy[G->numVertices];
+    for (int i = 0; i < G->numVertices; i++)
+    {
+        vrfy[i].valor = G->vertices[i]->valor;
+        vrfy[i].verificado = false;
+    }
+    vrfy[0].verificado = true;
+
+    Lista Stack = createLst(-1);
+    insertLst(Stack, V);
+    while (!isEmptyLst(Stack))
+    {
+        V = popLst(Stack);
+        /*Insere os Arestas conectadas para o Stack de verificação*/
+        for (int i = 0; i < V->numArestas; i++)
+        {
+            int j;
+            for (j = 0; j < G->numVertices; j++)
+            {
+                if (vrfy[j].valor == V->vertices[i]->valor)
+                {
+                    break;
+                }
+            }
+            if (!vrfy[j].verificado)
+            {
+                vrfy[j].verificado = true;
+                insertLst(Stack, V->vertices[i]);
+            }
+            CriaAresta(ARQDOT,V->valor,V->vertices[i]->valor);
+        }
+    }
+    TerminaDot(ARQDOT);
+    killLst(Stack);
+}

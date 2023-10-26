@@ -25,6 +25,7 @@ void TerminaDot(ArqDot fdot)
 void CriaVertice(ArqDot fdot, int vertice, const char *fillcolor)
 {
     fprintf(fdot, "\t%d [label=\"%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n", vertice, vertice, fillcolor);
+    fflush(fdot);
 }
 
 void CriaAresta(ArqDot fdot, int src, int dest)
@@ -33,11 +34,12 @@ void CriaAresta(ArqDot fdot, int src, int dest)
     fflush(fdot);
 }
 
-void CopiaDot(ArqDot fdot, const char *NomeArqDot)
+ArqDot CopiaDot(char *NomeArqDot)
 {
-    char fn[strlen(NomeArqDot) + 5];
-    strcpy(fn, NomeArqDot);
-    strcat(fn, ".dot");
+    FILE *fdot;
+    char *fn = CriaLogNome(NomeArqDot, "dot", &fdot);
+    fn = realloc(fn,(strlen(fn) + 5)*sizeof(char));
+    strcat(fn,".dot");
     FILE *faux = fopen(fn, "r");
     if (!faux)
     {
@@ -56,6 +58,8 @@ void CopiaDot(ArqDot fdot, const char *NomeArqDot)
     }
     fflush(fdot);
     fclose(faux);
+    free(fn);
+    return fdot;
 }
 
 void CriaPngDot(const char nome[])
