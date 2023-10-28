@@ -53,8 +53,9 @@ void freeGrafo(DataStructure grafo);
 /**
  * @brief Realiza busca em largura do grafo e marca com verde os nós percorridos
  * @param grafo Ponteiro para o grafo
+ * @param inicio Número do vértice de inicio
  */
-void buscarGrafoLargura(DataStructure grafo);
+void buscarGrafoLargura(DataStructure grafo, int inicio);
 
 /**
  * @brief Printa o grafo
