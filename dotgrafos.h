@@ -47,9 +47,16 @@ void CriaAresta(ArqDot fdot, int src, int dest, int peso);
 ArqDot CopiaDot(char *NomeArqDot);
 
 /**
- * @brief Cria o png a partir do .dot
+ * @brief Cria um gif a partir dos .dot
  * @param nome Nome do arquivo .dot
+ * @note É necessário para funcionar corretamente ter instalado o graphviz e o imagemagick
+ * Comandos de instalação:
+ * sudo apt install graphviz
+ * sudo apt install imagemagick
+ * Para verificar se foi instalado corretamente:
+ * dot -V
+ * convert --version
  */
-void CriaPngDot(const char nome[]);
+void CriaGifDot(const char nome[]);
 
 #endif
