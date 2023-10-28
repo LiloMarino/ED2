@@ -80,10 +80,12 @@ void CriaPngDot(const char nome[])
 
     // Verifica se o arquivo já existe
     FILE *vrfy = fopen(nomearq, "r");
+    char command[2 * strlen(nomearq) + 30];
+    
+    /* Realiza um loop criando uma imagem para cada .dot */
     while (vrfy != NULL)
     {
         fclose(vrfy);
-        char command[2 * strlen(nomearq) + 30];
         sprintf(command, "dot -Tpng %s -o %s", nomearq, nomepng);
 #if MOSTRAR_TEMPO != 0
         printf("\nTempo para gerar o %s\n", nomepng);
@@ -98,4 +100,8 @@ void CriaPngDot(const char nome[])
         sprintf(nomepng, "%s-%d.png", nome, n);
         vrfy = fopen(nomearq, "r");
     }
+
+    /* Cria um gif com as imagens geradas */
+    sprintf(command, "convert -delay 100 -loop 0 ../logs/*.png  %s.gif", nome);
+    system(command);
 }
