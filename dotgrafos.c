@@ -5,6 +5,7 @@
 #include "Bibliotecas/geradores.h"
 #include "Bibliotecas/efficiency.h"
 #include "Bibliotecas/learquivo.h"
+#include "Bibliotecas/path.h"
 
 void InicializaDot(ArqDot fdot)
 {
@@ -69,14 +70,16 @@ ArqDot CopiaDot(char *NomeArqDot)
     return fdot;
 }
 
-void CriaPngDot(const char nome[])
+void CriaGifDot(const char nome[])
 {
     char nomearq[strlen(nome) + 6];
     char nomepng[strlen(nome) + 6];
+    char *path = getPath(nome);
 
     int n = 1;
     sprintf(nomearq, "%s.dot", nome);
     sprintf(nomepng, "%s.png", nome);
+    
 
     // Verifica se o arquivo já existe
     FILE *vrfy = fopen(nomearq, "r");
@@ -102,6 +105,7 @@ void CriaPngDot(const char nome[])
     }
 
     /* Cria um gif com as imagens geradas */
-    sprintf(command, "convert -delay 50 -loop 0 ../logs/*.png  %s.gif", nome);
+    sprintf(command, "convert -delay 50 -loop 0 %s/*.png  %s.gif", path, nome);
     system(command);
+    free(path);
 }
