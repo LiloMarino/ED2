@@ -31,7 +31,8 @@
         "string_view": "c",
         "grafos.h": "c",
         "dotgrafos.h": "c",
-        "path.h": "c"
+        "path.h": "c",
+        "heap.h": "c"
     },
     "makefile.launchConfigurations": [
         {
