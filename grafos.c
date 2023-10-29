@@ -6,11 +6,18 @@
 #include "Bibliotecas/listadupla.h"
 #include "Bibliotecas/geradores.h"
 
+
 struct StVertice
 {
     int valor;
     int numArestas;
-    struct StVertice **vertices;
+    struct StAresta **arestas;
+};
+
+struct StAresta
+{
+    int peso;
+    struct StVertice *vertice;
 };
 
 struct StGrafo
@@ -26,6 +33,7 @@ struct StVerifica
 };
 
 typedef struct StVertice Vertice;
+typedef struct StAresta Aresta;
 typedef struct StGrafo Grafo;
 typedef struct StVerifica Verifica;
 
@@ -74,7 +82,7 @@ int searchVerticeID(DataStructure grafo, int vertice)
     return -1;
 }
 
-void adicionarVertice(DataStructure grafo, int src, int dest)
+void adicionarVertice(DataStructure grafo, int src, int dest, int peso)
 {
     Grafo *G = grafo;
     bool foundSrc = existsVerticeIn(G, src);
@@ -113,11 +121,11 @@ void adicionarVertice(DataStructure grafo, int src, int dest)
         }
     }
     S->numArestas++;
-    S->vertices = realloc(S->vertices, S->numArestas * sizeof(Vertice *));
-    S->vertices[S->numArestas - 1] = D;
+    S->arestas = realloc(S->arestas, S->numArestas * sizeof(Aresta));
+    S->arestas[S->numArestas - 1]->vertice = D;
     D->numArestas++;
-    D->vertices = realloc(D->vertices, D->numArestas * sizeof(Vertice *));
-    D->vertices[D->numArestas - 1] = S;
+    D->arestas = realloc(D->arestas, D->numArestas * sizeof(Aresta));
+    D->arestas[D->numArestas - 1]->vertice = S;
 }
 
 void freeGrafo(DataStructure grafo)
@@ -125,7 +133,7 @@ void freeGrafo(DataStructure grafo)
     Grafo *G = grafo;
     for (int i = 0; i < G->numVertices; i++)
     {
-        free(G->vertices[i]->vertices);
+        free(G->vertices[i]->arestas);
         free(G->vertices[i]);
     }
     free(G->vertices);
@@ -134,14 +142,14 @@ void freeGrafo(DataStructure grafo)
 
 void buscarGrafoLargura(DataStructure grafo, int inicio)
 {
-    if (!existsVerticeIn(grafo,inicio))
+    if (!existsVerticeIn(grafo, inicio))
     {
         printf("Não exite o vértice %d no grafo\n", inicio);
         return;
     }
 
     Grafo *G = grafo;
-    Vertice *V = searchVertice(G,inicio);
+    Vertice *V = searchVertice(G, inicio);
     ARQDOT = CopiaDot(FNARQDOT);
 
     Verifica vrfy[G->numVertices];
@@ -150,22 +158,22 @@ void buscarGrafoLargura(DataStructure grafo, int inicio)
         vrfy[i].valor = G->vertices[i]->valor;
         vrfy[i].verificado = false;
     }
-    vrfy[searchVerticeID(G,V->valor)].verificado = true;
+    vrfy[searchVerticeID(G, V->valor)].verificado = true;
 
     Lista Stack = createLst(-1);
     insertLst(Stack, V);
     while (!isEmptyLst(Stack))
     {
         V = popLst(Stack);
-        CriaVertice(ARQDOT,V->valor,"green");
+        CriaVertice(ARQDOT, V->valor, "green");
         /*Insere os Arestas conectadas para o Stack de verificação*/
         for (int i = 0; i < V->numArestas; i++)
         {
-            int index = searchVerticeID(G,V->vertices[i]->valor);
+            int index = searchVerticeID(G, V->arestas[i]->vertice->valor);
             if (!vrfy[index].verificado)
             {
                 vrfy[index].verificado = true;
-                insertLst(Stack, V->vertices[i]);
+                insertLst(Stack, V->arestas[i]->vertice);
             }
         }
         TerminaDot(ARQDOT);
@@ -201,7 +209,7 @@ void printGrafo(DataStructure grafo)
             int j;
             for (j = 0; j < G->numVertices; j++)
             {
-                if (vrfy[j].valor == V->vertices[i]->valor)
+                if (vrfy[j].valor == V->arestas[i]->vertice->valor)
                 {
                     break;
                 }
@@ -209,56 +217,83 @@ void printGrafo(DataStructure grafo)
             if (!vrfy[j].verificado)
             {
                 vrfy[j].verificado = true;
-                insertLst(Stack, V->vertices[i]);
+                insertLst(Stack, V->arestas[i]->vertice);
             }
-            CriaAresta(ARQDOT,V->valor,V->vertices[i]->valor,0);
+            CriaAresta(ARQDOT, V->valor, V->arestas[i]->vertice->valor, V->arestas[i]->peso);
         }
     }
     TerminaDot(ARQDOT);
     killLst(Stack);
 }
 
+void executarDijkstra(DataStructure grafo, int inicio)
+{
+    /* Verifica se o vértice existe */
+    Grafo *G = grafo;
+    if (!existsVerticeIn(G, inicio))
+    {
+        printf("Não exite o vértice %d no grafo\n", inicio);
+        return;
+    }
 
-/* INCOMPLETO DIJKSTRA */
-// void executarDijkstra(DataStructure grafo, int inicio)
-// {
-//     if (!existsVerticeIn(grafo,inicio))
-//     {
-//         printf("Não exite o vértice %d no grafo\n", inicio);
-//         return;
-//     }
+    /* Encontra o vértice inicial */
+    Vertice *V = searchVertice(G, inicio);
 
-//     Grafo *G = grafo;
-//     Vertice *V = searchVertice(G,inicio);
-//     ARQDOT = CopiaDot(FNARQDOT);
+    /* Inicializa o vetor que indica se os nós estão "abertos" ou não*/
+    Verifica vrfy[G->numVertices];
+    for (int i = 0; i < G->numVertices; i++)
+    {
+        vrfy[i].valor = G->vertices[i]->valor;
+        vrfy[i].verificado = false;
+    }
+    vrfy[searchVerticeID(G, V->valor)].verificado = true;
 
-//     Verifica vrfy[G->numVertices];
-//     for (int i = 0; i < G->numVertices; i++)
-//     {
-//         vrfy[i].valor = G->vertices[i]->valor;
-//         vrfy[i].verificado = false;
-//     }
-//     vrfy[searchVerticeID(G,V->valor)].verificado = true;
+    inicializaD()
+}
 
-//     Lista Stack = createLst(-1);
-//     insertLst(Stack, V);
-//     while (!isEmptyLst(Stack))
-//     {
-//         V = popLst(Stack);
-//         CriaVertice(ARQDOT,V->valor,"green");
-//         /*Insere os Arestas conectadas para o Stack de verificação*/
-//         for (int i = 0; i < V->numArestas; i++)
-//         {
-//             int index = searchVerticeID(G,V->vertices[i]->valor);
-//             if (!vrfy[index].verificado)
-//             {
-//                 vrfy[index].verificado = true;
-//                 insertLst(Stack, V->vertices[i]);
-//             }
-//         }
-//         TerminaDot(ARQDOT);
-//         ARQDOT = CopiaDot(FNARQDOT);
-//     }
-//     TerminaDot(ARQDOT);
-//     killLst(Stack);
-// }
+void inicializaD(DataStructure grafo, int *d, int *p, int indexInicial)
+{
+    int v;
+    for (v = 0; v < g->vertices; v++)
+    {
+        d[v] = INT_MAX / 2;
+        p[v] = -1;
+    }
+    d[indexInicial] = 0;
+}
+
+void relaxa(GRAFO *g, int *d, int *p, int u, int v)
+{
+    ADJACENCIA *ad = g->adj[u].cab;
+    while (ad && ad->vertice != v)
+        ad = ad->prox;
+    if (ad)
+    {
+        if (d[v] > d[u] + ad->peso)
+        {
+            d[v] = d[u] + ad->peso;
+            p[v] = u;
+        }
+    }
+}
+
+int *dijkstra(GRAFO *g, int s) {
+
+int p[g-›vertices];
+bool aberto [g-›vertices];
+InicializaD (g, d,p, s);
+int i;
+for (i=0; i‹g-›vertices; i++)
+aberto [i] = true;
+while (existeAberto (g, aberto)) {
+int u = menorDist (g, aberto,d) ;
+aberto [u] = false;
+ADJACENCIA *ad = g->adj [u].cab;
+while (ad) {
+relaxa (g,d,p,u, ad-›vertice);
+ad = ad->prox;
+}
+}
+}
+return (d);
+}

@@ -25,7 +25,7 @@ void TerminaDot(ArqDot fdot)
 
 void CriaVertice(ArqDot fdot, int vertice, const char *fillcolor)
 {
-    fprintf(fdot, "\t%d [label=\"%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n", vertice, vertice, fillcolor);
+    fprintf(fdot, "\tv%d [label=\"v%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n", vertice, vertice, fillcolor);
     fflush(fdot);
 }
 
@@ -33,11 +33,11 @@ void CriaAresta(ArqDot fdot, int src, int dest, int peso)
 {
     if (peso > 0)
     {
-        fprintf(fdot, "\t%d -> %d [label=\" %d\"];\n", src, dest, peso);
+        fprintf(fdot, "\tv%d -> v%d [label=\" %d\"];\n", src, dest, peso);
     }
     else
     {
-        fprintf(fdot, "\t%d -> %d;\n", src, dest);
+        fprintf(fdot, "\tv%d -> v%d;\n", src, dest);
     }
     fflush(fdot);
 }

@@ -41,8 +41,10 @@ int searchVerticeID(DataStructure grafo, int vertice);
  * @param grafo Ponteiro para o grafo
  * @param src Número do vértice de origem 
  * @param dest Número do vértice de destino 
+ * @param peso Peso do caminho entre o vértice de origem e o vértice de destino
+ * @note Se o peso for 0 então é considerado que não existe peso entre os nós do grafo
  */
-void adicionarVertice(DataStructure grafo, int src, int dest);
+void adicionarVertice(DataStructure grafo, int src, int dest, int peso);
 
 /**
  * @brief Realiza o free do grafo
