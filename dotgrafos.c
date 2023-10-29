@@ -7,9 +7,16 @@
 #include "Bibliotecas/learquivo.h"
 #include "Bibliotecas/path.h"
 
-void InicializaDot(ArqDot fdot)
+void InicializaDot(ArqDot fdot, bool direcionado)
 {
-    fprintf(fdot, "digraph Tree {\n");
+    if (direcionado)
+    {
+        fprintf(fdot, "digraph Tree {\n");
+    }
+    else
+    {
+        fprintf(fdot, "graph Tree {\n");
+    }
     fprintf(fdot, "\tnode [shape=circle];\n");
     fflush(fdot);
 }
@@ -29,15 +36,29 @@ void CriaVertice(ArqDot fdot, int vertice, const char *fillcolor)
     fflush(fdot);
 }
 
-void CriaAresta(ArqDot fdot, int src, int dest, int peso)
+void CriaAresta(ArqDot fdot, int src, int dest, int peso, bool direcionado)
 {
-    if (peso > 0)
+    if (direcionado)
     {
-        fprintf(fdot, "\tv%d -> v%d [label=\" %d\"];\n", src, dest, peso);
+        if (peso > 0)
+        {
+            fprintf(fdot, "\tv%d -> v%d [label=\" %d\"];\n", src, dest, peso);
+        }
+        else
+        {
+            fprintf(fdot, "\tv%d -> v%d;\n", src, dest);
+        }
     }
     else
     {
-        fprintf(fdot, "\tv%d -> v%d;\n", src, dest);
+        if (peso > 0)
+        {
+            fprintf(fdot, "\tv%d -- v%d [label=\" %d\"];\n", src, dest, peso);
+        }
+        else
+        {
+            fprintf(fdot, "\tv%d -- v%d;\n", src, dest);
+        }
     }
     fflush(fdot);
 }
@@ -79,12 +100,11 @@ void CriaGifDot(const char nome[])
     int n = 1;
     sprintf(nomearq, "%s.dot", nome);
     sprintf(nomepng, "%s.png", nome);
-    
 
     // Verifica se o arquivo já existe
     FILE *vrfy = fopen(nomearq, "r");
     char command[2 * strlen(nomearq) + 30];
-    
+
     /* Realiza um loop criando uma imagem para cada .dot */
     while (vrfy != NULL)
     {

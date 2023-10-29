@@ -2,6 +2,7 @@
 #define DOT_GRAFOS_H
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #define MOSTRAR_TEMPO 0 /* 1 = True, 0 = False, Define se mostra no terminal o tempo de criação dos arquivos */
 
@@ -13,8 +14,9 @@ extern char* FNARQDOT;
 /**
  * @brief Inicializa o arquivo .dot já aberto
  * @param fdot Ponteiro para o arquivo .dot
+ * @param direcionado Indica se o grafo é direcionado ou não
  */
-void InicializaDot(ArqDot fdot);
+void InicializaDot(ArqDot fdot, bool direcionado);
 
 /**
  * @brief Termina e fecha o arquivo .dot
@@ -36,8 +38,9 @@ void CriaVertice(ArqDot fdot, int vertice, const char *fillcolor);
  * @param src  Número do vértice de origem
  * @param dest Número do vértice de destino
  * @param peso Peso da aresta
+ * @param direcionado Indica se o grafo é direcionado ou não
  */
-void CriaAresta(ArqDot fdot, int src, int dest, int peso);
+void CriaAresta(ArqDot fdot, int src, int dest, int peso, bool direcionado);
 
 /**
  * @brief Copia o .dot porém não fecha o arquivo

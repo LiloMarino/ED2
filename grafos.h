@@ -8,9 +8,10 @@ typedef void *Node;
 
 /**
  * @brief Cria o gráfico
+ * @param direcionado Indica se o grafo é direcionado ou não
  * @return Retorna o ponteiro para o grafo
  */
-DataStructure criarGrafo();
+DataStructure criarGrafo(bool direcionado);
 
 /**
  * @brief Verifica se existe o vértice no grafo
