@@ -4,7 +4,7 @@
 #include <limits.h>
 #include "grafos.h"
 #include "dotgrafos.h"
-#include "heap.h"
+#include "Bibliotecas/efficiency.h"
 #include "Bibliotecas/listadupla.h"
 #include "Bibliotecas/geradores.h"
 
@@ -270,18 +270,17 @@ void executarDijkstra(DataStructure grafo, int inicio)
             dist[i] = INT_MAX / 2;
         }
         dist[indexInicial] = 0;
-
         /* Cria o heap */
-        Heap fila = criarHeap(G->numVertices);
+        Lista fila = createLst(-1);
         Distancia *atual = malloc(sizeof(Distancia));
         atual->index = indexInicial;
         atual->distancia = 0;
-        heapPush(fila, atual, 0);
+        insertLst(fila, atual);
 
         /* Inicia o algoritmo */
-        while (!isEmptyHeap(fila))
+        while (!isEmptyLst(fila))
         {
-            atual = heapPop(fila);
+            atual = popLst(fila);
 
             /* Faz o relaxamento */
             Vertice *V = G->vertices[atual->index];
@@ -295,12 +294,12 @@ void executarDijkstra(DataStructure grafo, int inicio)
                     Distancia *tmp = malloc(sizeof(Distancia));
                     tmp->index = indexVizinho;
                     tmp->distancia = distancia;
-                    heapPush(fila, tmp, 0);
+                    insertLst(fila, tmp);
                 }
             }
             free(atual);
         }
-        killHeap(fila);
+        killLst(fila);
 
         /* Printa o resultado */
         printDistMinima(G, inicio, dist);
