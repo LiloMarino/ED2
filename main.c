@@ -21,7 +21,7 @@ int main()
     adicionarVertice(Grafo, 3, 5, 4);
     adicionarVertice(Grafo, 4, 5, 6);
     printGrafo(Grafo);
-    //buscarGrafoLargura(Grafo,0);
+    buscarGrafoLargura(Grafo,0);
     executarDijkstra(Grafo,0);
     freeGrafo(Grafo);
     CriaGifDot(FNARQDOT);
