@@ -73,4 +73,40 @@ void printGrafo(DataStructure grafo);
  */
 void executarDijkstra(DataStructure grafo, int inicio);
 
+/**
+ * @brief Inicializa os vetores necessários para o algoritmo de Dijkstra
+ * @param grafo Ponteiro para o grafo
+ * @param dist Vetor de distâncias
+ * @param pred Vetor de predecessores
+ * @param indexInicial Índice do vértice inicial
+ */
+void inicializaDijkstra(DataStructure grafo, int dist[], int pred[], int indexInicial);
+
+/**
+ * @brief Verifica se há vértices abertos no grafo
+ * @param grafo Ponteiro para o grafo
+ * @param aberto Vetor indicando se os vértices estão abertos
+ * @return true se há vértices abertos, false caso contrário
+ */
+bool existeAberto(DataStructure grafo, bool aberto[]);
+
+/**
+ * @brief Encontra o índice do vértice com a menor distância entre os vértices abertos
+ * @param grafo Ponteiro para o grafo
+ * @param aberto Vetor indicando se os vértices estão abertos
+ * @param dist Vetor de distâncias
+ * @return Índice do vértice com a menor distância
+ */
+int menorDist(DataStructure grafo, bool aberto[], int dist[]);
+
+/**
+ * @brief Relaxa as arestas do vértice atual, atualizando distâncias e predecessores se necessário
+ * @param grafo Ponteiro para o grafo
+ * @param index Índice do vértice atual
+ * @param dist Vetor de distâncias
+ * @param pred Vetor de predecessores
+ * @param vizinhoIndex Índice do vértice vizinho
+ */
+void relaxaAresta(DataStructure grafo, int index, int dist[], int pred[], int vizinhoIndex);
+
 #endif

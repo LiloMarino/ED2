@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 #include "grafos.h"
 #include "dotgrafos.h"
 #include "Bibliotecas/listadupla.h"
@@ -240,74 +241,119 @@ void printGrafo(DataStructure grafo)
     killLst(Stack);
 }
 
-// void executarDijkstra(DataStructure grafo, int inicio)
-// {
-//     /* Verifica se o vértice existe */
-//     Grafo *G = grafo;
-//     if (!existsVerticeIn(G, inicio))
-//     {
-//         printf("Não exite o vértice %d no grafo\n", inicio);
-//         return;
-//     }
+void executarDijkstra(DataStructure grafo, int inicio)
+{
+    /* Verifica se o vértice existe */
+    Grafo *G = grafo;
+    if (!existsVerticeIn(G, inicio))
+    {
+        printf("Não exite o vértice %d no grafo\n", inicio);
+        return;
+    }
+    else
+    {
+        /* Encontra o índice do vértice inicial */
+        int indexInicial = searchVerticeID(G, inicio);
 
-//     /* Encontra o vértice inicial */
-//     Vertice *V = searchVertice(G, inicio);
+        /* Inicializa os vetores */
+        int dist[G->numVertices];
+        int pred[G->numVertices];
+        bool aberto[G->numVertices];
+        for (int i = 0; i < G->numVertices; i++)
+        {
+            aberto[i] = true;
+        }
 
-//     /* Inicializa o vetor que indica se os nós estão "abertos" ou não*/
-//     Verifica vrfy[G->numVertices];
-//     for (int i = 0; i < G->numVertices; i++)
-//     {
-//         vrfy[i].valor = G->vertices[i]->valor;
-//         vrfy[i].verificado = false;
-//     }
-//     vrfy[searchVerticeID(G, V->valor)].verificado = true;
+        inicializaDijkstra(G, dist, pred, indexInicial);
 
-//     inicializaDijkstra();
-// }
+        while (existeAberto(G, aberto))
+        {
+            int index = menorDist(G, aberto, dist);
+            aberto[index] = false;
 
-// void inicializaDijkstra(DataStructure grafo, int *d, int *p, int indexInicial)
-// {
-//     int v;
-//     for (v = 0; v < g->vertices; v++)
-//     {
-//         d[v] = INT_MAX / 2;
-//         p[v] = -1;
-//     }
-//     d[indexInicial] = 0;
-// }
+            /* Atualizar as distâncias e predecessores dos vizinhos de 'index' */
+            Vertice *V = G->vertices[index];
+            int vizinhoIndex;
+            for (int i = 0; i < V->numArestas; i++)
+            {
+                vizinhoIndex = searchVerticeID(G, V->arestas[i].vertice->valor);
+                relaxaAresta(G, index, dist, pred, vizinhoIndex);
+            }
+        }
+    }
+}
 
-// void relaxa(GRAFO *g, int *d, int *p, int u, int v)
-// {
-//     ADJACENCIA *ad = g->adj[u].cab;
-//     while (ad && ad->vertice != v)
-//         ad = ad->prox;
-//     if (ad)
-//     {
-//         if (d[v] > d[u] + ad->peso)
-//         {
-//             d[v] = d[u] + ad->peso;
-//             p[v] = u;
-//         }
-//     }
-// }
+void inicializaDijkstra(DataStructure grafo, int dist[], int pred[], int indexInicial)
+{
+    Grafo *G = grafo;
+    for (int v = 0; v < G->numVertices; v++)
+    {
+        dist[v] = INT_MAX / 2;
+        pred[v] = -1;
+    }
+    dist[indexInicial] = 0;
+}
 
-// int *dijkstra(GRAFO *g, int s) {
+bool existeAberto(DataStructure grafo, bool aberto[])
+{
+    Grafo *G = grafo;
+    for (int i = 0; i < G->numVertices; i++)
+    {
+        if (aberto[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
-// int p[g-›vertices];
-// bool aberto [g-›vertices];
-// InicializaD (g, d,p, s);
-// int i;
-// for (i=0; i‹g-›vertices; i++)
-// aberto [i] = true;
-// while (existeAberto (g, aberto)) {
-// int u = menorDist (g, aberto,d) ;
-// aberto [u] = false;
-// ADJACENCIA *ad = g->adj [u].cab;
-// while (ad) {
-// relaxa (g,d,p,u, ad-›vertice);
-// ad = ad->prox;
-// }
-// }
-// }
-// return (d);
-// }
+int menorDist(DataStructure grafo, bool aberto[], int dist[])
+{
+    Grafo *G = grafo;
+    int i;
+    for (i = 0; i < G->numVertices; i++)
+    {
+        if (aberto[i])
+        {
+            break;
+        }
+    }
+
+    if (i == searchVerticeID(G, G->vertices[i]->valor))
+    {
+        return -1;
+    }
+    else
+    {
+        int menor = i;
+        for (i = menor + 1; i < G->numVertices; i++)
+        {
+            if (aberto[i] && (dist[menor] > dist[i]))
+            {
+                menor = i;
+            }
+        }
+        return menor;
+    }
+}
+
+void relaxaAresta(DataStructure grafo, int index, int dist[], int pred[], int vizinhoIndex)
+{
+    Grafo *G = grafo;
+    Vertice *atual = G->vertices[index];
+    Aresta *aresta = atual->arestas;
+
+    while (aresta != NULL)
+    {
+        Vertice *vizinho = aresta->vertice;
+        int pesoAresta = aresta->peso;
+        int novaDistancia = dist[index] + pesoAresta;
+
+        if (novaDistancia < dist[vizinhoIndex])
+        {
+            dist[vizinhoIndex] = novaDistancia;
+            pred[vizinhoIndex] = index;
+        }
+        aresta = aresta->proximaAresta;
+    }
+}
