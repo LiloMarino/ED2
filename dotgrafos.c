@@ -18,6 +18,8 @@ void InicializaDot(ArqDot fdot, bool direcionado)
         fprintf(fdot, "graph Tree {\n");
     }
     fprintf(fdot, "\tnode [shape=circle];\n");
+    fprintf(fdot, "\tlayout=sfdp;\n");
+    fprintf(fdot, "\trankdir=LR;\n");
     fflush(fdot);
 }
 
