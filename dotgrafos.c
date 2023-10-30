@@ -17,6 +17,7 @@ void InicializaDot(ArqDot fdot, bool direcionado)
     {
         fprintf(fdot, "graph Tree {\n");
     }
+    fprintf(fdot, "\tgraph [splines=true overlap=false sep=\"+25,25\"];\n");
     fprintf(fdot, "\tnode [shape=circle];\n");
     fprintf(fdot, "\tlayout=sfdp;\n");
     fprintf(fdot, "\trankdir=LR;\n");
@@ -111,7 +112,7 @@ void CriaGifDot(const char nome[])
     while (vrfy != NULL)
     {
         fclose(vrfy);
-        sprintf(command, "dot -Tpng %s -o %s", nomearq, nomepng);
+        sprintf(command, "neato -x -Tpng %s -o %s", nomearq, nomepng);
 #if MOSTRAR_TEMPO != 0
         printf("\nTempo para gerar o %s\n", nomepng);
         iniciarTempo();
@@ -127,7 +128,7 @@ void CriaGifDot(const char nome[])
     }
 
     /* Cria um gif com as imagens geradas */
-    sprintf(command, "convert -delay 50 -loop 0 %s/*.png  %s.gif", path, nome);
+    sprintf(command, "convert -delay 50 -loop 0 $(ls -v %s/*.png) %s.gif", path, nome);
     system(command);
     free(path);
 }
