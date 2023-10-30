@@ -262,10 +262,12 @@ void executarDijkstra(DataStructure grafo, int inicio)
         for (int i = 0; i < G->numVertices; i++)
         {
             aberto[i] = true;
+            dist[i] = INT_MAX / 2;
+            pred[i] = -1;
         }
+        dist[indexInicial] = 0;
 
-        inicializaDijkstra(G, dist, pred, indexInicial);
-
+        /* Inicia o algoritmo */
         while (existeAberto(G, aberto))
         {
             int index = menorDist(G, aberto, dist);
@@ -280,18 +282,8 @@ void executarDijkstra(DataStructure grafo, int inicio)
                 relaxaAresta(G, index, dist, pred, vizinhoIndex);
             }
         }
+        printDistMinima(G, inicio, dist);
     }
-}
-
-void inicializaDijkstra(DataStructure grafo, int dist[], int pred[], int indexInicial)
-{
-    Grafo *G = grafo;
-    for (int v = 0; v < G->numVertices; v++)
-    {
-        dist[v] = INT_MAX / 2;
-        pred[v] = -1;
-    }
-    dist[indexInicial] = 0;
 }
 
 bool existeAberto(DataStructure grafo, bool aberto[])
@@ -341,12 +333,11 @@ void relaxaAresta(DataStructure grafo, int index, int dist[], int pred[], int vi
 {
     Grafo *G = grafo;
     Vertice *atual = G->vertices[index];
-    Aresta *aresta = atual->arestas;
 
-    while (aresta != NULL)
+    for (int i = 0; i < atual->numArestas; i++)
     {
-        Vertice *vizinho = aresta->vertice;
-        int pesoAresta = aresta->peso;
+        Aresta aresta = atual->arestas[i];
+        int pesoAresta = aresta.peso;
         int novaDistancia = dist[index] + pesoAresta;
 
         if (novaDistancia < dist[vizinhoIndex])
@@ -354,6 +345,15 @@ void relaxaAresta(DataStructure grafo, int index, int dist[], int pred[], int vi
             dist[vizinhoIndex] = novaDistancia;
             pred[vizinhoIndex] = index;
         }
-        aresta = aresta->proximaAresta;
+    }
+}
+
+void printDistMinima(DataStructure grafo, int inicio, int dist[])
+{
+    Grafo *G = grafo;
+    printf("Caminho minimo: ");
+    for (int i = 0; i < G->numVertices; i++)
+    {
+        printf("%d -> %d : %d ", inicio, G->vertices[i]->valor, dist[i]);
     }
 }

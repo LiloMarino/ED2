@@ -66,16 +66,12 @@ void buscarGrafoLargura(DataStructure grafo, int inicio);
  */
 void printGrafo(DataStructure grafo);
 
-void executarDijkstra(DataStructure grafo, int inicio);
-
 /**
- * @brief Inicializa os vetores necessários para o algoritmo de Dijkstra
+ * @brief Executa o algoritmo de Dijkstra e printa o resultado
  * @param grafo Ponteiro para o grafo
- * @param dist Vetor de distâncias
- * @param pred Vetor de predecessores
- * @param indexInicial Índice do vértice inicial
+ * @param inicio Número do vértice de início
  */
-void inicializaDijkstra(DataStructure grafo, int dist[], int pred[], int indexInicial);
+void executarDijkstra(DataStructure grafo, int inicio);
 
 /**
  * @brief Verifica se há vértices abertos no grafo
@@ -103,5 +99,13 @@ int menorDist(DataStructure grafo, bool aberto[], int dist[]);
  * @param vizinhoIndex Índice do vértice vizinho
  */
 void relaxaAresta(DataStructure grafo, int index, int dist[], int pred[], int vizinhoIndex);
+
+/**
+ * @brief Imprime as distâncias mínimas na tela
+ * @param grafo Ponteiro para o grafo
+ * @param inicio Número do vértice de início
+ * @param dist Vetor de distâncias mínimas
+ */
+void printDistMinima(DataStructure grafo, int inicio, int dist[]);
 
 #endif
