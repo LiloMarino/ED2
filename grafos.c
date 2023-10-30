@@ -4,7 +4,6 @@
 #include <limits.h>
 #include "grafos.h"
 #include "dotgrafos.h"
-#include "Bibliotecas/efficiency.h"
 #include "Bibliotecas/listadupla.h"
 #include "Bibliotecas/geradores.h"
 
@@ -202,10 +201,9 @@ void buscarGrafoLargura(DataStructure grafo, int inicio)
 void printGrafo(DataStructure grafo)
 {
     Grafo *G = grafo;
-    Vertice *V = G->vertices[0];
     ARQDOT = CriaLog(FNARQDOT, "dot");
     InicializaDot(ARQDOT, G->direcionado);
-
+    
     Verifica vrfy[G->numVertices];
     for (int i = 0; i < G->numVertices; i++)
     {
@@ -213,12 +211,11 @@ void printGrafo(DataStructure grafo)
         vrfy[i].verificado = false;
     }
     vrfy[0].verificado = true;
-
-    Lista Stack = createLst(-1);
-    insertLst(Stack, V);
-    while (!isEmptyLst(Stack))
+    
+    for (int k = 0; k < G->numVertices; k++)
     {
-        V = popLst(Stack);
+        Vertice *V = G->vertices[k];
+        CriaVertice(ARQDOT,V->valor,"");
         /*Insere os Arestas conectadas para o Stack de verificação*/
         for (int i = 0; i < V->numArestas; i++)
         {
@@ -233,7 +230,6 @@ void printGrafo(DataStructure grafo)
             if (!vrfy[j].verificado)
             {
                 vrfy[j].verificado = true;
-                insertLst(Stack, V->arestas[i].vertice);
                 if (!G->direcionado)
                 {
                     CriaAresta(ARQDOT, V->valor, V->arestas[i].vertice->valor, V->arestas[i].peso, G->direcionado);
@@ -246,7 +242,6 @@ void printGrafo(DataStructure grafo)
         }
     }
     TerminaDot(ARQDOT);
-    killLst(Stack);
 }
 
 void executarDijkstra(DataStructure grafo, int inicio)
