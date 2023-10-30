@@ -11,7 +11,7 @@ struct StHeapLista
 {
     struct StHeapNode *array;
     size_t capac;
-    size_t lenght;
+    size_t length;
 };
 
 typedef struct StHeapNode HeapNode;
@@ -21,7 +21,7 @@ Heap criarHeap(size_t capac)
 {
     HeapLista *heap = malloc(sizeof(HeapLista));
     heap->capac = capac;
-    heap->lenght = 0;
+    heap->length = 0;
     heap->array = malloc(capac * sizeof(HeapNode));
     return heap;
 }
@@ -40,13 +40,13 @@ void heapifyDown(Heap H, size_t current_index)
     size_t left_child_index = 2 * current_index + 1;
     size_t right_child_index = 2 * current_index + 2;
 
-    if (left_child_index < heap->lenght &&
+    if (left_child_index < heap->length &&
         heap->array[left_child_index].prioridade < heap->array[smallest_index].prioridade)
     {
         smallest_index = left_child_index;
     }
 
-    if (right_child_index < heap->lenght &&
+    if (right_child_index < heap->length &&
         heap->array[right_child_index].prioridade < heap->array[smallest_index].prioridade)
     {
         smallest_index = right_child_index;
@@ -64,23 +64,29 @@ void heapifyDown(Heap H, size_t current_index)
 
 Item heapPop(Heap H)
 {
-     HeapLista *heap = H;
-    if (heap->lenght == 0)
+    HeapLista *heap = H;
+    if (heap->length == 0)
     {
         return NULL; // Heap está vazia
     }
 
     Item menor = heap->array[0].item;
-    heap->array[0] = heap->array[heap->lenght - 1];
-    heap->lenght--;
+    heap->array[0] = heap->array[heap->length - 1];
+    heap->length--;
     heapifyDown(heap, 0);
 
     return menor;
 }
 
+bool isEmptyHeap(Heap H)
+{
+    HeapLista *heap = H;
+    return heap->length == 0 ? true : false;
+}
+
 void heapifyUp(Heap H, size_t current_index)
 {
-     HeapLista *heap = H;
+    HeapLista *heap = H;
     while (current_index > 0)
     {
         size_t parent_index = (current_index - 1) / 2;
@@ -103,15 +109,15 @@ void heapifyUp(Heap H, size_t current_index)
 
 void heapPush(Heap H, Item item, int prioridade)
 {
-     HeapLista *heap = H;
-    if (heap->lenght == heap->capac)
+    HeapLista *heap = H;
+    if (heap->length == heap->capac)
     {
         // A capacidade da heap foi atingida, pode ser necessário aumentar a capacidade
         return;
     }
 
-    heap->array[heap->lenght].item = item;
-    heap->array[heap->lenght].prioridade = prioridade;
-    heap->lenght++;
-    heapifyUp(heap, heap->lenght - 1);
+    heap->array[heap->length].item = item;
+    heap->array[heap->length].prioridade = prioridade;
+    heap->length++;
+    heapifyUp(heap, heap->length - 1);
 }

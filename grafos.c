@@ -4,6 +4,7 @@
 #include <limits.h>
 #include "grafos.h"
 #include "dotgrafos.h"
+#include "heap.h"
 #include "Bibliotecas/listadupla.h"
 #include "Bibliotecas/geradores.h"
 
@@ -33,10 +34,17 @@ struct StVerifica
     bool verificado;
 };
 
+struct StDistancia
+{
+    int index;
+    int distancia;
+};
+
 typedef struct StVertice Vertice;
 typedef struct StAresta Aresta;
 typedef struct StGrafo Grafo;
 typedef struct StVerifica Verifica;
+typedef struct StDistancia Distancia;
 
 DataStructure criarGrafo(bool direcionado)
 {
@@ -255,105 +263,56 @@ void executarDijkstra(DataStructure grafo, int inicio)
         /* Encontra o índice do vértice inicial */
         int indexInicial = searchVerticeID(G, inicio);
 
-        /* Inicializa os vetores */
+        /* Inicializa o vetor */
         int dist[G->numVertices];
-        int pred[G->numVertices];
-        bool aberto[G->numVertices];
         for (int i = 0; i < G->numVertices; i++)
         {
-            aberto[i] = true;
             dist[i] = INT_MAX / 2;
-            pred[i] = -1;
         }
         dist[indexInicial] = 0;
 
-        /* Inicia o algoritmo */
-        while (existeAberto(G, aberto))
-        {
-            int index = menorDist(G, aberto, dist);
-            aberto[index] = false;
+        /* Cria o heap */
+        Heap fila = criarHeap(G->numVertices);
+        Distancia *atual = malloc(sizeof(Distancia));
+        atual->index = indexInicial;
+        atual->distancia = 0;
+        heapPush(fila, atual, 0);
 
-            /* Atualizar as distâncias e predecessores dos vizinhos de 'index' */
-            Vertice *V = G->vertices[index];
-            int vizinhoIndex;
+        /* Inicia o algoritmo */
+        while (!isEmptyHeap(fila))
+        {
+            atual = heapPop(fila);
+
+            /* Faz o relaxamento */
+            Vertice *V = G->vertices[atual->index];
             for (int i = 0; i < V->numArestas; i++)
             {
-                vizinhoIndex = searchVerticeID(G, V->arestas[i].vertice->valor);
-                relaxaAresta(G, index, dist, pred, vizinhoIndex);
+                int distancia = atual->distancia + V->arestas[i].peso;
+                int indexVizinho = searchVerticeID(G, V->arestas[i].vertice->valor);
+                if (distancia < dist[indexVizinho])
+                {
+                    dist[indexVizinho] = distancia;
+                    Distancia *tmp = malloc(sizeof(Distancia));
+                    tmp->index = indexVizinho;
+                    tmp->distancia = distancia;
+                    heapPush(fila, tmp, 0);
+                }
             }
+            free(atual);
         }
+        killHeap(fila);
+
+        /* Printa o resultado */
         printDistMinima(G, inicio, dist);
-    }
-}
-
-bool existeAberto(DataStructure grafo, bool aberto[])
-{
-    Grafo *G = grafo;
-    for (int i = 0; i < G->numVertices; i++)
-    {
-        if (aberto[i])
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-int menorDist(DataStructure grafo, bool aberto[], int dist[])
-{
-    Grafo *G = grafo;
-    int i;
-    for (i = 0; i < G->numVertices; i++)
-    {
-        if (aberto[i])
-        {
-            break;
-        }
-    }
-
-    if (i == searchVerticeID(G, G->vertices[i]->valor))
-    {
-        return -1;
-    }
-    else
-    {
-        int menor = i;
-        for (i = menor + 1; i < G->numVertices; i++)
-        {
-            if (aberto[i] && (dist[menor] > dist[i]))
-            {
-                menor = i;
-            }
-        }
-        return menor;
-    }
-}
-
-void relaxaAresta(DataStructure grafo, int index, int dist[], int pred[], int vizinhoIndex)
-{
-    Grafo *G = grafo;
-    Vertice *atual = G->vertices[index];
-
-    for (int i = 0; i < atual->numArestas; i++)
-    {
-        Aresta aresta = atual->arestas[i];
-        int pesoAresta = aresta.peso;
-        int novaDistancia = dist[index] + pesoAresta;
-
-        if (novaDistancia < dist[vizinhoIndex])
-        {
-            dist[vizinhoIndex] = novaDistancia;
-            pred[vizinhoIndex] = index;
-        }
     }
 }
 
 void printDistMinima(DataStructure grafo, int inicio, int dist[])
 {
     Grafo *G = grafo;
-    printf("Caminho minimo: ");
+    printf("Caminho minimo:\n");
     for (int i = 0; i < G->numVertices; i++)
     {
-        printf("%d -> %d : %d ", inicio, G->vertices[i]->valor, dist[i]);
+        printf("v%d -> v%d : %d\n", inicio, G->vertices[i]->valor, dist[i]);
     }
 }
