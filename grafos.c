@@ -215,7 +215,7 @@ void printGrafo(DataStructure grafo)
     for (int k = 0; k < G->numVertices; k++)
     {
         Vertice *V = G->vertices[k];
-        CriaVertice(ARQDOT,V->valor,"");
+        CriaVertice(ARQDOT,V->valor,NULL);
         /*Insere os Arestas conectadas para o Stack de verificação*/
         for (int i = 0; i < V->numArestas; i++)
         {

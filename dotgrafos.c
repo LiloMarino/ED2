@@ -35,7 +35,14 @@ void TerminaDot(ArqDot fdot)
 
 void CriaVertice(ArqDot fdot, int vertice, const char *fillcolor)
 {
-    fprintf(fdot, "\tv%d [label=\"v%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n", vertice, vertice, fillcolor);
+    if (fillcolor == NULL)
+    {
+        fprintf(fdot, "\tv%d [label=\"v%d\"];\n", vertice, vertice);
+    }
+    else
+    {
+        fprintf(fdot, "\tv%d [label=\"v%d\", fontcolor=\"white\" style=filled, fillcolor=\"%s\"];\n", vertice, vertice, fillcolor);
+    }
     fflush(fdot);
 }
 
