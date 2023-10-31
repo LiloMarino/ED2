@@ -265,7 +265,8 @@ void executarDijkstra(DataStructure grafo, int inicio)
             dist[i] = INT_MAX / 2;
         }
         dist[indexInicial] = 0;
-        /* Cria o heap */
+        
+        /* Cria a fila de verificação */
         Lista fila = createLst(-1);
         Distancia *atual = malloc(sizeof(Distancia));
         atual->index = indexInicial;
